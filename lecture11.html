@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>PHI 401 Logic - Week 11</title>
+    <meta charset="UTF-8" />
+<link rel="stylesheet" type="text/css" href="logic-1724095155.css" />
+
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-database.js"></script>
+
+<script language="JavaScript" src="logic-1724095155.js"></script>
+    <script language="JavaScript" src="lecture_toolbar-1724095155.js"></script>
+
+    <script language="JavaScript" src="textBehavior-1724095155.js"></script>
+    <script language="JavaScript" src="lectures-1724095155.js"></script>
+    
+
+
+
+</head>
+
+<body>
+
+
+
+<article class="link">
+    <header>
+        <h2>Week 11: Identity</h2>
+    </header>
+
+<p>At this point in the course, we have presented a complete system for proving inferences involving the Boolean connectives <log>~</log>, <log>|</log>, <log>&amp;</log>, <log>-&gt;</log> and <log>&lt;-&gt;</log>. But there's more to logic than these connectives. This week, we cover the logic of identity. In the following weeks, we will make a further (and final) extension to our system to quantifiers.</p>
+
+<h3>Review</h3>
+
+<p>In contrast to the last few weeks, we're going to be making heavy use of names and predicates again. So let's quickly review the rules for names and predicates.
+<ul>
+<li>Names refer to individual objects.
+<li>Names always start with a <b>lowercase letter</b>.
+<li>Examples: <log>a, b, sammy, number1</log>.
+<li>Predicates refer to general <em>properties</em> and <em>relations</em> of objects.
+<li>Predicates always start with an <b>uppercase letter</b>.
+<li>Examples: <log>Square</log>, <log>Round</log>, <log>RightOf</log>, <log>Happy</log>.
+<li>Predicates are always used in the following way: <em>Predicate</em> ( <em>names</em> ). The result is a simple sentence.
+<li>Examples: <log>Square(a), Round(b), LeftOf(c, d)</log>.
+<li>Boolean connectives are then used to combine these simple sentences into longer sentences.
+<li>Example: <log>IsHungry(jim) -&gt; IsThirsty(mary)</log>, <log>Square(a) & Round(b)</log>.
+<li>The Boolean connectives join sentences together to make new sentences. They can't be used any other way.
+</ul>
+If you don't follow the rules, you'll get incorrect results. For example:
+<ul>
+<li><log>Square(A)</log> <b>WRONG</b>
+</ul>
+Can you see what's wrong with this sentence? What's wrong is that <log>A</log> is being used as a name, but <log>A</log> cannot be a name because it doesn't begin with a lowercase letter.
+<ul>
+<li><log>small(a)</log> <b>WRONG</b>
+</ul>
+Here, <log>small</log> is being used as a predicate. But <log>small</log> can't be a predicate because it doesn't start with an uppercase letter.</p>
+<ul>
+<li><log>Square(a &amp; b)</log> <b>WRONG</b>
+</ul>
+Someone writing this probably means that <log>a</log> and <log>b</log> are squares. But you can't use a connective like <log>&amp;</log> to join names, and you can't put anything but a name in the parentheses after a predicate. The correct form is: <log>Square(a) &amp; Square(b)</log>.
+
+<h4>Practice</h4>
+
+<p><em>NOTE: Practice exercises are NOT GRADED.</em></p>
+
+<p>Rewrite the following garbled sentences.</p>
+<ol>
+<li>round(b)
+<div translate="true" expected="Round(b)">
+    Corrected: <input t_id="1" size="70"/> <br />
+    <button t_op="translate" t_source="1" t_out="2">Check</button>
+    <span t_id="2"></span>
+    <br />
+    <button t_op="reveal" t_out="3">Show Answer</button>
+    <log t_id="3"></log>
+</div>
+
+<li>IsHungry(Michael)
+<div translate="true" expected="IsHungry(michael)">
+    Corrected: <input t_id="1" size="70"/> <br />
+    <button t_op="translate" t_source="1" t_out="2">Check</button>
+    <span t_id="2"></span>
+    <br />
+    <button t_op="reveal" t_out="3">Show Answer</button>
+    <log t_id="3"></log>
+</div>
+
+<li>Diamond(b & c)
+<div translate="true" expected="Diamond(b) & Diamond(c)">
+    Corrected: <input t_id="1" size="70"/> <br />
+    <button t_op="translate" t_source="1" t_out="2">Check</button>
+    <span t_id="2"></span>
+    <br />
+    <button t_op="reveal" t_out="3">Show Answer</button>
+    <log t_id="3"></log>
+</div>
+
+<li>b RightOf c
+<div translate="true" expected="RightOf(b, c)">
+    Corrected: <input t_id="1" size="70"/> <br />
+    <button t_op="translate" t_source="1" t_out="2">Check</button>
+    <span t_id="2"></span>
+    <br />
+    <button t_op="reveal" t_out="3">Show Answer</button>
+    <log t_id="3"></log>
+</div>
+
+<li>A between B & C
+<div translate="true" expected="Between(a, b, c)">
+    Corrected: <input t_id="1" size="70"/> <br />
+    <button t_op="translate" t_source="1" t_out="2">Check</button>
+    <span t_id="2"></span>
+    <br />
+    <button t_op="reveal" t_out="3">Show Answer</button>
+    <log t_id="3"></log>
+</div>
+</ol>
+
+
+
+<h3>The Identity Sign =</h3>
+
+<p>You've already seen the identity sign, <log>=</log>. As you know, it joins two names, and forms a sentence that says that the two names name the same object. For example, <log>a = b</log> is a sentence that says that <log>a</log> and <log>b</log> are the very same object.</p>
+
+<p>There are also valid inferences between sentences containing the identity sign. For example, suppose the same individual happens to have two names: say, <em>Michael</em> and <em>Steve</em>. Then if Michael is hungry, it should follow logically that Steve is hungry. In formal terms, the following argument should be valid:</p>
+
+<div class="argument">
+    <div>
+        <div><span>IsHungry(michael)</span><span>michael = steve</span></div>
+        <div>IsHungry(steve)</div>
+    </div>
+</div>
+
+<p>There is a simple formal rule that captures this sort of inference. It is the <b>substitution</b> rule. The sentence <log>IsHungry(steve)</log> is simply what you get when you replace <log>michael</log> with <log>steve</log> in <log>IsHungry(michael)</log>. This suggests that <em>all</em> inferences of the following form should be valid:</p>
+
+<div class="argument">
+    <div>
+        <div><span>F(michael)</span><span>michael = steve</span></div>
+        <div>F(steve)</div>
+    </div>
+</div>
+
+<p>Here we've just replaced <log>IsHungry</log> with a generic symbol <log>F</log>. <log>F(michael)</log> is supposed to be any sentence containing the name <log>michael</log>. <log>F(steve)</log> is the same sentence, but with <log>michael</log> replaced with <log>steve</log>.</p>
+
+<p>The sentence <log>F(michael)</log> can be any sentence you want. It isn't limited to being a simple atomic sentence. All that matters in the above inference is this: the sentences <log>F(michael)</log> and <log>F(steve)</log> must be the same, except that <log>steve</log> occurs in the latter where <log>michael</log> occurs in the former. For example, we could have:</p>
+
+<div class="argument">
+    <div>
+        <div><span>IsHungry(michael) | IsThirsty(michael)</span><span>michael = steve</span></div>
+        <div>IsHungry(steve) | IsThirsty(steve)</div>
+    </div>
+</div>
+
+<p>Here, <log>michael</log> has been replaced with <log>steve</log> in the sentence <log>IsHungry(michael) | IsThirsty(michael)</log>, producing the sentence <log>IsHungry(steve) | IsThirsty(steve)</log>.</p>
+
+<h3>The = Elim Rule</h3>
+
+<p>The above inferences belong to a rule, calle the <b><log>=</log> Elim</b> rule. That rule can be stated simply, as follows:</p>
+
+<div class="argument">
+    <div>
+        <div><span>F(a)</span><span>a = b</span></div>
+        <div>F(b)</div>
+    </div>
+</div>
+
+<p>What this means is that if you have a sentence, which we'll call <log>F(a)</log>, and you also have an identity sentence <log>a = b</log>, then you can infer <log>F(b)</log>, which is simply the result of replacing the <log>a</log> in <log>F(a)</log> with <log>b</log>. Here's an example of = Elim in a proof:</p>
+
+<div proof="json">
+{"premises":[{"s":"IsHungry(michael)","l":1},{"s":"michael = steve","l":2}],"body":[{"s":"IsHungry(steve)","l":3,"r":"= Elim","c":[1,2]}],"hasDialog":false}
+</div>
+
+<p>The conclusion, on line 3, is just like the premise on line 1, except that the name <log>michael</log> on line 1 has been replaced by <log>steve</log> on line 3. The conclusion is justified by citing the original sentence on line 1, together with the identity <log>michael = steve</log> on line 2. Here's another example:</p>
+
+<div proof="json">
+{"premises":[{"s":"F(a) & G(c)","l":1},{"s":"a = b","l":2}],"body":[{"s":"F(b) & G(c)","l":3,"r":"= Elim","c":[1,2]}],"hasDialog":false}
+</div>
+
+<p>Let's take a look at what we did here. As always, we're performing a substitution. The sentence we're performing a substitution on is the first premise, <log>F(a) &amp; G(c)</log>. We're replacing <log>a</log> with <log>b</log>. Now you may notice that the first premise also contains an additional name, <log>c</log>. This name gets left alone: it isn't replaced by anything. As a result, the conclusion is <log>F(b) &amp; G(c)</log>.
+
+<p>Here's a tricky example:</p>
+
+<div proof="json">
+{"premises":[{"s":"a = b","l":1},{"s":"b = c","l":2}],"body":[{"s":"a = c","l":3,"r":"= Elim","c":[1,2]}],"hasDialog":false}
+</div>
+
+<p>See if you can tell what's going on here. What's happening is that the <log>b</log> in line 1 is being replaced with <log>c</log>, and the identity <log>b = c</log> is being used to justify this substitution. Thus, even though both sentences are identities, only one of them is being treated as an identity. The other, <log>a = b</log>, is just an ordinary sentence that contains the name <log>b</log>, and that name is being replaced with another name <log>c</log>.</p>
+
+<h4>Practice</h4>
+
+<p>Look at the partial proof below; where is the argument going? Enter the natural conclusion and see how the <log>=</log> Elim rule justifies it.</p>
+
+<div proof="json">
+{"premises":[{"s":"IsSmart(hermione)","l":1},{"s":"hermione=emma","l":2}],"body":[{"s":"","l":3,"r":"= Elim","c":[2,1]}],"hasToolbar":false,"hasDialog":false,"enabledRules":["= Elim","= Intro"]}
+</div>
+
+<p>Next, enter an identity statement on line 2 that will make the conclusion justified.</p>
+
+<div proof="json">
+{"premises":[{"s":"IsEvil(tom)","l":1},{"s":"","l":2}],"body":[{"s":"IsEvil(voldemort)","l":3,"r":"= Elim","c":[1,2]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[]}
+</div>
+
+<p>What conclusion can you enter on line 3, so that it evaluates correct?</p>
+
+<div proof="json">
+{"premises":[{"s":"Hero(wolverine) & Villain(magneto)","l":1},{"s":"wolverine = logan","l":2}],"body":[{"s":"","l":3,"r":"= Elim","c":[1,2]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[]}
+</div>
+
+
+<h3>Partial Substitutions</h3>
+
+<p>The = Elim rule also allows you to make substitutions selectively. That is, if the name <log>a</log> occurs more than once in a sentence <log>F(a)</log>, you are allowed to replace some of the <log>a</log>'s with <log>b</log> and leave the others intact. Here's an example:</p>
+
+<div proof="json">
+{"premises":[{"s":"Square(a) -> Large(a)","l":1},{"s":"a = b","l":2}],"body":[{"s":"Square(a) -> Large(b)","l":3,"r":"= Elim","c":[2,1]}],"hasDialog":false}
+</div>
+
+<p>Here, the second <log>a</log> on line 1 is replaced with <log>b</log>, but the first <log>a</log> is not replaced. This is considered perfectly correct. Of course, it would also be correct to replace both <log>a</log>'s with <log>b</log>'s, or to replace just the first <log>a</log> and leave the second <log>a</log> alone.</p>
+
+<h4>Practice</h4>
+
+<p>There are three different conclusions that you can make using the <log>=</log> Elim rule; what are they?</p>
+
+<div proof="json">
+{"premises":[{"s":"Square(a) & Large(a)","l":1},{"s":"a=b","l":2}],"body":[{"s":"","l":3,"r":"= Elim","c":[1,2]},{"s":"","l":4,"r":"= Elim","c":[2,1]},{"s":"","l":5,"r":"= Elim","c":[1,2]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[]}
+</div>
+
+<h3>The = Intro Rule</h3>
+
+<p>The = Elim rule has a companion, the <b>= Intro</b> rule. This rule is extremely simple. For any name <log>a</log>, you are allowed to write the sentence <log>a = a</log> at any point in the proof. You use the = Intro rule to justify the sentence, and you don't cite any premises. For example:</p>
+
+<div proof="json">
+{"premises":[{"s":"","l":1}],"body":[{"s":"a = a","l":2,"r":"= Intro","c":[]}],"hasDialog":false}
+</div>
+
+<p>You're allowed to do this, because the sentence <log>a = a</log> is a truth of logic. It is guaranteed to be true no matter what. It's similar to a tautology, in a way, except that it doesn't have a truth table.</p>
+
+<p>The <log>=</log> Intro rule may look trivial. However, you sometimes need to use it in conjunction with other rules. Also, without this rule, our system would be incomplete: there would be logical implications that we would be unable to prove in our system.</p>
+
+<h3>A Shortcut: Taut Con</h3>
+
+<p>We have one more rule to cover this week. The rule is actually just a shortcut that we use when we don't want to get bogged down in the details of a proof.</p>
+
+<p>Suppose you are trying to derive some sentence, and you're pretty sure that this sentence is a tautological consequence of sentences you have already written down. For example, suppose the sentence you're trying to justify is <log>~A | ~B</log>. You already have <log>~(A &amp; B)</log> in the proof, and you're sure you read somewhere that <log>~A | ~B</log> follows from <log>~(A &amp; B)</log>. But you can't remember the proof. Well, you can justify the sentence in one step, using our new rule, <b>Taut Con</b>:</p>
+
+<div proof="json">
+{"premises":[{"s":"~(A & B)","l":1}],"body":[{"s":"~A | ~B","l":2,"r":"Taut Con","c":[1]}],"hasDialog":false}
+</div>
+
+<p>When the proof checker sees the Taut Con rule, it determines whether the sentence you're trying to justify can be derived from the cited sentence(s) using only the following rules: the Elim and Intro rules for the five Boolean connectives, the Reit rule, and the Contradiction rule. That is, it looks to see if the sentence is derivable using the rules we've studied up to now, <em>excluding</em> the identity rules = Elim and = Intro. If the sentence can be so derived, then the use of Taut Con is considered correct. In effect, Taut Con tells the proof checker to find a proof for you. If no such proof exists, then the inference is marked incorrect.</p>
+
+<p>In the previous weeks' problems, the Taut Con rule was made unavailable. And for good reason: with Taut Con, every problem from the past weeks can be solved in a single step! So making Taut Con available would have completely defeated the purpose of the exercises. On the other hand, in this week's exercises, I want you to learn how to use the = Elim and = Intro rules, without the distraction of having to deal with the other rules.</p>
+
+<p>When the proof checker evaluates your use of Taut Con, it is doing the equivalent of finding a proof, and this is pretty trivial for a computer to do. In that respect, the computer is smarter than you or me, for whom finding a proof is hard. In fact, though, the computer is being a bit less clever than it looks, since what it is actually doing is more akin to evaluating a big truth table. And as you know, evaluating a truth table, while tedious, doesn't require a lot of imagination. Fortunately, computers are good at tedious tasks</p>
+
+<h3>Examples</h3>
+
+<p>Here are a few more examples of the rules. First, suppose we have <log>Between(a, b, c)</log>, and we want to prove <log>Between(d, e, f)</log>. Suppose we also have the identity statements <log>a = d</log>, <log>b = e</log>, and <log>c = f</log>. We then apply substitutions one at a time, until we get the desired result:</p>
+
+<div proof="json">
+{"premises":[{"s":"Between(a, b, c)","l":1},{"s":"a = d","l":2},{"s":"b = e","l":3},{"s":"c = f","l":4}],"body":[{"s":"Between(d, b, c)","l":5,"r":"= Elim","c":[1,2]},{"s":"Between(d, e, c)","l":6,"r":"= Elim","c":[5,3]},{"s":"Between(d, e, f)","l":7,"r":"= Elim","c":[6,4]}],"hasDialog":false}
+</div>
+
+<p>Notice what we're doing here. First, we replace the <log>a</log> in <log>Between(a, b, c)</log> with <log>d</log>: this gives us <log>Between(d, b, c)</log>. Then we take this sentence, <log>Between(d, b, c)</log>, and replace the <log>b</log> with <log>e</log>, yielding <log>Between(d, e, c)</log> Finally, we replace the <log>c</log> in that sentence with <log>f</log>, resulting in <log>Between(d, e, f)</log>. At each point, we cite the appropriate sentences.</p>
+
+<p>Here's a slightly more complicated example. Suppose our premises are <log>IsHungry(michael) | IsHungry(steve)</log> and <log>michael = steve</log>. The first sentence says that either Michael or Steve is hungry, and the second sentence says that Michael and Steve are the same person. Therefore, it we should be able to prove that Michael is hungry. That is, it should be possible to prove <log>IsHungry(michael)</log>. But how would this be proven in our system? Here's the trick. First, we use the = Elim rule to replace the <log>steve</log> in our first sentence with <log>michael</log>. This gives us <log>IsHungry(michael) | IsHungry(michael)</log>. That's close to what we want, but it's not all the way there: we want just <log>IsHungry(michael)</log>. At this point, we could go back and use the rules from the previous weeks. Or, we could just use the Taut Con rule. In the latter case, we get the following result:</p>
+
+<div proof="json">
+{"premises":[{"s":"IsHungry(michael) | IsHungry(steve)","l":1},{"s":"michael = steve","l":2}],"body":[{"s":"IsHungry(michael) | IsHungry(michael)","l":3,"r":"= Elim","c":[2,1]},{"s":"IsHungry(michael)","l":4,"r":"Taut Con","c":[3]}],"hasDialog":false}
+</div>
+
+<p>If you'd rather not use Taut Con, you can do it the hard way instead:</p>
+
+<div proof="json">
+{"premises":[{"s":"IsHungry(michael) | IsHungry(steve)","l":1},{"s":"michael = steve","l":2}],"body":[{"s":"IsHungry(michael) | IsHungry(michael)","l":3,"r":"= Elim","c":[2,1]},{"p":{"premises":[{"s":"IsHungry(michael)","l":4}],"body":[{"s":"IsHungry(michael)","l":5,"r":"Reit","c":[4]}]},"l":6},{"p":{"premises":[{"s":"IsHungry(michael)","l":7}],"body":[{"s":"IsHungry(michael)","l":8,"r":"Reit","c":[7]}]},"l":9},{"s":"IsHungry(michael)","l":10,"r":"| Elim","c":[9,6,3]}],"hasDialog":false}
+</div>
+
+<p>And here's one more example. Suppose you have <log>a = b</log>; how would you prove <log>b = a</log>? The answer is tricky, but instructive.</p>
+
+<div proof="json">
+{"premises":[{"s":"a = b","l":1}],"body":[{"s":"a = a","l":2,"r":"= Intro","c":[]},{"s":"b = a","l":3,"r":"= Elim","c":[2,1]}],"hasDialog":false}
+</div>
+
+<p>In the first step, we introduce the identity <log>a = a</log>, and justify it with = Intro. Then, in the second step, we replace the first <log>a</log> in <log>a = a</log> with <log>b</log>, using = Elim and the identity on line 1.</p>
+
+<h4>Practice</h4>
+
+<p>The following is a proof where we do three substitutions, one at a time, just like the example above with <log>Between(a, b, c)</log>. Fill in lines 5-7 to make a correct proof.</p>
+
+<div proof="json">
+{"premises":[{"s":"LeftOf(a, b) & RightOf(a, c)","l":1},{"s":"a = d","l":2},{"s":"b = e","l":3},{"s":"c = f","l":4}],"body":[{"s":"","l":5,"r":"= Elim","c":[1,2]},{"s":"","l":6,"r":"= Elim","c":[5,3]},{"s":"","l":7,"r":"= Elim","c":[6,4]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[]}
+</div>
+
+<p>The next proof involves a chain of substitutions: replace one name with a second name, then replace that second name with a third. Supply a premise on line 3, which will be an identity, and a step on line 4, to make the conclusion on line 5 justified.</p>
+
+<div proof="json">
+{"premises":[{"s":"Square(a)","l":1},{"s":"a = b","l":2},{"s":"","l":3}],"body":[{"s":"","l":4,"r":"= Elim","c":[2,1]},{"s":"Square(c)","l":5,"r":"= Elim","c":[4,3]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[]}
+</div>
+
+
+
+</article>
+
+</body>
+</html>

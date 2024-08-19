@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>PHI 401 Logic - Week 12</title>
+    <meta charset="UTF-8" />
+<link rel="stylesheet" type="text/css" href="logic-1724095155.css" />
+
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-database.js"></script>
+
+<script language="JavaScript" src="logic-1724095155.js"></script>
+    <script language="JavaScript" src="lecture_toolbar-1724095155.js"></script>
+
+    <script language="JavaScript" src="textBehavior-1724095155.js"></script>
+    <script language="JavaScript" src="lectures-1724095155.js"></script>
+
+</head>
+
+<body>
+
+
+
+<article class="link">
+    <header>
+        <h2>Week 12: Quantifiers</h2>
+    </header>
+
+<p>This week, we add two new symbols to the language. We add <log>A</log>, meaning &quot;For all,&quot; and <log>E</log>, meaning &quot;There is&quot; or &quot;There exists.&quot; These new symbols are called <b>quantifiers</b>. Here are some examples of quantifiers in action.</p>
+
+<ul>
+<li> <log>Ax Square(x)</log> &mdash; For all <log>x</log>, <log>x</log> is a square (or: everything is a square).
+<li> <log>Ey Square(y)</log> &mdash; For some <log>y</log>, <log>y</log> is a square (or: there exists at least one square).
+<li> <log>Az Loves(z, raymond)</log> &mdash; For all <log>z</log>, <log>z</log> loves Raymond (or: everybody loves Raymond).
+</ul>
+
+<p>Hopefully you are seeing the general pattern. If you see a sentence like this:</p>
+
+<ul>
+<li> <log>Ax ...x...</log>
+</ul>
+
+<p>it means the following:</p>
+
+<ul>
+<li>Every object <log>x</log> is such that <log>...x...</log>
+</ul>
+
+<p>And if you see a sentence that looks like this:
+
+<ul>
+<li><log>Ex ...x...</log>
+</ul>
+
+<p>it means the following:</p>
+
+<ul>
+<li>At least one object <log>x</log> is such that <log>...x...</log>
+</ul>
+
+<p>Thus, <log>Ax</log> should be read &quot;For all <log>x</log>, ...,&quot; and <log>Ex</log> should be read &quot;There exists <log>x</log> such that ....&quot;</p>
+
+<p>The letters <log>x</log>, <log>y</log>, etc., are called <b>variables</b>. They work with quantifiers to form sentences. It doesn't matter whether you use <log>x</log>, <log>y</log>, etc., as they all have the same meaning. The reason we have more than one variable in the language is that a sentence can have more than one quantifier, and in general, different quantifiers go with different variables, as we will see.</p>
+
+<p>We can combine quantifiers with the other symbols in the language to produce more complicated sentences, such as:</p>
+
+<ul>
+<li> <log>Ex (Square(x) &amp; Small(x))</log> &mdash; There exists at least one small square.
+<li> <log>Ax (Square(x) -&gt; Small(x))</log> &mdash; All squares are small.
+<li> <log>~Ex (Square(x) &amp; Diamond(x))</log> &mdash; Nothing is both a square and a diamond.
+<li> <log>Ax Square(x) | Ax Diamond(x)</log> &mdash; Either everything is a square, or everything is a diamond.
+</ul>
+
+<p>We can even have two quantifiers in the same sentence. Try and see if you can figure out the meaning of the following sentence before looking at the answer:</p>
+
+<ul>
+<li><log>~Ex Ey (Whiner(x) &amp; Likes(y, x))</log>
+</ul>
+(Answer: Nobody likes a whiner.)
+
+<p>And that's basically the whole story. Now let's look at the details.</p>
+
+<h3>Notation</h3>
+
+<p>The notation used in this course is a bit atypical. What I'm writing as <log>A</log> is typically written as a special symbol: <log>&forall;</log>. (In case you don't have the right fonts installed, this symbol looks like an upside-down A.) And what I'm writing <log>E</log> is typically written as another special symbol: <log>&exist;</log>, or backwards-E.</p>
+
+<p>The reason I'm using the ordinary letters <log>A</log> and <log>E</log> is that your keyboard is unlikely to have the special logic symbols on it, and special symbol entry in a browser leads to unwanted complexity. We do pay a small price for this, however. Consider a sentence such as <log>Ax Square(x)</log>. The first part of the sentence, <log>Ax</log>, consists of two symbols: the quantifier <log>A</log>, and the variable <log>x</log>. However, in a different context this two-letter sequence <log>Ax</log> could just be a predicate. For example, we could have a sentence <log>Ax(mary)</log>, in which <log>Ax</log> serves as a predicate.</log>
+
+<p>Fortunately, this is not likely to be a problem in practice, since in any well-formed sentence, <log>Ax</log> can be interpreted as a quantifier expression, or as a predicate, <em>but not both</em>. For example, in <log>Ax Square(x)</log>, <log>A</log> <em>has</em> to be interpreted as a quantifier, since otherwise the sentence would be ill-formed. And in the sentence <log>Ax(mary)</log>, <log>Ax</log> <em>has</em> to be interpreted as a predicate, since any other interpretation would result in an ill-formed sentence.</p>
+
+<p>You can, optionally, leave some space between the quantifier and the variable. For example, <log>Ax Square(x)</log> could be written <log>A x Square(x)</log>, and <log>Ex Small(x)</log> could be written <log>E x Small(x)</log>. Another option is to put a pair of parentheses around the quantifier expression, writing <log>(Ax) Square(x)</log> and <log>(Ex) Small(x)</log>, for example.</p>
+
+<p>One bit of space that is mandatory is the space between the variable <log>x</log> and the rest of the sentence. For example, if you left out the space between <log>x</log> and <log>Square</log> in <log>Ax Square(x)</log>, the result would be <log>AxSquare(x)</log>, and this is <b>incorrect</b>. If you write something like that, the computer will do one of two things: it will interpret <log>AxSquare</log> as one long predicate; or it will interpret <log>xSquare</log> as a variable. So the rule is: you can't put a variable next to a predicate without an intervening space.</p>
+
+<p>Finally, there is one more notational convention that is optional, but I might as well describe it for you. The statement <log>Ax Square(x)</log> can optionally be written <log>(x) Square(x)</log>. That is, a variable enclosed in parentheses, <log>(x)</log>, is interpreted as &quot;for all <log>x</log>.&quot; This option is included because the notation <log>(x)</log> is fairly common in print, and used to be completely standard.</p>
+
+<p>To summarize, <log>Ax Square(x)</log> can also be written <log>A x Square(x)</log>, <log>(Ax) Square(x)</log>, <log>(A x) Square(x)</log>, or <log>(x) Square(x)</log>; but I will just stick with the first form, <log>Ax Square(x)</log>. Likewise, <log>Ex Small(x)</log> can also be written <log>E x Small(x)</log>, <log>(Ex) Small(x)</log>, or <log>(E x) Small(x)</log>, but again I'll just stick to the first form.</p>
+
+
+<h3>Variables</h3>
+
+<p>We are introducing two new types of symbols this week: <b>quantifiers</b> (i.e., the symbols <log>A</log> and <log>E</log>), and <b>variables</b>. A variable is a letter from the end of the alphabet, specifically any letter from <log>u</log> to <log>z</log>. We also allow variables to include numbers, e.g. <log>x1</log> or <log>y22</log>.
+
+<p>Variables superficially resemble names. In fact, a variable can legally go anywhere a name can. The opposite doesn't hold: there are a few places a variable can go that a name can't. Specifically, constructions like the following are illegal:
+
+<ul><li><log>Ab Square(b)</log> &nbsp;&nbsp;<b>WRONG</b></ul>
+
+<p>This tries to use a name as a variable, and that isn't allowed. On the other hand, the following is perfectly fine:
+
+  <ul><li><log>Ax Square(x)</log></ul>
+
+<p>You can think of a variable as something that makes reference to an unspecified object, while a name makes reference to a specific object. In the sentence <log>Ax Square(x)</log>, for example, it doesn't make any sense to ask which square <log>x</log> refers to. It basically refers to all of them. On the other hand, in <log>Square(a)</log>, it does make sense to ask what shape <log>a</log> refers to.
+
+
+   
+
+
+<h3>Quantifiers and Variables Go Together</h3>
+
+<p>A quantifier always goes with a variable. The general format is:
+<ul>
+<li> <log>Ax</log> ... <log>x</log>...
+<li> <log>Ex</log> ... <log>x</log>...
+</ul>
+These sentences say, respectively, "For all <log>x</log>, ...<log>x</log>..." and "There is an <log>x</log> such that ...<log>x</log>...". In each case, there are two <log>x</log>'s. One <log>x</log> comes right after the quantifier, and the other appears somewhere else in the sentence but <em>refers back</em> to the quantifier. For example, take the sentence:
+<ul>
+<li> <log>Ex IsHungry(x)</log>
+</ul>
+This sentence says that someone or other is hungry. A little more formally, it says that there is someone <log>x</log> such that <log>x</log> is hungry. "There is someone <log>x</log>" is rendered <log>Ex</log>, and "such that <log>x</log> is hungry</log>" is rendered <log>IsHungry(x)</log>, and the two <log>x</log>'s are related to each other and must both appear in the full sentence <log>Ex IsHungry(x)</log>.</p>
+
+<p>Sometimes a variable will appear three or more times, as in the following sentences:
+<ul>
+<li><log>Ex [Square(x) &amp; Large(x)]</log>
+<li><log>Ax [IsHungry(x) -&gt; IsThirsty(x)]</log>
+</ul>
+The first sentence says that something is both square and large. That is, it says that there is an <log>x</log> such that <log>x</log> is square and <log>x</log> is large. So the sentence <log>Square(x) &amp; Large(x)</log>, where <log>x</log> appears twice, says that <log>x</log> is a large square. Adding <log>Ex</log> creates a sentence that says that some object <log>x</log> has this property of being a large square. Thus, the <log>x</log>'s in <log>Square(x) &amp; Large(x)</log> both refer back to <log>Ex</log>. The same thing goes for the second sentence, which says that everyone who is hungry is also thirsty. The <log>x</log>'s in <log>IsHungry(x) -&gt; IsThirsty(x)</log> both refer back to <log>Ax</log>.</p>
+
+<h3>Some Mistakes</h3>
+
+<p>It is very important to follow the rules of the language when you write sentences in logical notation. The following sentences, for example, are all incorrect.
+<ol>
+<li><log>E Square(x)</log> <b>WRONG</b>
+<li><log>Loves(Ax, raymond)</log> <b>WRONG</b>
+<li><log>Wants(sally, Ex)</log> <b>WRONG</b>
+<li><log>Wants(sally, ~Ex)</log> <b>WRONG</b>
+</ol>
+Let's go over these one by one. The first ill-formed sentence was
+<ul>
+<li><log>E Square(x)</log> <b>WRONG</b>
+</ul>
+The problem here is that the quantifier <log>E</log> has no corresponding variable. Here is where you have to remember the rule we just went over, that variables come in pairs: one variable comes right after the quantifier, and the other appears farther along in the sentence. The correct way to write the sentence is:
+<ul>
+<li><log>Ex Square(x)</log>
+</ul>
+Next, let's look at the second sentence:
+<ul>
+<li><log>Loves(Ax, raymond)</log> <b>WRONG</b>
+</ul>
+Whoever wrote this sentence was trying to say that everybody loves Raymond. But writing the sentence this way breaks the rules of logic. The expression <log>Ax</log> is being used as if it were a name, and it is <em>not</em> a name. It's more like a connective. The <em>only</em> correct way to use <log>Ax</log> is by putting it at the front of a complete sentence, as in <log>Ax Small(x)</log>: this sentence is formed by attaching <log>Ax</log> to the sentence <log>Small(x)</log>, and that's how you have to do it. The correct way to write sentence 2 would have been as follows:
+<ul>
+<li><log>Ax Loves(x, raymond)</log></li>
+</ul>
+A similar problem occurs with the third sentence:
+<ul>
+<li><log>Wants(sally, Ex)</log> <b>WRONG</b>
+</ul>
+This sentence is trying (unsuccessfully) to say that Sally wants something. Whoever wrote this sentence thought that <log>Ex</log> could be used the same way we use "something" in English. As before, though, <log>Ex</log> can't be used that way. The only thing that could go where <log>Ex</log> is is a name. And <log>Ex</log> is not a name. In a well-formed sentence, <log>Ex</log> is used in exactly the same way as <log>Ax</log>: at the front of a complete sentence. Sentence 3 needs to be rewritten as follows:
+<ul>
+<li><log>Ex Wants(sally, x)</log>
+</ul>
+Finally, let's have a look at the fourth sentence:
+<ul>
+<li><log>Wants(sally, ~Ex)</log> <b>WRONG</b>
+</ul>
+This is by far the trickiest. The author of the above non-sentence was trying to say that Sally wants nothing. But the expression <log>~Ex</log> is not a name that means "nothing." Only a name or variable can go where <log>~Ex</log> is. Thus, we will have to rewrite this sentence to make it grammatical. The correct way is as follows:
+<ul>
+<li><log>~Ex Wants(sally, x)</log>
+</ul>
+You can avoid all of these mistakes by remembering these simple rules:
+<ol>
+<li>A quantifier <log>A</log> or <log>E</log> must always be followed directly by a variable, and this variable must have one or more matching variables later on in the sentence.
+<li> The only correct way to use a predicate <log>P</log> is <log>P(...)</log>, where <log>...</log> is a list of one or more names and/or variables.
+<li> A name or variable has no internal structure. It is just a single item, typically a single lower-case letter, though longer names are allowed such as <log>michael</log> and <log>sally</log>. Other items, such as predicates, sentences, quantifiers, etc., are <em>not</em> names or variables.
+<li>As a consequence of rules 2 and 3, within a sentence <log>P(...)</log>, the item or items in <log>...</log> cannot include any sentences, quantifiers, predicates, or complex constructions of any kind.
+</ol>
+
+<h3>Making More Complex Sentences</h3>
+
+<p>The simplest kind sentence we can make with quantifiers has one quantifier and one predicate. For example:
+<ul>
+<li><log>Ax Square(x)
+<li><log>Ey Wants(michael, y)</log>
+</ul>
+But we can form more complicated sentences, too. There are a couple basic methods. First, we can attach a quantifier to a sentence that already has some internal structure of its own. We have already seen a few sentences of this type. For example:
+<ul>
+<li><log>Ex [Square(x) &amp; Large(x)]
+</ul>
+This sentence says that there exists at least one large square. That is, it says that there exists an object <log>x</log> such that <log>x</log> is square and <log>x</log> is large.</p>
+
+<p>The sentence is organized in a way that reflects its meaning. It has two parts: a quantifier part <log>Ex</log>, and the remaining part, which the quantifier applies to: <log>Square(x) &amp; Large(x)</log>. We can see this structure in a parse tree:</p>
+
+<div parsetree="Ex [Square(x) & Large(x)]"></div>
+
+<p>In the other parse trees you have worked with, you clicked the sentence's main connective to expand the tree. This is still true, but now we treat <log>E</log> and <log>A</log> as connectives, and you can click them the same way you click a connective. (Quantifiers are not, technically, considered to be connectives, but I will sometimes call them connectives anyway. They do something similar: they join together two elements to make a sentence.) In the above tree, there are two clickable items: the quantifier <log>E</log>, and the Boolean connective <log>&amp;</log>. One is the main connective of the sentence, and the other isn't. Go ahead and see if you can figure out which is which.</p>
+
+<p>If you did this exercise, you found out that it was <log>E</log> that needed to be clicked. It is the main connective. (If you didn't do the exercise, please go back and do it now.) Clicking the <log>E</log> reveals that the sentence has two components which the quantifier <log>E</log> joins to form a complete sentence. The first component is the variable <log>x</log> that comes right after the <log>E</log>. The other is the rest of the sentence, <log>Square(x) &amp; Large(x)</log>. You can expand the latter part further by clicking the connective <log>&amp;</log>, just as usual.</p>
+
+<p>This sentence structure also reveals the <em>meaning</em> of the sentence, as I mentioned before. Since the quantifier <log>E</log> joins the variable <log>x</log> to the sentence <log>Square(x) &amp; Large(x)</log>, the sentence says that there is an object, called <log>x</log>, of which the rest of the sentence, <log>Square(x) &amp; Large(x)</log>, is true.</p>
+
+<p>Let's look at a few more sentences. You may have noticed that in the previous sentence, we put parentheses around <log>Square(x) &amp; Large(x)</log>. The parentheses are for grouping, just as in other sentences you've seen. They indicate that the quantifier <log>Ex</log> applies to the whole sentence <log>Square(x) &amp; Large(x)</log>, and not just part of that sentence. What happens if we leave the parentheses off? Let's find out. Please expand out the following sentence.</p>
+
+<div parsetree="Ex Square(x) & Large(x)"></div>
+
+<p>Aside from the missing parentheses, this sentence looks just like the one before. However, it has a completely different parse tree. It is no longer structured as a quantifier joining a variable <log>x</log> to a sentence <log>Square(x) &amp; Large(x)</log>, which in turn is a conjunction. Instead, the whole sentence is a conjunction, one of whose conjuncts is a quantified sentence, <log>Ex Square(x)</log>, and whose other conjunct is the quantifier-less sentence <log>Large(x)</log>.</p>
+
+<p>Also, it's important to understand that the second <log>x</log>, in <log>Large(x)</log>, has <em>nothing to do</em> with the quantifier <log>E</log>. The variables associated with a quantifier are <em>precisely</em> those that trace back to it in the parse tree. In the previous parse tree, every <log>x</log> in the sentence falls below the <log>E</log> in the tree: you can get from the <log>E</log> to any <log>x</log> by following the tree's branches downward. Not so in this tree: the second <log>x</log> is hanging all by itself, with no connection to the <log>E</log>.</p>
+
+<p>So what does the sentence <em>mean</em>? It means: "Something is a square; and in addition, <log>x</log> is large." And this doesn't really make a lot of sense, because it's completely undefined what <log>x</log> refers to. This <log>x</log>, unconnected to any quantifier, is called a <b>free variable</b>. A sentence with a free variable can't be interpreted, because a free variable doesn't have a well-defined meaning.</p>
+
+<p>To summarize, we wanted to see the effect of removing the parentheses in <log>Ex [Square(x) &amp; Large(x)]</log>, and the effect was to create a kind of nonsense sentence. This is a very good reason to use parentheses correctly.</p>
+
+<p>Here's another sentence to parse:</p>
+
+<div parsetree="Ex Square(x) & Ex Large(x)"></div>
+
+<p>Go ahead and expand that sentence. You'll find that the sentence is a conjunction: its main connective is <log>&amp;</log>, and its two conjuncts are <log>Ex Square(x)</log> and <log>Ex Large(x)</log>. The sentence means that something is square, and also, something is large. But the square thing and the large thing are not necessarily the same.</p>
+
+<p>Even though the same variable <log>x</log> is used throughout, some of the <log>x</log>'s are tied to the first <log>Ex</log>, and some are tied to the second <log>Ex</log>. The rule is the same as before: to find the quantifier associated with a variable, you find the variable in the tree, and then trace up the tree until you find the corresponding quantifier.</p>
+
+<p>Our sentence is a little confusing, because we used the same variable <log>x</log> for both quantifiers. Fortunately, there is a way of making the sentence less confusing. We can simply use different variables with different quantifiers. For example, we can rewrite our sentence as follows: <log>Ex Square(x) &amp; Ey Large(y)</log>. Both sentences are completely equivalent, but the sentence I just wrote is much less confusing. Here it is in a parse tree:</p>
+
+<div parsetree="Ex Square(x) & Ey Large(y)"></div>
+
+<p>I'll generally make a practice of using different variables with different quantifiers.</p>
+
+<p>Let's just do a few more examples. In each case, I want you to expand the parse tree.</p>
+
+<div parsetree="Ex ~Loves(x, raymond)"></div>
+
+<p>This sentence means that there is somebody who doesn't love Raymond. The sentence shows how a quantifier can combine with the negation sign. A related example:</p>
+
+<div parsetree="~Ax Loves(x, raymond)"></div>
+
+<p>This sentence says that it is not the case that everybody loves Raymond. This sentence is, in fact, perfectly equivalent to the previous one: both say that not everybody loves Raymond. Finally, here's a more complicated example:</p>
+
+<div parsetree="Ax [Number(x) -> Ey Less(x,y)]"></div>
+
+<p>This sentence says that for every number <log>x</log>, there is a number <log>y</log> such that <log>x</log> is less than <log>y</log>. Or more briefly, there is no greatest number. This sentence is a little different from the ones we've seen so far, in that the quantifiers are nested. The quantified sentence <log>Ey Less(x,y)</log>, comes inside the scope of the quantifier <log>Ax</log>. You can see this in the parse tree: the <log>E</log> is a direct descendant of the <log>A</log>. </p>
+
+
+
+<h3>Semantics</h3>
+
+
+
+<p>Let's try out some of these ideas with our world app. <a href="example.html?week=12&idx=0" target="_blank">Please open this world</a> and look at the sentences there to get a sense of what it takes to make a sentence with quantifiers true or false. The first group of sentences uses the existential quantifier <log>E</log>. In the second group, each sentence has the universal quantifier <log>A</log>. The third group has a mixture of quantifiers, with one quantifier falling within the scope of another. Finally, the last group shows how quantifiers interact with the identity symbol <log>=</log>. You'll notice that not all the sentences in this world are true; this is intentional.</p>
+
+<p>Next, I want you to make some changes to the board, to see what effect the changes have on the truth values of the sentences. Go ahead and experiment. You can reset the board to its original configuration at any time by refreshing your browser. One good way to experiment is to go through all the sentences, and try to change the truth value of each one.</p>
+
+<p>Next, please look at <a href="example.html?week=12&idx=1" target="_blank">the following example</a>. Notice that there are two pairs of sentences, and that in each pair, one sentence is true, while the other is false. The two sentences in either pair are very similar. For the first pair, the sentences are:</p>
+
+<ul>
+<li><log>Ax (Square(x) -&gt; Small(x))</log>
+<li><log>Ax Square(x) -&gt; Ax Small(x)</log>
+</ul>
+
+<p>But similar as they are, they have different truth values. The first sentence says that every shape <log>x</log> on the board satisfies <log>Square(x) -&gt; Small(x)</log>. That is, it says that for all shapes <log>x</log> on the board, if <log>Square(x)</log>, then <log>Small(x)</log>. Or in other words: every square on the board is small. And since <em>not</em> every square on the board is small &mdash; in fact, there's just one square and it's large &mdash; the sentence is false. By contrast, the second sentence says that if <log>Ax Square(x)</log> is true, then so is <log>Ax Small(x)</log>. That is, if every shape on the board is square, then every shape on the board is small. This is a conditional, and its antecedent, <log>Ax Square(x)</log>, is false. (Not everything on the board is a square.) And we know from earlier in the course that a conditional with a false antecedent is always true. Thus, the second sentence is true.</p>
+
+<p>The second pair of sentences is as follows:</p>
+
+<ul>
+<li><log>Ex (Large(x) &amp; Diamond(x))</log>
+<li><log>Ex Large(x) &amp; Ex Diamond(x)</log>
+</ul>
+
+<p>The first sentence above says that something <log>x</log> satisfies <log>Large(x) &amp; Diamond(x)</log>. That is, the first sentence says that there is a large diamond on the board. And this is false, since although there is a diamond on the board, it's small, not large. The second sentence is a conjunction, whose two conjuncts are <log>Ex Large(x)</log> and <log>Ex Diamond(x)</log>. Of these two sentences, the first says that there exists a large shape on the board, and the second says that there is a diamond. Both statements are true: there is a large shape on the board (namely the large square), and there is a diamond on the board (namely the small diamond).</p>
+
+
+
+</article>
+
+</body>
+</html>

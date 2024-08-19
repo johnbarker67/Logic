@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>PHI 401 Logic - Week 7</title>
+    <meta charset="UTF-8" />
+<link rel="stylesheet" type="text/css" href="logic-1724095155.css" />
+
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-database.js"></script>
+
+<script language="JavaScript" src="logic-1724095155.js"></script>
+    <script language="JavaScript" src="lecture_toolbar-1724095155.js"></script>
+
+    <script language="JavaScript" src="textBehavior-1724095155.js"></script>
+    <script language="JavaScript" src="lectures-1724095155.js"></script>
+
+
+
+</head>
+
+<body>
+
+
+
+<article class="link">
+    <header>
+        <h2>Week 7: Proofs, Continued</h2>
+    </header>
+
+<p>Last week we introduced formal proofs, but we only covered two inference rules: <log>&amp;</log> Intro and <log>&amp;</log> Elim. This week, we'll introduce some more rules and get more practice with proofs.</p>
+
+<p>Just like last week, to make the examples more concrete, we assign meanings to the sentences <log>A</log>, <log>B</log>, etc., as follows:</p>
+
+<table class="normal">
+<tbody>
+<tr>
+<td><log>A</log>
+<td>Amy is at work
+<tr>
+<td><log>B</log>
+<td>Brian is at home
+<tr>
+<td><log>C</log>
+<td>Claire is sleeping
+<tr>
+<td><log>D</log>
+<td>David is awake
+</tbody>
+</table>
+
+<p>But it's important to remember that these are just examples, and that the letters <log>A</log>, <log>B</log>, etc., can stand for <em>any</em> sentences.</p>
+
+<h3>The <em>Or</em> Rules</h3>
+
+<p>There are two rules associated with the connective <log>|</log>. Similarly to <log>&amp;</log>, they are called <b>disjunction introduction</b> and <b>disjunction elimination</b>. Also as with <log>&amp;</log>, they have shorter names that we will use most of the time: <b><log>|</log> Intro</b> and <b><log>|</log> Elim</b>.</p>
+
+<p>The <log>|</log> Intro rule takes either of the following forms:</p>
+
+<div class="argument">
+    <div>
+        <div><span>A</span></div>
+        <div>A | B</div>
+    </div>
+    <div>
+        <div><span>B</span></div>
+        <div>A | B</div>
+    </div>
+</div>
+
+<p>That is, the <log>|</log> Intro rule tells you that if you have a sentence <log>A</log>, you can infer any sentence that is a disjunction, as long as one of its disjuncts is <log>A</log>. For example, the inference on the left takes us from "Amy is at work" to "Either Amy is at work, or Brian is at home". Likewise, the inference on the right takes us from "Brian is at home" to "Either Amy is at work, or Brian is at home."</p>
+
+<p>Both inferences are valid, as you can easily verify with a truth table:</p>
+
+<div parsetree="A.A|B" parse_options="hasTruthTable:true"></div>
+
+<p>At the same time, these inferences might strike you as rather useless. If you already know that Amy is at work, for example, what would be the point of inferring that <em>either</em> Amy is at work, <em>or</em> Brian is at home?</p>
+
+<p>The short answer is that they <em>are</em> useless much of the time, but we do occasionally need them. Without them, there would be valid arguments that we wouldn't be able to prove. To see exactly <em>when</em> we need them, however, you'll have to wait until next week.</p>
+
+<p>Just as with the <log>&amp;</log> rules, the letters <log>A</log> and <log>B</log> stand for any sentences, and so you are allowed to substitute any sentences for them. For example, suppose we replace the letter <log>B</log> with a new letter <log>C</log>, and replace <log>A</log> with the longer sentence <log>A &amp; ~B</log>. Then the <log>|</log> Intro rule takes the following form:
+
+<div class="argument">
+    <div>
+        <div><span>A &amp; ~B</span></div>
+        <div>(A &amp; ~B) | C</div>
+    </div>
+</div>
+
+<p>Notice that in the conclusion of the rule, we had to put parentheses around <log>A &amp; ~B</log>. They are needed to make the conclusion well-formed. They also indicate that the conclusion is a disjunction, and that its first disjunct is <log>A &amp; ~B</log>.
+
+<p>Here's another example:</p>
+
+<div class="argument">
+    <div>
+        <div><span>IsHungry(michael)</span></div>
+        <div>IsHungry(michael) | HasCats(amy)</div>
+    </div>
+</div>
+
+<p>Here, we're making an inference from &quot;Michael is hungry&quot; to &quot;Michael is hungry, or Amy has cats.&quot; We could just as easily made the inference:</p>
+
+<div class="argument">
+    <div>
+        <div><span>IsHungry(michael)</span></div>
+        <div>HasCats(amy) | IsHungry(michael)</div>
+    </div>
+</div>
+
+<p>That would have been an equally correct application of the rule. The only difference is the order in which the disjuncts appear in the conclusion.</p>
+
+<p>Finally, here's an example of <log>|</log> Intro in an actual proof:
+
+<div proof="json">
+{"premises":[{"s":"IsHungry(michael)","l":1}],"body":[{"s":"IsHungry(michael) | HasCats(amy)","l":2,"r":"| Intro","c":[1]}],"goal":"IsHungry(michael) | HasCats(amy)","hasDialog":false}
+</div>
+
+<p>So that's the <log>|</log> Intro rule. Its companion, the <log>|</log> Elim rule, is more complicated, and we'll cover it next week.</p>
+
+<h3>The <em>Not</em> Rules</h3>
+
+<p>There is also an Intro rule and an Elim rule for the connective <log>~</log>, called <b>negation introduction</b> and <b>negation elimination</b>. Similarly to the other connectives, they are also called <b><log>~</log> Intro</b> and <b><log>~</log> Elim</b>.</p>
+
+<p>This week, we're only going to cover the <log>~</log> Elim rule. Its companion, the <log>~</log> Intro rule, uses a mechanism called <em>subproofs</em> that we won't get to until next week. The <log>~</log> Elim rule takes the following form:
+
+<div class="argument">
+    <div>
+        <div><span>~~A</span></div>
+        <div>A</div>
+    </div>
+</div>
+
+<p>In short, the <log>~</log> Elim rule lets you drop a double negation sign, <log>~~</log>, from a sentence, but <b>only when the first <log>~</log> is the main connective</b>. Thus, the following would be an <b>incorrect</b> use of the rule:</p>
+
+<div class="argument">
+    <div>
+        <div><span>~~A & B</span></div>
+        <div>A & B</div>
+    </div>
+    <div>WRONG</div>
+</div>
+
+<p>This example is wrong, because the main connective of the sentence is <log>&amp;</log>, not <log>~</log>. The following is also wrong:<p>
+
+<div class="argument">
+    <div>
+        <div><span>~(~A & B)</span></div>
+        <div>A & B</div>
+    </div>
+    <div>WRONG</div>
+</div>
+
+<p>To see the difference, here are the three sentences again, in parse tree form:</p>
+
+<div parsetree="~~A.~~A&B.~(~A&B)" parse_options="hasTruthTable:false"></div>
+
+<p>The <log>~</log> Elim rule can <b>only</b> be applied to a sentence whose parse tree looks like the one on the left, with <log>~</log> as the main connective, and another <log>~</log> directly under the first.</p>
+
+<p>The rule is valid because the negation sign <log>~</log> reverses a sentence's truth value. Adding a single negation sign to a sentence <log>A</log> changes its truth value; adding a second negation sign changes the truth value back to what it was before. In other words, <log>A</log> and <log>~A</log> have opposite truth values, and so do <log>~A</log> and <log>~~A</log>, which means that <log>A</log> and <log>~~A</log> have the <em>same</em> truth value.<p>
+
+<p>In other words, if Amy is at work, then it's <em>not</em> the case that Amy is <em>not</em> at work. Thus, <log>A</log> implies <log>~~A</log>. And if it's not the case that Amy is not at work, then it <em>is</em> the case that Amy <em>is</em> at work. Thus, <log>~~A</log> implies <log>A</log>.</p>
+
+<p>You may have noticed that we have a rule for going from <log>~~A</log> to <log>A</log>, but no rule for the opposite inference, from <log>A</log> to <log>~~A</log>. As we'll see later, the reason we left out the latter rule is that we don't need it. There is always a clever way to argue from <log>A</log> to <log>~~A</log>.
+
+<h3>The <em>If</em> Rules</h3>
+
+<p>Next, we have the introduction and elimination rules for the connective <log>-&gt;</log>. As with the other rules we've covered today, we're only going to talk about one of these rules, as the other is more complicated. Consistently with out naming practices, the rules are called <b>conditional introduction</b> and <b>conditional elimination</b>, and these names are shortened to <b><log>-&gt;</log> Intro</b> and <b><log>-&gt;</log> Elim</b>.</p>
+
+<p>This week, we only cover <log>-&gt;</log> Elim. The pattern for this rule is as follows:</p>
+
+<div class="argument">
+    <div>
+        <div><span>A</span><span>A -&gt; B</span></div>
+        <div>B</div>
+    </div>
+</div>
+
+<p>This is an <em>extremely useful</em> rule which you will use many times in this course. Here's an informal explanation of how the rule works. Suppose we already know that Michael is happy, and that if Michael is happy, then so is Sarah. Then the <log>-&gt;</log> Elim rule allows us to reason as follows:</p>
+
+<table class="argument">
+<tbody>
+<tr><td>Michael is happy.</tr>
+<tr><td>If Michael is happy, then Sarah is happy.</tr>
+<tr><td>Sarah is happy.</tr>
+</tbody>
+</table>
+
+<p>A more formal version of the same thing is as follows:</p>
+
+<div proof="json">
+{"premises":[{"s":"IsHappy(michael)","l":1},{"s":"IsHappy(michael) -> IsHappy(sarah)","l":2}],"body":[{"s":"IsHappy(sarah)","l":3,"r":"-> Elim","c":[1,2]}],"hasDialog":false}
+</div>
+
+<p>In other logic texts, the <log>-&gt;</log> Elim rule is often called <b>modus ponens</b>. The rule has a long history. In some systems of logic, it is the only rule. In these systems, the work of the other rules is performed by <b>axioms</b>, where an axiom is an assumption that you're always allowed to make. For example, in place of the <log>&amp;</log> Elim rule, there would be a pair of axioms, <log>(A &amp; B) -&gt; A</log> and <log>(A &amp; B) -&gt; B</log>. To derive the conclusion <log>A</log> from the premise <log>A &amp; B</log>, we would first write down the axiom <log>(A &amp; B) -&gt; A</log>, and then derive the conclusion <log>A</log> via <log>-&gt;</log> Elim. Anyway, that's how it works in systems with <log>-&gt;</log> Elim as the only rule. In our system, <log>-&gt;</log> Elim is just one rule among many, though in some ways it is the most important rule.</p>
+
+<h3>The <em>If And Only If</em> Rules</h3>
+
+<p>Finally, we have the rules of <b>biconditional introduction</b> and <b>biconditional elimination</b>. Their short names are <b><log>&lt;-&gt;</log> Intro</b> and <b><log>&lt;-&gt;</log> Elim</b>. We'll cover the <log>&lt;-&gt;</log> Elim rule here and save the <log>&lt;-&gt;</log> Intro rule for another lecture.</p>
+
+<p>The <log>&lt;-&gt;</log> Elim rule is basically just a two-way version of the <log>-&gt;</log> Elim rule. It works like this:</b>
+
+<div class="argument">
+    <div>
+        <div><span>A</span><span>A &lt;-&gt; B</span></div>
+        <div>B</div>
+    </div>
+    <div>
+        <div><span>B</span><span>A &lt;-&gt; B</span></div>
+        <div>A</div>
+    </div>
+</div>
+
+<p>That is if you have a biconditional, and you also have one side (right or left) of the biconditional, you are allowed to infer the other side. Thus, for example, both of the following inferences are justified:</p>
+
+<table class="argument">
+<tbody>
+<tr><td>Michael is happy.</tr>
+<tr><td>Michael is happy if and only if Sarah is happy.</tr>
+<tr><td>Sarah is happy.</tr>
+</tbody>
+</table>
+
+<p />
+
+<table class="argument">
+<tbody>
+<tr><td>Sarah is happy.</tr>
+<tr><td>Michael is happy if and only if Sarah is happy.</tr>
+<tr><td>Michael is happy.</tr>
+</tbody>
+</table>
+
+<p>Here's a live example of the rule:</p>
+
+<div proof="json">
+{"premises":[{"s":"A","l":1},{"s":"B","l":2},{"s":"A <-> B","l":3}],"body":[{"s":"B","l":4,"r":"<-> Elim","c":[1,3]},{"s":"A","l":5,"r":"<-> Elim","c":[3,2]}],"hasDialog":false}
+</div>
+
+<p>Please have a close look at the above proof to see what is being derived from what. (Remember, you can click on a justification to see more clearly what sentences are being cited.)</p>
+
+<p>There is a crucial difference between the <log>&lt;-&gt;</log> Elim rule and the <log>-&gt;</log> Elim rule. The <log>&lt;-&gt;</log> Elim rule works in both directions: from either side of the biconditional, you can infer the other. The <log>-&gt;</log> Elim rule, by contrast, works in only one direction. We can illustrate this with the following <em>incorrect</em> proof:</p>
+
+<div proof="json">
+{"premises":[{"s":"B","l":1},{"s":"A -> B","l":2}],"body":[{"s":"A","l":3,"r":"-> Elim","c":[2,1]}],"hasDialog":false}
+</div>
+
+<p><b>It is very important to understand this feature</b> of the <log>-&gt;</log> Elim rule. The move is a very common beginner's mistake in logic, and even some seasoned professionals fall into this trap when they're not careful.</p>
+
+<h3>Summary of the Rules</h3>
+
+<p>Here's a summary of the rules we have so far:</p>
+
+<table class="normal">
+<thead>
+<tr><td>Rule<td>Premises<td>Conclusion(s)</tr>
+</thead>
+<tbody>
+<tr><td>&amp; Elim<td>A &amp; B<td>A, B</tr>
+<tr><td>&amp; Intro<td>A, B<td>A &amp; B</tr>
+<tr><td>| Elim<td>-<td>-</tr>
+<tr><td>| Intro<td>A<td>A | B, B | A</tr>
+<tr><td>~ Elim<td>~~A<td>A</tr>
+<tr><td>~ Intro<td>-<td>-</tr>
+<tr><td>-&gt; Elim<td>A -&gt; B, A<td>B</tr>
+<tr><td>-&gt; Intro<td>-<td>-</tr>
+<tr><td rowspan="2">&lt;-&gt; Elim<td style="border-bottom:none">A &lt;-&gt; B, A<td  style="border-bottom:none">B</tr>
+<tr><td>A &lt;-&gt; B, B<td>A</tr>
+<tr><td>&lt;-&gt; Intro<td>-<td>-</tr>
+</tbody>
+</table>
+
+<p>By way of explanation, some of the rules haven't been covered yet, so I've left their entries blank. When more than one premise is listed, that means that <em>both</em> premises are required in an inference. When more than one one conclusion is listed, that means that <em>either</em> conclusion can be inferred. In the case of <log>&lt;-&gt;</log> Elim, two different forms have been given; either can be used.</p>
+
+<p><b>Please study this chart carefully.</b> The thing about rules is that while there aren't really that many of them, it is important that you be extremely familiar with them.</p>
+
+<h3>Practice</h3>
+
+<p>Please look at <a href="example.html?week=7&idx=0" target="_blank">this example</a>, in which the rules have not been specified but everything else is set. In each case, select the appropriate rule. Keep going until all the X's have changed to checks. If you get stuck, you can look at <a href="example.html?week=7&idx=1" target="_blank">the answer</a>.</p>
+
+<p>In <a href="example.html?week=7&idx=2" target="_blank">the next example</a>, you need to supply both the rules and the citations. The only rules used are <log>~</log> Elim and <log>-&gt;</log> Elim. Look at <a href="example.html?week=7&idx=3" target="_blank">the answer</a> if you get stuck.</p>
+
+<p>Here's a <a href="example.html?week=7&idx=4" target="_blank">similar example</a>, only this time, the only rules are <log>&amp;</log> Elim and <log>|</log> Intro. You can <a href="example.html?week=7&idx=5" target="_blank">look at the answer</a> if you get stuck.</p>
+
+<p>Here's a <a href="example.html?week=7&idx=6" target="_blank">another example</a>, but you need to figure out which rules are called for. Answer <a href="example.html?week=7&idx=7" target="_blank">here</a>.</p>
+
+<p>In the <a href="example.html?week=7&idx=8" target="_blank">next example</a>, some lines of the proof have been left out, and you need to supply them. Answer <a href="example.html?week=7&idx=9" target="_blank">here</a>.</p>
+
+<p>In the <a href="example.html?week=7&idx=10" target="_blank">final example</a>, a variety of information has been left out of the proof, and you must supply it. The example is best done by working step by step, finishing one step before starting the next. Answer <a href="example.html?week=7&idx=11" target="_blank">here</a>.</p>
+
+<h3>Proof Technique</h3>
+
+If you followed the preceding examples you should at least be starting to understand how the rules work. But actually composing a proof requires knowing <em>which</em> rules to apply in <em>what</em> order. In general this can make proofs very challenging. However, there are some techniques that greatly simplify the task.
+
+<p>Before diving into technique, it's important to gain a more systematic understanding of how the rules work. With a couple exceptions that we'll get to later, there are just two kinds of rules: <em>elimination</em> rules and <em>introduction</em> rules. Each elimination rule and each introduction rule is associated with a specific connective. All the elimination rules follow a certain pattern, and all the introduction rules also follow a certain pattern.
+
+<p>First let's look at the elimination rules. As you recall, aside from atomic sentences, every sentence has a <em>main connective</em>. You practiced identifying these when you did parse trees. For example, take the sentence <log>A & B</log>:
+    <div parsetree="A & B" style="height:200px;"></div>
+The main connective is <log>&amp;</log>, and if you click that connective you'll see that the sentence is made of two smaller sentences, in this case <log>A</log> and <log>B</log>. Here's a slightly longer example:
+<div parsetree="(A -> B) & (~B | C)" style="height:440px;"></div>
+Although there are several connectives in this sentence, the <em>main</em> connective is <log>&amp;</log>. The sentences that appear directly below the main connective in the parse tree are the <em>components</em>, in this case <log>A -> B</log> and <log>~B | C</log>.
+
+<p>An elimination rule for a given connective only applies to a sentence when that connective is the sentence's main connective. And the conclusions that can be inferred using that rule are one or more of the sentence's components. For example, <log>&amp;</log> Elim only applies to sentences whose main connective is <log>&amp;</log> (i.e. it only applies to a conjuction); and the sentences that one can infer using <log>&amp;</log> Elim are simply those sentence's components (i.e. its conjuncts). More formally, elimination rules work as follows.
+<ol>
+    <li>Every elimination rule is associated with a specific connective.</li>
+    <li>When an elimination rule is used, one of the premises, which is called the <b>major premise</b>, has that connective as its main connective.</li>
+    <li>If there are any other premises, they are called <b>minor premises</b>.</li>
+    <li>The inferred sentence &mdash; i.e. the conclusion of an inference that uses the given elimination rule &mdash; is always a component of the premise.</li>
+</ol>
+
+<p>For example, take the sentence from before, <log>(A -> B) &amp; (~B | C)</log>. This sentence has <log>&amp;</log> as its main connective; so the <log>&amp;</log> Elim rule is the <em>only</em> elimination rule that applies to it. And its components are <log>A -> B</log> and <log>~B | C</log>, so one or both of those sentences will be inferred when we use <log>&amp;</log> Elim in this case. </p>
+
+<p>This is very useful to know, because it gives us the beginning of a strategy for writing proofs. Given a list of premises we proceed as follows:
+    <ol>
+        <li>Start with the first premise.</li>
+        <li>Identify that premis's main connective.</li>
+        <li>See if it is possible to make an inference from that premise using the elimination rule for its main connective.</li>
+        <li>If so, infer all the sentences that can be inferred in this way.</li>
+        <li>Continue to the next premise, or if all the premises have been handled, continue with any sentences you may have previously inferred.</li>
+    </ol>
+    This generally won't completely solve a proof, but by proceeding this way you can simplify a proof to the point where it can be solved more easily. 
+</p>
+
+<p>Before explaining this technique in more detail we need to review the elimination rules we've learned to see how they fit into this pattern.</p>
+
+<h3>Elimination Rules Again</h3>
+
+<p>We have so far described elimination rules for four connectives: <log>&amp;</log>, <log>~</log>, <log>-></log> and <log>&lt;-></log>. Let's see how they fit the pattern just described.
+
+<p><b><log>&amp;</log> Elim.</b> We've already gone over this case, but to recap:
+<ul>
+    <li>Major premise: <log>A &amp; B</log>.</li>
+    <li>Minor premises: None.</li>
+    <li>Conclusions: <log>A</log>, <log>B</log>.</li>
+</ul>
+This means you can use <log>&amp;</log> Elim to infer either <log>A</log> or <log>B</log> from <log>A &amp; B</log>.
+
+<p><b><log>~</log> Elim.</b></p>
+<ul>
+    <li>Major premise: <log>~~A</log>.</li>
+    <li>Minor premises: None.</li>
+    <li>Conclusion: <log>A</log></li>
+</ul>
+This means you can infer <log>A</log> from <log>~~A</log>. This slightly violates the pattern, because <log>A</log> is not technically a component of <log>~~A</log>: <log>~~A</log> has the one component <log>~A</log>, which in turn has the component <log>A</log>. So you're not actually inferring a component of <log>~~A</log>, but rather a component of a component. (For this reason some authors call this rule <log>~~</log> Elim, and think of <log>~~A</log> as if its main connective were <log>~~</log> rather than <log>~</log>.)
+
+<p><b><log>-></log> Elim.</b></p>
+<ul>
+    <li>Major premise: <log>A -> B</log>.</li>
+    <li>Minor premise: <log>A</log>.</li>
+    <li>Conclusion: <log>B</log>.</li>
+</ul>
+This means you can infer <log>B</log> from the major premise <log>A -> B</log> and the minor premise <log>A</log>. Remember, the major premise is the one that always has the associated connective, which in this case is <log>-></log>.
+
+<p><b><log>&lt;-></log> Elim.</b></p>
+<ul>
+    <li>Major premise: <log>A &lt;-> B</log>.</li>
+    <li>Minor premise: Either <log>A</log> or <log>B</log>.</li>
+    <li>Conclusion: Either <log>A</log> or <log>B</log>, whichever one wasn't used as the minor premise.</li>
+</ul>
+Thus you can use <log>&lt;-></log> Elim to infer <log>B</log> from the major premise <log>A &lt;-> B</log> and the minor premise <log>A</log>, or to infer <log>A</log> from the major premise <log>A &lt;-> B</log> and the minor premise <log>B</log>.
+
+<h3>Proof Technique: An Example</h3>
+
+<p>With all this in mind, suppose I give you a proof like this:
+<div proof="json">
+    {"ro":0,"premises":[{"s":"(B | C) -> (~~D & E)","l":1,"ro":1},{"s":"A & (B | C)","l":2,"ro":1},{"s":"D -> (E -> F)","l":3,"ro":1}],"body":[{"s":"","l":4,"ro":0,"c":[]}],"goal":"F","hasToolbar":false,"hasDialog":true,"enabledRules":[]}
+</div>
+This may seem intimidating: where do you start? Fortunately, this problem is very easy if you follow the method described above and take things one step at a time.
+
+<p>We start by looking over the premises, looking for opportunities to apply elimination rules. We start with the first premise, <log>(B | C) -> (~~D & E)</log>. The main connective is <log>-></log>, so if we're going to use an elimination rule, it's going to have to be <log>-></log> Elim. To use <log>-></log> Elim with this sentence as the major premise, we also need to use the minor premise <log>B | C</log>. To do that, we would need the minor premise to be in the proof somewhere on its own line, and not just as part of a larger sentence. That is, we would need for <log>B | C</log> to be an existing premise or step of the proof. But it isn't; therefore we can't use <log>-></log> Elim on this sentence at this time. We therefore move on to the next premise.
+
+<p>The next sentence is <log>A & (B | C)</log>, whose main connective is <log>&amp;</log>. We therefore see if we can apply the corresponding elimination rule, <log>&amp;</log> Elim, with this sentence as the major premise. The rule <log>&amp;</log> Elim doesn't have any minor premises, so unlike with the previous premise, nothing prevents us from using <log>&amp;</log> Elim in this case. If we use <log>&amp;</log> Elim, we have a choice of inferring <log>A</log> or <log>B | C</log>. Let's infer both, applying <log>&amp;</log> Elim twice. This gives us the following:
+
+<p><div proof="json">
+    {"ro":0,"premises":[{"s":"(B | C) -> (~~D & E)","l":1,"ro":1},{"s":"A & (B | C)","l":2,"ro":1},{"s":"D -> (E -> F)","l":3,"ro":1}],"body":[{"s":"A","l":4,"ro":7,"r":"& Elim","c":[2]},{"s":"B | C","l":5,"ro":7,"r":"& Elim","c":[2]}],"goal":"F","hasToolbar":false,"hasDialog":true,"enabledRules":[]}
+</div>
+
+<p>Moving on to the next premise, <log>D -> (E -> F)</log>, the relevant rule would be <log>-></log> Elim, and we would need to use the sentence <log>D</log> as the minor premise of the inference. But we don't have <log>D</log> available &mdash; it's not on a line all by itself &mdash; so we can't do anything with this premise at this time.</p>
+
+<p>We can continue with the new sentences <log>A</log> and <log>B | C</log> if we want, but we won't make any progress there either. With <log>A</log>, the problem is that you can't apply an elimination rule to an atomic sentence, because such a sentence has no main connective. With <log>B | C</log>, the relevant elimination rule would be <log>|</log> Elim. While this rule does exist, we haven't covered it yet and its use is somewhat more complicated than that of the rules we've covered so far.</p>
+
+<p>We're not totally stuck, however, because we can go back and reconsider the first premise, <log>(B | C) -> (~~D & E)</log>. The only thing that kept us from applying <log>-></log> Elim before was that such an inference would have to cite <log>B | C</log> as a minor premise, and we didn't have <log>B | C</log> on a line all by itself. But now we do: we just inferred it on line 5. We can therefore use <log>-></log> Elim, citing the major premise <log>(B | C) -> (~~D & E)</log> and the minor premise <log>B | C</log>, and inferring the consequent of the major premise, namely <log>~~D & E</log>:</p>
+
+<p><div proof="json">
+    {"ro":0,"premises":[{"s":"(B | C) -> (~~D & E)","l":1,"ro":1},{"s":"A & (B | C)","l":2,"ro":1},{"s":"D -> (E -> F)","l":3,"ro":1}],"body":[{"s":"A","l":4,"ro":7,"r":"& Elim","c":[2]},{"s":"B | C","l":5,"ro":7,"r":"& Elim","c":[2]},{"s":"~~D & E","l":6,"ro":7,"r":"-> Elim","c":[1,5]}],"goal":"F","hasToolbar":false,"hasDialog":true,"enabledRules":[]}
+</div></p>
+
+<p>This new sentence gives us more material to work with. Its main connective is <log>&amp;</log>, so we can apply the <log>&amp;</log> Elim rule. Recall that when we do this, we infer one or both conjuncts of the sentence we're operating on. Unless you have a special reason not to, you should infer both conjuncts, using <log>&amp;</log> Elim twice. The result is as follows:</p>
+
+<p><div proof="json">
+    {"ro":0,"premises":[{"s":"(B | C) -> (~~D & E)","l":1,"ro":1},{"s":"A & (B | C)","l":2,"ro":1},{"s":"D -> (E -> F)","l":3,"ro":1}],"body":[{"s":"A","l":4,"ro":7,"r":"& Elim","c":[2]},{"s":"B | C","l":5,"ro":7,"r":"& Elim","c":[2]},{"s":"~~D & E","l":6,"ro":7,"r":"-> Elim","c":[1,5]},{"s":"~~D","l":7,"ro":7,"r":"& Elim","c":[6]},{"s":"E","l":8,"ro":7,"r":"& Elim","c":[6]}],"goal":"F","hasToolbar":false,"hasDialog":true,"enabledRules":[]}
+</div></p>
+
+<p>Now let's look at the newly generated sentences. The sentence <log>E</log> we can't do anything with because it lacks connectives. But the sentence <log>~~D</log> is exactly the kind of sentence on which we can use <log>~</log> Elim. (The fact that the main connective is <log>~</log> tells you that <log>~</log> Elim is the only possible elimination rule that you can use here; the fact that <log>~~D</log> is a <em>double</em> negation shows that you can in fact use <log>~</log> here.) When you use <log>~</log> Elim, you get the conclusion <log>D</log>. Let's go ahead and make that inference:
+
+<p><div proof="json">
+    {"ro":0,"premises":[{"s":"(B | C) -> (~~D & E)","l":1,"ro":1},{"s":"A & (B | C)","l":2,"ro":1},{"s":"D -> (E -> F)","l":3,"ro":1}],"body":[{"s":"A","l":4,"ro":7,"r":"& Elim","c":[2]},{"s":"B | C","l":5,"ro":7,"r":"& Elim","c":[2]},{"s":"~~D & E","l":6,"ro":7,"r":"-> Elim","c":[1,5]},{"s":"~~D","l":7,"ro":7,"r":"& Elim","c":[6]},{"s":"E","l":8,"ro":7,"r":"& Elim","c":[6]},{"s":"D","l":9,"ro":7,"r":"~ Elim","c":[7]}],"goal":"F","hasToolbar":false,"hasDialog":true,"enabledRules":[]}
+</div></p>
+
+<p>Of course, you can't do anything with <log>D</log>. But there is one more sentence we haven't used yet. We haven't done anything with premise 3, <log>D -> (E -> F)</log>. This is because using <log>-></log> Elim on that sentence would require citing the minor premise <log>D</log>, and we didn't have <log>D</log> on a line by itself. But now we do. We apply <log>-></log> Elim to premise 3, and the conclusion we get is simply premise 3's consequent, which is <log>E -> F</log>:</p>
+
+<p><div proof="json">
+    {"ro":0,"premises":[{"s":"(B | C) -> (~~D & E)","l":1,"ro":1},{"s":"A & (B | C)","l":2,"ro":1},{"s":"D -> (E -> F)","l":3,"ro":1}],"body":[{"s":"A","l":4,"ro":7,"r":"& Elim","c":[2]},{"s":"B | C","l":5,"ro":7,"r":"& Elim","c":[2]},{"s":"~~D & E","l":6,"ro":7,"r":"-> Elim","c":[1,5]},{"s":"~~D","l":7,"ro":7,"r":"& Elim","c":[6]},{"s":"E","l":8,"ro":7,"r":"& Elim","c":[6]},{"s":"D","l":9,"ro":7,"r":"~ Elim","c":[7]},{"s":"E -> F","l":10,"ro":7,"r":"-> Elim","c":[9,3]}],"goal":"F","hasToolbar":false,"hasDialog":true,"enabledRules":[]}
+</div></p>
+
+<p>This gives us a new sentence to work with, <log>E -> F</log>. And since we have <log>E</log> all by itself on line 8, we can go ahead and apply <log>-></log> Elim to get the following:</p>
+
+<p><div proof="json">
+    {"ro":0,"premises":[{"s":"(B | C) -> (~~D & E)","l":1,"ro":1},{"s":"A & (B | C)","l":2,"ro":1},{"s":"D -> (E -> F)","l":3,"ro":1}],"body":[{"s":"A","l":4,"ro":7,"r":"& Elim","c":[2]},{"s":"B | C","l":5,"ro":7,"r":"& Elim","c":[2]},{"s":"~~D & E","l":6,"ro":7,"r":"-> Elim","c":[1,5]},{"s":"~~D","l":7,"ro":7,"r":"& Elim","c":[6]},{"s":"E","l":8,"ro":7,"r":"& Elim","c":[6]},{"s":"D","l":9,"ro":7,"r":"~ Elim","c":[7]},{"s":"E -> F","l":10,"ro":7,"r":"-> Elim","c":[9,3]},{"s":"F","l":11,"ro":7,"r":"-> Elim","c":[10,8]}],"goal":"F","hasToolbar":false,"hasDialog":true,"enabledRules":[]}
+</div></p>
+
+<p>The resulting sentence is <log>F</log>, which is the goal.</p>
+
+<p>Some important points to take away include:
+    <ul>
+        <li>At each step, our choice of how to proceed was dictated by the sentence we were operating on.</li>
+        <li>The sentence's main connective told us exactly what elimination rule to try to use: it had to be the elimination rule for that connective. For example, in operating on a conditional one <em>has</em> to use the <log>-></log> Elim rule.</li>
+        <li>If the rule has no minor premises, you can always use it at this stage. A slight exception is the <log>~</log> Elim rule, which can only be used on a doubly-negated sentence like <log>~~A</log>.</li>
+        <li>If the rule has a minor premise, then the use of the rule requires that minor premise to be already in the proof on its own line. If this is not the case, then you can't use the rule at this time and you need to move on to another sentence.</li>
+        <li>If the rule can be applied, the sentence you infer is dictated for you. When operating on <log>A &amp; B</log> using <log>&amp;</log> Elim, you <em>have</em> to infer <log>A</log> or <log>B</log> or both (and you do infer both unless you have a special reason not to). When operating on <log>~~A</log> using <log>~</log> Elim, the only sentence you can infer is <log>A</log>. When operating on <log>A -> B</log> with <log>-></log> Elim, you can only infer <log>B</log> (and you can only do this if you have <log>A</log> available). When operating on <log>A &lt;-> B</log> via <log>&lt;-></log> Elim, the only things you can infer are <log>A</log> and <log>B</log> &mdash; but you choice is further constrained by the availability of minor premises.</li>
+        <li>When you create a new sentence, you try applying an elimination rule to that sentence as well. You keep going until there are no more ways of applying an elimination rule.</li>
+    </ul>
+</p>
+
+<p>This technique is called <b>working forward</b>, and it is very useful. It doesn't always solve a proof all by itself (as it did in the above example), but it can simplify a proof and make it easier to solve.</p>
+
+<h3>Another Example</h3>
+
+<p>If you've applied this technique and your proof still isn't complete, it's time to consider using an introduction rule. Consider the following problem:</p>
+
+<p><div proof="json">
+    {"ro":0,"premises":[{"s":"A -> (D -> C)","l":1,"ro":1},{"s":"D -> E","l":2,"ro":1},{"s":"A & D","l":3,"ro":1}],"body":[{"s":"","l":4,"ro":0,"c":[]}],"goal":"C & E","hasToolbar":false,"hasDialog":true,"enabledRules":[]}
+</div></p>
+
+<p>As before, we can apply the working forward technique to make some progress. We can't do anything with the first two premises at this time, because we don't have the requisite minor premises available. But we can work with the third premise, applying the <log>&amp;</log> Elim rule:</p>
+
+<p><div proof="json">
+    {"ro":0,"premises":[{"s":"A -> (D -> C)","l":1,"ro":1},{"s":"D -> E","l":2,"ro":1},{"s":"A & D","l":3,"ro":1}],"body":[{"s":"A","l":4,"ro":7,"r":"& Elim","c":[3]},{"s":"D","l":5,"ro":7,"r":"& Elim","c":[3]}],"goal":"C & E","hasToolbar":false,"hasDialog":true,"enabledRules":[]}
+</div></p>
+
+<p>Again, we applied <log>&amp;</log> Elim twice. Next we revisit the first premise. The main connective is <log>-></log>, so our option here would be to use <log>-></log> Elim. This requires the minor premise <log>A</log>, which now appears as line 4 of the proof. We can therefore apply this rule, and the inferred sentence, as always, is the consequent of the conditional.</p>
+
+<p><div proof="json">
+    {"ro":0,"premises":[{"s":"A -> (D -> C)","l":1,"ro":1},{"s":"D -> E","l":2,"ro":1},{"s":"A & D","l":3,"ro":1}],"body":[{"s":"A","l":4,"ro":7,"r":"& Elim","c":[3]},{"s":"D","l":5,"ro":7,"r":"& Elim","c":[3]},{"s":"D -> C","l":6,"ro":7,"r":"-> Elim","c":[1,4]}],"goal":"C & E","hasToolbar":false,"hasDialog":true,"enabledRules":[]}
+</div></p>
+
+<p>We can likewise work on premise 2, <log>D -> E</log>, since we have the antecedent <log>D</log> on line 5:</p>
+
+<p><div proof="json">
+    {"ro":0,"premises":[{"s":"A -> (D -> C)","l":1,"ro":1},{"s":"D -> E","l":2,"ro":1},{"s":"A & D","l":3,"ro":1}],"body":[{"s":"A","l":4,"ro":7,"r":"& Elim","c":[3]},{"s":"D","l":5,"ro":7,"r":"& Elim","c":[3]},{"s":"D -> C","l":6,"ro":7,"r":"-> Elim","c":[1,4]},{"s":"E","l":7,"ro":7,"r":"-> Elim","c":[5,2]}],"goal":"C & E","hasToolbar":false,"hasDialog":true,"enabledRules":[]}
+</div></p>
+
+<p>And we can operate on line 6 in the same way:</p>
+
+<p><div proof="json">
+    {"ro":0,"premises":[{"s":"A -> (D -> C)","l":1,"ro":1},{"s":"D -> E","l":2,"ro":1},{"s":"A & D","l":3,"ro":1}],"body":[{"s":"A","l":4,"ro":7,"r":"& Elim","c":[3]},{"s":"D","l":5,"ro":7,"r":"& Elim","c":[3]},{"s":"D -> C","l":6,"ro":7,"r":"-> Elim","c":[1,4]},{"s":"E","l":7,"ro":7,"r":"-> Elim","c":[5,2]},{"s":"C","l":8,"ro":7,"r":"-> Elim","c":[6,5]}],"goal":"C & E","hasToolbar":false,"hasDialog":true,"enabledRules":[]}
+</div></p>
+
+<p>And that's as far as we can go with this technique. So now it's time to shift gears and see if we can make good use of an introduction rule. The goal of the proof is <log>C &amp; E</log>. This sentence could be inferred from the sentences <log>C</log> and <log>E</log> via <log>&amp;</log> Intro. And we happen to have <log>C</log> and <log>E</log> available on lines 8 and 7. Thus we can complete the proof in one more step.</p>
+
+<p><div proof="json">
+    {"ro":0,"premises":[{"s":"A -> (D -> C)","l":1,"ro":1},{"s":"D -> E","l":2,"ro":1},{"s":"A & D","l":3,"ro":1}],"body":[{"s":"A","l":4,"ro":7,"r":"& Elim","c":[3]},{"s":"D","l":5,"ro":7,"r":"& Elim","c":[3]},{"s":"D -> C","l":6,"ro":7,"r":"-> Elim","c":[1,4]},{"s":"E","l":7,"ro":7,"r":"-> Elim","c":[5,2]},{"s":"C","l":8,"ro":7,"r":"-> Elim","c":[6,5]},{"s":"C & E","l":9,"ro":7,"r":"& Intro","c":[7,8]}],"goal":"C & E","hasToolbar":false,"hasDialog":true,"enabledRules":[]}
+</div></p>
+
+
+
+</article>
+
+</body>
+</html>

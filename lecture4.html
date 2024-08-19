@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>PHI 401 Logic - Week 3</title>
+    <meta charset="UTF-8" />
+<link rel="stylesheet" type="text/css" href="logic-1724095155.css" />
+
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-database.js"></script>
+
+<script language="JavaScript" src="logic-1724095155.js"></script>
+    <script language="JavaScript" src="lecture_toolbar-1724095155.js"></script>
+
+    <script language="JavaScript" src="textBehavior-1724095155.js"></script>
+    <script language="JavaScript" src="lectures-1724095155.js"></script>
+
+</head>
+
+<body>
+
+<article class="link">
+    <header>
+        <h2>Week 4: Parsing and Truth Tables</h2>
+    </header>
+
+<p>At this point in the course, you have been introduced to the language of symbolic logic. You have learned to read and write sentences of the language, and evaluate them in a model. Over the next couple of weeks, we're going to study the language a bit more systematically. You're going to learn more about how sentences are put together, how they depend on their parts, and how their truth values are determined in a systematic way. This will prepare you for next week, when we start studying logical relations between sentences.</p>
+
+<h3>Sentences and their Parts</h3>
+
+<p>As we've seen, connectives are used to put sentences together to make larger sentences. Once we have a whole sentence together, we can decompose it into its parts. This process is called <em>parsing</em>. For example, <log>A &amp; B</log> is composed of the sentences <log>A</log> and <log>B</log>, joined by the connective <log>&amp;</log>.<p>
+
+<p>We often represent the relation between a sentence and its parts with a tree, with the sentence itself at the top and its parts below. To see this in action, click the connective <log>&amp;</log> of the sentence <log>A &amp; B</log> below and see what happens:</p>
+
+<div parsetree="A & B" style="height:200px;"></div>
+
+<p>If everything went as it should, the box expanded into a little tree. On top there is a box containing <log>A &amp; B</log>. On the bottom are the individual sentences <log>A</log> and <log>B</log>. And in the middle is a little circle with the connective <log>&amp;</log>, which joins the two sentences together. What you see above is called a <b>parse tree</b>. Parse trees are also called <b>formation trees</b>, because the show how a sentence is formed.</p>
+
+<p>Here's an other example for you. The sentence has two connectives, <log>~</log> and <log>&amp;</log>, and you can click either one of them. Try clicking <log>~</log>, and see what happens:</p>
+
+<div parsetree="~A & B" style="height:300px;"></div>
+
+<p>Now click the <log>&amp;</log> instead. See the difference? The connective <log>&amp;</log> is called the <b>main connective</b> of the sentence. It's the connective that joins the two parts <log>~A</log> and <log>B</log> to form the whole sentence. By contrast, the connective <log>~</log> belongs to a smaller part of the sentence. Clicking on the main connective expands the sentence into its parts. Clicking on any other connective causes the sentence to shudder.</p>
+
+<p>Now you will notice that in our tree, one of the two boxes at the bottom has a connective in it: namely, the <log>~</log> of <log>~A</log>. You can click on that connective too, and further expand the tree. Try it!</p>
+
+<p>Now here's a more complicated sentence for you to try. Remember, at each stage you're looking for the main connective. Once you click it, the sentence expands and shows its constituent parts. If these parts have connectives of their own, you need to expand them as well. Keep going until you can't expand the sentence any further.</p>
+
+<div parsetree="(A -> B) & (~B | C)"></div>
+
+<p>Using parse trees, we can show the difference between similar-looking sentences. Consider the two sentences <log>~A &amp; B</log> and <log>~(A &amp; B)</log>, for example. They look very different when you expand them out as trees:</p>
+
+<div parsetree="~A&B.~(A&B)"></div>
+
+<p>And here we have <log>A &amp; (B | C)</log> vs. <log>(A &amp; B) | C</log>:</p>
+
+<div parsetree="A&(B|C).(A&B)|C"></div>
+
+<p>You can <a href="parsetree.html" target="_blank">practice more sentences on your own here</a>.</p>
+
+<h3>Some Terminology</h3>
+
+<p>As we get more into the study of how sentences are structured, some terminology will be useful. There are terms for different kinds of sentences, depending on the main connective. And for each kind of sentence, there is a terminology for the sentence's parts.</p>
+
+<p><b>Conjunctions.</b> A sentence whose main connective is <log>&amp;</log> is called a <b>conjunction</b>. Thus, the following are all conjunctions: <log>A &amp; B</log>, <log>~A &amp; B</log>, <log>A &amp; (B | C)</log>. The following are <em>not</em> conjunctions: <log>A | B</log>, <log>~(A &amp; B)</log>, <log>(A &amp; B) | C</log>. They aren't conjunctions because even though some of them contain the connective <log>&amp;</log>, the connective <log>&amp;</log> is not the <em>main</em> connective of any of them.</p>
+
+<p>The parts that make up a conjunction are called its <b>conjuncts</b>. Thus, in the sentence <log>~A & (B | C)</log>, the conjuncts are <log>~A</log> and <log>B | C</log>.</p>
+
+<p>In terms of parse trees, a conjunction has <log>&amp;</log> as the top-most connective, and the sentences directly under the <log>&amp;</log> are the conjuncts. So consider our three examples of conjunctions again:</p>
+
+<div parsetree="A&B.~A&B.A&(B|C)" parse_options="cstate:['200','2X0','20X']"></div>
+
+<p>The sentences in the boxes on top are the conjunctions, and the sentences one row down from them are their conjuncts.</p>
+
+<p><b>Disjunctions.</b> An or-sentence is called a <b>disjunction</b>. That is, a disjunction is a sentence whose main connective is <log>|</log>. The immediate parts of a disjunction are called its <b>disjuncts</b>. For example, <log>A | (B &amp; C)</log> is a disjunction, and its disjuncts are <log>A</log> and <log>B &amp; C</log>. Here are some more examples. The sentences on the top row are disjunctions, and the sentences on the second row are the disjuncts:</p>
+
+<div parsetree="A|B.A|~B.(A&B)|C" parse_options="cstate:['200','20X','2X0']"></div>
+
+<p><b>Conditionals</b> As we saw last week, a <b>conditional</b> is an if-statement: that is, it is a sentence whose main connective is <log>-&gt;</log>. The part to the left of the arrow is called the <b>antecedent</b>, and the part to the right is called the <b>consequent</b>. Again, don't confuse consequent with consequ<em>ence</em>. Here are some conditionals:</p>
+
+<div parsetree="A->B.~A->B.A->(B|C)" parse_options="cstate:['200','2X0','20X']"></div>
+
+<p>In each tree, the sentence on the lower left is the antecedent, and the sentence to its right is the consequent. So in the first tree, for example, <log>A</log> is the antecedent and <log>B</log> is the consequent. The whole conditional is <log>A -&gt; B</log>. In the rightmost sentence, the antecedent is <log>A</log> and the consequent is <log>B | C</log>.</p>
+
+<p><b>Biconditionals.</b> A sentence whose main connective is <log>&lt;-&gt;</log> is called a <b>biconditional</b>. There is no special name for the parts of a biconditional.</p>
+
+<p><b>Negation</b>. A not-sentence is called a negation. Specifically, a sentence <log>~A</log> is called the <b>negation</b> of <log>A</log>.</p>
+
+<p><b>Atomic Sentences</b>. Finally, a sentence with no connectives at all is called an <b>atomic</b> sentence. The individual sentence letters <log>A</log>, <log>B</log>, etc. are atomic sentences, as are sentences like <log>IsHungry(michael)</log>, <log>LeftOf(a, b)</log>, or <log>a = b</log>.</p>
+
+<p>Here's a summary:</p>
+
+<table class="normal">
+<thead>
+<tr>
+<td>Sentence Type<td>Example<td>Parts Are Called</tr>
+</thead><tbody>
+<tr><td>Conjunction<td>A &amp; B<td>A, B: Conjuncts</tr>
+<tr><td>Disjunction<td>A | B<td>A, B: Disjuncts</tr>
+<tr><td>Conditional<td>A -&gt; B<td>A: Antecedent<br/>B: Consequent</tr>
+<tr><td>Biconditional<td>A &lt;-&gt; B<td>-</tr>
+<tr><td>Negation<td>~A<td>-</tr>
+<tr><td>Atomic<td>A<td>(no parts)</tr>
+</tbody></table>
+
+
+<h3>Truth Values and Truth Tables</h3>
+
+<p>Recall what we mean by the <b>truth value</b> of a sentence: a sentence's truth value is simply <em>true</em> or <em>false</em>, whichever the sentence is. The truth value of a sentence depends systematically on the truth values of its parts, and that's what we're going to spend the rest of the lesson studying.</p>
+
+<p>Let's start with the conjunction <log>A &amp; B</log>. There are two possible truth values for <log>A</log>, namely true and false. And there are two possible truth values for <log>B</log>. That means there are four possible combinations of truth values:
+<table class="normal">
+<thead>
+<tr>
+<td>A<td>B</tr>
+</thead><tbody>
+<tr><td>True<td>True</tr>
+<tr><td>True<td>False</tr>
+<tr><td>False<td>True</tr>
+<tr><td>False<td>False</tr>
+</tbody></table>
+<p>Now let's consider the truth value of the whole sentence in each case:</p>
+<table class="normal">
+<thead>
+<tr>
+<td>A<td>B<td>A &amp; B</tr>
+</thead><tbody>
+<tr><td>True<td>True<td>True</tr>
+<tr><td>True<td>False<td>False</tr>
+<tr><td>False<td>True<td>False</tr>
+<tr><td>False<td>False<td>False</tr>
+</tbody></table>
+
+<p>The above table is an example of a <b>truth table</b>. A truth table shows how the truth value of a sentence depends on the truth values of its parts. The best way to learn about truth tables is to make them yourself, so here is an exercise in which you construct the above table.</p>
+
+<div parsetree="A&B" parse_options="hasTruthTable:true"></div>
+
+<p>First, expand the sentence as usual by clicking the connective <log>&amp;</log>. Notice that there is a truth table to the right of the tree. Click any row of the table. You should now see truth values T and/or F placed to the side of the letters <log>A</log> and <log>B</log> in the tree.</p>
+
+<p>In the truth table, each row represents the truth values assigned to the whole sentence and its parts. The column under each letter represents the truth values assigned to that letter. When you click a row, you should notice that the truth values that now appear next to the letters are the same as those in the corresponding position of the row you selected. For example, click the second row. That row has 'T' under <log>A</log> and 'F' under <log>B</log>. In the tree, you should see the same truth values, 'T' and 'F', next to the letters <log>A</log> and <log>B</log>. Try clicking each row to see what you get.</p>
+
+<p>Now you've probably noticed that next to the sentence <log>A &amp; B</log> itself, there are two truth values: a little 'T' above a little 'F'. This means that you have to select one of the two truth values. Namely, you should select the value that you think the sentence <log>A &amp; B</log> has, <em>given</em> the truth values that have been assigned to the components <log>A</log> and <log>B</log>. Go ahead and try it. You will get different feedback depending on whether you picked the right value.<p>
+
+<p>Once you do pick the right value, that value is automatically placed inside the corresponding position in the truth table. At this point, you should fill out the entire truth table. For each row in the table, select the row, then select the correct value in the tree. When you're done, the column under <log>A &amp; B</log> should be completely filled in.</p>
+
+<p>I should stress that when you assign a truth value to a sentence in a tree, you are picking the truth value that the sentence <em>has</em> to have, given (a) the truth values that have been assiged to its components (i.e., the sentence immediately below it in the tree) and (b) the connective. These things &mdash; the truth values of the components and the connective &mdash; fully determine the sentence's truth value. For example, on row (2) above, the connective is <log>&amp;</log> and the component sentences have the truth values T and F. These three things, the connective <log>&amp;</log> and the values T and F, determine the correct truth value for the row, which in this case is F.
+
+<p>Now that you've created a truth table, it's time to do another one. Please do the following truth table for &quot;or&quot;:</p>
+
+<div parsetree="A|B" parse_options="hasTruthTable:true"></div>
+
+<p>Remember, in each case you're assigning the truth value that <log>A|B</log> <em>has</em> to have, given the truth values that have been assigned to <log>A</log> and <log>B</log>, and given that the main connective is <log>|</log>.
+
+<p>The connective <log>~</log> has its own tiny little truth table:</p>
+
+<div parsetree="~A" parse_options="hasTruthTable:true"></div>
+
+<p>Notice that the sentence <log>~A</log> always gets the <em>opposite</em> truth value to that of <log>A</log>. This is sometimes a source of confusion. When <log>A</log> is false, there is sometimes a temptation to think that <log>~A</log> is also false. But this is wrong: <log>~A</log> is true in this case.
+
+<p>Next, conditionals. These can be a bit tricky, but instead of explaining the rule to you, I want you to figure it out.</p>
+
+<div parsetree="A->B" parse_options="hasTruthTable:true"></div>
+
+<p>Finally, let's try biconditionals. The rule for biconditionals is that <log>A <-> B</log> is true if, and only if, the sentences <log>A</log> and <log>B</log> have the same truth value.</p>
+
+<div parsetree="A<->B" parse_options="hasTruthTable:true"></div>
+
+<p>Congratulations! You've just created the five basic truth tables. These truth tables completely define the meanings of the five connectives.</p>
+
+<h3>Compound Sentences</h3>
+
+<p>Now it's time to do some truth tables for more complicated sentences. It's the same basic process as for simpler sentences; you just have to take it one step at a time. Let's jump right in:</p>
+
+<div parsetree="~(A&B) | (A&~B)" parse_options="hasTruthTable:true"></div>
+
+<p>OK, that looks like a big complicated sentence, but it's actually not hard to evaluate if we take things one step at a time. First, expand the sentence into a full parse tree as usual. Then click on the first truth table row. (If you click on a row and nothing happens, that means you didn't fully expand the tree.) You'll see truth values assigned to the letters as usual. Now, to find the truth value of the whole sentence, you just work your way up the tree, working from bottom to top.<p>
+
+<p>Specifically, pick a box in the tree whose immediate descendants have truth values assigned to them. For example, you could pick the box <log>A &amp; B</log> on the left, because its immediate descendants, <log>A</log> and <log>B</log>, have been assigned truth values. Or, you could pick the box <log>~B</log> on the right, because its one descendant <log>B</log> has a truth value. But you <em>can't</em> pick, for example, <log>A &amp; ~B</log> at this stage, because one of the boxes under it doesn't have a truth value yet.</p>
+
+<p>Now with your box chosen, go ahead and assign it the correct truth value. Here you're following the same rules you did in the earlier exercises. Then pick another box and assign it a truth value. Keep going until you assign a truth value to the box on top. At this stage, you have assigned a truth value to the whole sentence, and the assigned truth value will appear in the selected truth table row. Now do the same thing for the other three rows, and you're done.<p>
+
+<p>Here's one more example before you leave: a sentence with three different letters, whose corresponding truth table has 8 rows:</p>
+
+<div parsetree="(A&B)|C" parse_options="hasTruthTable:true"></div>
+
+
+<h3>Appendix</h3>
+
+<p>For your reference, here are the five basic truth tables.</p>
+
+<table class="plain" id="truthtables">
+<tbody>
+<tr>
+<td>
+    <table class="truth-table" >
+    <thead>
+    <tr><td>A<td>B<td>A &amp; B</tr>
+    </thead>
+    <tbody>
+    <tr><td>T<td>T<td>T</tr>
+    <tr><td>T<td>F<td>F</tr>
+    <tr><td>F<td>T<td>F</tr>
+    <tr><td>F<td>F<td>F</tr>
+    </tbody>
+    </table>
+<td>
+    <table class="truth-table" >
+    <thead>
+    <tr><td>A<td>B<td>A | B</tr>
+    </thead>
+    <tbody>
+    <tr><td>T<td>T<td>T</tr>
+    <tr><td>T<td>F<td>T</tr>
+    <tr><td>F<td>T<td>T</tr>
+    <tr><td>F<td>F<td>F</tr>
+    </tbody>
+    </table>
+</tr>
+<td>
+    <table class="truth-table" >
+    <thead>
+    <tr><td>A<td>B<td>A -> B</tr>
+    </thead>
+    <tbody>
+    <tr><td>T<td>T<td>T</tr>
+    <tr><td>T<td>F<td>F</tr>
+    <tr><td>F<td>T<td>T</tr>
+    <tr><td>F<td>F<td>T</tr>
+    </tbody>
+    </table>
+<td>
+    <table class="truth-table" >
+    <thead>
+    <tr><td>A<td>B<td>A <-> B</tr>
+    </thead>
+    <tbody>
+    <tr><td>T<td>T<td>T</tr>
+    <tr><td>T<td>F<td>F</tr>
+    <tr><td>F<td>T<td>F</tr>
+    <tr><td>F<td>F<td>T</tr>
+    </tbody>
+    </table>
+</tr>
+<td colspan="2">
+    <table class="truth-table" >
+    <thead>
+    <tr><td>A<td>~A</tr>
+    </thead>
+    <tbody>
+    <tr><td>T<td>F</tr>
+    <tr><td>F<td>T</tr>
+    </tbody>
+    </table>
+</tr>
+</tbody>
+</table>
+
+
+
+</article>
+
+</body>
+</html>

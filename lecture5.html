@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>PHI 401 Logic - Week 5</title>
+    <meta charset="UTF-8" />
+<link rel="stylesheet" type="text/css" href="logic-1724095155.css" />
+
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-database.js"></script>
+
+<script language="JavaScript" src="logic-1724095155.js"></script>
+    <script language="JavaScript" src="lecture_toolbar-1724095155.js"></script>
+
+    <script language="JavaScript" src="textBehavior-1724095155.js"></script>
+    <script language="JavaScript" src="lectures-1724095155.js"></script>
+
+</head>
+
+<body>
+
+
+
+<article class="link">
+    <header>
+        <h2>Week 5: Tautologies, Implication, Equivalence</h2>
+    </header>
+
+<p>Now that we understand truth tables, we can finally start learning about the logical relations between sentences. This is the whole point of logic in a lot of ways, so we are finally starting to get the payoff of our formal work.</p>
+
+<p>Informally, there are some statements that are just true no matter what, as a matter of logic alone. These statements are called <b>tautologies</b>. A couple of examples of tautologies are: &quot;Everything is either blue or not blue,&quot; and &quot;Nothing is both blue and not blue.&quot; We will define a precise formal notion of tautology for sentences of our formal language.</p>
+
+<p>Also, sometimes one statement will <b>logically imply</b> another, meaning that when the first statement is true, the second statement has to be true. For example, &quot;Sally is tall and blonde&quot; logically implies &quot;Sally is tall.&quot; We will give a precise formal definition of implication.</p>
+
+<p>Finally, when two statement logically imply each other, they are said to be <b>logically equivalent</b>. For example, &quot;Sally is tall and blonde&quot; is logically equivalent to &quot;Sally is blonde and tall.&quot;</p>
+
+<h3>Tautologies</h3>
+
+<p>As we saw last week, a sentence's truth value is completely determined by the truth values of the atomic sentences it contains. Thus, it makes sense to define a tautology to be a sentence that comes out true no matter what values are assigned to its atomic sentences. Equivalently, a sentence is a tautology if it is assigned <em>true</em> on every row of its truth table.</p>
+
+<p>For example, look at this sentence:</p>
+
+<div parsetree="A | ~A" parse_options="hasTruthTable:true"></div>
+
+<p>Please fill out this truth table right now if you don't mind. You'll notice that the column under <log>A | ~A</log> is all T's. That means <log>A | ~A</log> is a tautology. Here's another example for you:</p>
+
+<div parsetree="~(A & ~A)" parse_options="hasTruthTable:true"></div>
+
+<p>And another:</p>
+
+<div parsetree="A -> A" parse_options="hasTruthTable:true"></div>
+
+<p>A tautology can involve any number of atomic sentences. Here's an example with two atomic sentences:</p>
+
+<div parsetree="(A&B)->A" parse_options="hasTruthTable:true"></div>
+
+<h3>Tautology vs. Logical Truth</h3>
+
+<p>Now let's look at a slightly different case. Please do the following truth table:</p>
+
+<div parsetree="LeftOf(a,b) -> RightOf(b,a)" parse_options="hasTruthTable:true,ttPosition:'bottom'"></div>
+
+<p>If you completed the truth table, you found that the last column is not all T's: there is an F in the second row. Therefore, the sentence is <b>not</b> a tautology. However, this is strange; surely, if <log>a</log> is to the left of <log>b</log>, then <log>b</log> is to the right of <log>a</log>. And so one would think the sentence <log>LeftOf(a,b) -> RightOf(b,a)</log> is true no matter what. And yet it's not a tautology.</p>
+
+<p>Looking at the second row, where our sentence is false, we start to get a clue about what's going on. Look at the whole row, which includes truth values for <log>LeftOf(a,b)</log> and <log>RightOf(b,a)</log>. Notice that on this row, the first sentence, <log>LeftOf(a,b)</log>, is assigned the value <em>true</em>, and the second sentence, <log>RightOf(b,a)</log>, is assigned the value <em>false</em>. However, in the real world, that assignment of truth values doesn't make any sense. There's no way for one object to be left of a second object without the second object being right of the first.<p>
+
+<p>So the second line is the culprit. It represents an assignment of truth values that doesn't make any sense. And that's why the sentence <log>LeftOf(a,b) -></log>  <log>RightOf(b,a)</log>, which can't really be false, winds up being assigned <em>false</em> on the second line.</p>
+
+<p>So what lesson should we draw here? The correct lesson may be a bit surprising. In logic, the sentence <log>LeftOf(a,b) -> RightOf(b,a)</log> is considered <b>not</b> to be a tautology, even though there is no real way for it to be false. We always use the truth table definition of tautology: a sentence is a tautology if and only if it has a value <em>true</em> in every row of its truth table. And this truth table includes all possible assignments of truth values to the atomic sentences, even assignments that don't make any real world sense, like that of the second row.</p>
+
+<p>This means that there are many sentence that &quot;have to&quot; be true, but which are nonetheless not tautologies. In the case of the sentence above, this is due to a connection between the meanings of the predicates <log>LeftOf</log> and <log>RightOf</log>. Symbolic logic can't &quot;see&quot; this connection, because it  views different predicates as completely unrelated.</p>
+
+<h3>Contradictions</h3>
+
+<p>The opposite of a tautology is a <b>contradiction</b>. A contradiction is a sentence that is <em>false</em> on any way of assigning truth values to its atomic sentences. In other words, a contradiction is a sentence that is false on every row of its truth table. Here's the most famous example of a contradiction:</p>
+
+<div parsetree="A & ~A" parse_options="hasTruthTable:true"></div>
+
+<p>There is a simple relation between tautologies and contradictions. Namely, if a sentence is a tautology, then its negation is a contradiction; and if a sentence is a contradiction, then its negation is a tautology. For example, the sentence <log>A | ~A</log> is a tautology; so its negation, <log>~(A | ~A)</log>, is a contradiction. And the sentence <log>A &amp; ~A</log> is a contradiction; so its negation, <log>~(A &amp; ~A)</log>, is a tautology.</p>
+
+<h3>Implication</h3>
+
+<p>Next, we have <b>implication</b>, which is arguably the most important concept in logic. Implication is something that occurs between a set of sentences, called the <b>premises</b>, and a further sentence, called the <b>conclusion</b>.</p>
+
+<p>In brief, a set of premises implies a conclusion if there is no way for the premises to be true without the conclusion also being true. For example, the statement <em>Sally is tall and blonde</em> implies the statement <em>Sally is tall</em>: there's no way for the first statement to be true without the second statement also being true. In this case, the premises consist of the single statement <em>Sally is tall and blonde</em>, and the conclusion is the statement <em>Sally is tall</em>.</p>
+
+<p>We can also have implications with more than one premise. Here is arguably the most famous example:</p>
+
+<table class="argument">
+<tbody>
+<tr><td>Socrates is a man.</tr>
+<tr><td>All men are mortal.</tr>
+<tr><td>Socrates is mortal.</tr>
+</tbody>
+</table>
+
+<p>The sentences above the horizontal line are the premises, and the sentence below the line is the conclusion. And the premises do indeed imply the conclusion, since there is no way for the premises to be true without the conclusion also being true.</p>
+
+<p>Implication is such an important notion that there is a lot of equivalent terminology connected to it. When a set of premises implies a conclusion, we also say that the conclusion is a <b>consequence</b> of the premises. Also, the premises and the conclusion together form what is called an <b>argument</b>. That is, an argument is defined to be a set of premises together with a conclusion. And an argument is defined to be <b>valid</b> when its premises imply its conclusion. So in the previous example, the conclusion <em>Socrates is mortal</em> is a consequence of the premises <em>Socrates is a man</em> and <em>All men are mortal</em>. Also, the entire argument, which consists of all three sentences, is valid. As one final bit of terminology, people sometimes attach the word &quot;logical&quot; or &quot;logically&quot; to these terms. So one can say that the premises <b>logically imply</b> the conclusion, that the conclusion is a <b>logical consequence</b> of the premises, and that the argument is <b>logically valid</b>. That's a lot of terminology, so here's a chart to help you remember:</p>
+
+<style>
+
+table.definitions b {
+color:red;
+}
+
+</style>
+
+<table class="normal definitions">
+<thead>
+<tr><td>The Following All Mean the Same Thing:</tr>
+</thead>
+<tbody>
+<tr><td>Premises <b>(Logically) Imply</b> Conclusion</tr>
+<tr><td>Conclusion is a <b>(Logical) Consequence</b> of Premises</tr>
+<tr><td>Argument (= Premises + Conclusion) is <b>(Logically) Valid</b></tr>
+</tbody>
+</table>
+
+<p>Part of what makes implication so important is that implications can be used in chains of reasoning. If you know that one statement implies another, then you can move from one statement to the other in reasoning. For example, consider the following line of reasoning:</p>
+<ol>
+<li>Sally is tall and blonde.
+<li><em>Therefore</em>, Sally is tall.
+<li>All tall people are cheerful.
+<li><em>Therefore</em>, Sally is cheerful.
+</ol>
+<p>Each step that has a <em>therefore</em> is making use of a logical implication. In step 2, we're using the fact that <em>Sally is tall and blonde</em> implies <em>Sally is tall</em>. And on line 4, we're using the fact that the statements <em>All tall people are cheerful</em> and <em>Sally is tall</em> imply <em>Sally is cheerful</em>. In each case, we infer a statement that is implied by previous statements. Stringing implications together like this is called a <b>chain of reasoning</b>, and it's one of the main topics in logic.</p>
+
+<h3>Tautological Implication</h3>
+
+<p>In our formal language, we study a special but important case of logical implication, called <b>tautological implication</b>. Recall the definition of logical implication: a statement <log>A</log> implies a statement <log>B</log> if there is no way for <log>A</log> to be true without <log>B</log> also being true. A sentence <log>A</log> <b>tautologically implies</b> a sentence <log>B</log> if every way of assigning truth values to the atomic sentences that makes <log>A</log> true also makes <log>B</log> true.<p>
+
+<p>We can illustrate tautological implication, and also test for it, using truth tables. Here's a simple case. Consider the following two sentences:</p>
+
+<div parsetree="A&B.A|B" parse_options="hasTruthTable:true"></div>
+
+<p>As usual, I'd like you to expand the sentences and fill out the truth table. Once you do, look at the truth values under <log>A &amp; B</log> and <log>A | B</log> These truth values follow a certain pattern. Namely, every time there is a T under <log>A &amp; B</log>, there is also a T under <log>A | B</log>. Another way of saying the same thing is: there is never, in any row, a T under <log>A &amp; B</log> and an F under <log>A | B</log>. This proves that <log>A &amp; B</log> implies <log>A | B</log>. Thus, we have the following definition of tautological implication:</p>
+
+<p class="definition"><b>Definition.</b> A sentence <log>A</log> <b>tautologically implies</b> a sentence <log>B</log> if in the truth table for <log>A</log> and <log>B</log>, there is no row that assigns <em>true</em> to <log>A</log> and  <em>false</em> to <log>B</log>.</p>
+
+<p>We can also talk about a set of two or more sentences tautologically implying a sentence. For example, consider the sentences:</p>
+
+<div parsetree="A->B.B->C.A->C" parse_options="hasTruthTable:true,ttPosition:'bottom'"></div>
+
+<p>In the truth table for these three sentences, there are some rows with T under <log>A -> B</log> and F under <log>A -> C</log>, and there are some rows with T under <log>B -> C</log> and F under <log>A -> C</log>. But there is no row with T under <em>both</em> <log>A -> B</log> and <log>B -> C</log> that has F under <log>A -> C</log>. Thus, the sentences <log>A -> B</log> and <log>B -> C</log> together tautologically imply <log>A -> C</log>. So here's a more general definition. When reading the definition, recall what we mean by premises and conclusion. In the example above, the sentences <log>A -> B</log> and <log>B -> C</log> are the premises and <log>A -> C</log> is the conclusion.</p>
+
+<p class="definition"><b>Definition.</b> A set of premises <b>tautologically imply</b> a conclusion if in their combined truth table, there is no row that assigns all the premises  <em>true</em> and the conclusion <em>false</em>.</p>
+
+<p>Similarly to tautologies, it is possible for one statement to imply another without tautologically implying it. For example, the sentence <log>LeftOf(a,b)</log> implies <log>RightOf(b,a)</log>, because there's no way for the former statement to be true without the latter statement also being true. But <log>LeftOf(a,b)</log> does not <em>tautologically</em> imply <log>RightOf(b,a)</log>. Since <log>LeftOf(a,b)</log> and <log>RightOf(b,a)</log> are atomic sentences, a truth table can assign them any values whatsoever. In particular, a truth table can assign <log>LeftOf(a,b)</log> the value <em>true</em>, while assigning <log>RightOf(b,a)</log> the value <em>false</em>.</p>
+
+<p>Here's an exercise to help you see if you understand the notion of tautological consequence. Does the sentence on the left tautologically imply the sentence on the right?</p>
+
+<div parsetree="A->B.B->A" parse_options="hasTruthTable:true"></div>
+
+<p>This problem is solved as follows. First, complete the truth table. Then, see if there is any row in which the sentence on the left is true, but the sentence on the right is false. If there is, then the sentence on the left does not imply the sentence on the right. If no such row exists, then the sentence on the left does imply the sentence on the right.</p>
+
+<h3>Equivalence</h3>
+
+<p>Closely related to logical implication is the notion of logical <b>equivalence</b>. In short, two statements are logically equivalent if they imply each other. For example, <em>Sally is tall and blonde</em> is equivalent to <em>Sally is blonde and tall</em>, because each statement implies the other.</p>
+
+<p>We can unpack this definition a bit. Two statements are equivalent if they imply each other, and in turn, one statement implies another if there is no circumstance that makes the first statement true while making the second one false. Therefore, two statements are equivalent if (a) no possible circumstance makes the first true and the second false, and (b) no possible circumstance makes the second true and the first false. Thus, we have an alternative definition of equivalence: two statements are equivalent if they have the same truth value &mdash; i.e., both are true or both are false &mdash; in any possible circumstance.</em>
+
+<p>As with implication, there is also a notion of <b>tautological</b> equivalence. Two sentences are tautologically equivalent if they tautologically imply each other. In turn, one sentence tautologically implies another if there is no assignment of truth values to atomic sentences that makes the first true and the second false. Thus, two sentences tautologically imply each other if and only if they have the same truth value &mdash; both true or both false &mdash; on any possible truth value assignment. Thus, we have two equivalent ways of defining tautological equivalence.</p>
+
+<p class="definition"><b>Definition.</b> Two sentences are <b>tautologically equivalent</b> if they tautologically imply each other.</p>
+
+<p class="definition"><b>Definition.</b> Two sentences are <b>tautologically equivalent</b> if they have the same truth value in each row of their combined truth table.</p>
+
+<p>Since these two definitions say the same thing, either one can be used. But the second definition is more useful if we want to test whether two sentences are tautologically equivalent. Suppose we want to see if the following sentences are equivalent:</p>
+
+<div parsetree="~A|B.A->B" parse_options="hasTruthTable:true"></div>
+
+<p>As usual, we complete the truth table. Now look at the truth values under the sentences <log>~A | B</log> and <log>A -> B</log>. In each row, these sentences are either both true, or both false. Therefore, they are tautologically equivalent. On the other hand, consider the following sentences:</p>
+
+<div parsetree="~A&~B.~(A&B)" parse_options="hasTruthTable:true"></div>
+
+<p>These sentences do have the same truth value on the first and last row. But they have different truth values on the second and third rows. Therefore, they do not have the same truth value on <em>all</em> rows, and therefore they are not tautologically equivalent.</p>
+
+<h3>Consistency</h3>
+
+<p>Our final notion is <b>consistency</b>. A statement is consistent if there is some possible way for it to be true. More generally, a set of statements is consistent if there is some possible way for all of them to be true at once. If a statement or set of statements is not consistent, it is <b>inconsistent</b>.</p>
+
+<p>As with the other notions, we also have a tautological version. A sentence is <b>tautologically consistent</b> if it is true on <em>at least one row</em> of its truth table. A set of sentences is tautologically consistent if there is at least one row on which they are <em>all true</em>.</p>
+
+<p>For example, the following two sentences form a tautologically consistent set, because there is a row of their truth table in which they are both true:</p>
+
+<div parsetree="A->B.A->~B" parse_options="hasTruthTable:true"></div>
+
+<p>(In fact, there are two such rows.) On the other hand, the following sentences do <em>not</em> form a consistent set:</p>
+
+<div parsetree="A&B.A&~B" parse_options="hasTruthTable:true"></div>
+
+<p>While each sentence is true on one row, there is no row where they are <em>both</em> true, and so the two sentences do not form a tautologically consistent set.</p>
+
+<p>Now suppose a sentence is not consistent. Then there is no row of its truth table where it is assigned the value <em>true</em>. We already have a term for such sentences: they are called <b>contradictory</b>. Thus, we have shown that a sentence is contradictory if and only if it is not consistent. The notions of consistency and contradictoriness are interdefinable.</b>
+
+<h3>Summary</h3>
+
+<p>We've covered a lot of different concepts in this lecture, so here's a summary.</p>
+
+<ul>
+<li>A sentence is a <b>tautology</b> if it is true in <b>all</b> rows of its truth table.
+<li>A sentence is <b>contradictory</b> if it is true in <b>none</b> of the rows of its truth table.
+<li>A sentence is <b>consistent</b> if it is true in <b>at least one</b> row of its truth table.
+<li>A set of sentences is <b>consistent</b> if there is <b>at least one</b> row of their combined truth table in which <b>all</b> the sentences are true.
+<li>A set of sentences, called the <b>premises</b>, <b>implies</b> another sentence, called the <b>conclusion</b>, if in the combined truth table for all the sentence, there is <b>no row</b> in which all the premises are true but the conclusion is false.
+<li>Two sentences are <b>equivalent</b> if in their combined truth table, they have the <b>same truth value</b> &mdash; i.e., they are either both true or both false &mdash; in <b>each row</b>.
+</ul>
+<p>Finally, note that this applies to the &quot;tautological&quot; or &quot;truth-functional&quot; versions of the concepts. E.g., the above definition of implication is actually the definition of <em>tautological</em> implication. Henceforth, we always use the tautological versions unless otherwise stated. There are also broader notions of implication, equivalence, consistency, etc., which are harder to capture formally. For example, as we have seen, <log>LeftOf(a,b)</log> implies <log>RightOf(b,a)</log>, but the implication is not <em>tautological</em> implication.</p>
+
+<h3>A Note on the Homework</h3>
+
+<p>In last week's homework, the software really didn't let you make any mistakes. That is, it only allowed you to enter correct values. Any incorrect entry would just be rejected. This week, some of the problems have a decreased level of error checking. It will be more up to you to get the answer right.</p>
+
+<p>There are two different levels of reduced error checking. On the first level, you still have to fill out the parse tree from bottom to top, but you won't be told whether you have entered the right value or not. Here's an example:</p>
+
+<div parsetree="A&(B|~C)" parse_options="hasTruthTable:true,enforceNodes:false"></div>
+
+<p>Please fill in at least a few entries to see how it works. You can't assign a truth value to a sentence until you've assigned truth values to the sentences below: that's the same rule as before. But you can enter either T or F at any stage, and you won't be told if you answered incorrectly.</p>
+
+<p>On the second, and lower, level of error checking, all restrictions are removed. You can assign a truth value to a sentence without assigning truth values to the sentences below. If you're confident you know a sentence's truth value, you can just go ahead and make an assignment. This can make the process of filling out a truth table much quicker, but it's also more dangerous. Here's the same sentence, but with all restrictions lifted:</p>
+
+<div parsetree="A&(B|~C)" parse_options="hasTruthTable:true,enforceNodes:false,enforceTree:false"></div>
+
+<p>Now expand the tree and select the last row of the truth table. In that row, the sentence <log>A</log> is false. That means the top-most sentence also has to be false, since it is a conjunction with a false conjunct, namely <log>A</log>. So you can safely assign F without filling out the rest of the tree. Next, click the second row. On that row, <log>B</log> is true. That means the sentence <log>B | ~C</log> must also be true, since it is a disjunction with at least one true disjunct, namely <log>B</log>. So you can safely assign T to <log>B | ~C</log> without filling out the rest of the tree.</p>
+
+<p>This way of filling out a truth table is provided for you, but you are not required to use it. You can still fill out the whole tree, and in fact that's what I recommend unless you're feeling very confident that you know the right answer.</p>
+
+
+
+</article>
+
+</body>
+</html>

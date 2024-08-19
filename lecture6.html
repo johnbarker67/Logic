@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>PHI 401 Logic - Week 6</title>
+    <meta charset="UTF-8" />
+<link rel="stylesheet" type="text/css" href="logic-1724095155.css" />
+
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-database.js"></script>
+
+<script language="JavaScript" src="logic-1724095155.js"></script>
+    <script language="JavaScript" src="lecture_toolbar-1724095155.js"></script>
+
+    <script language="JavaScript" src="textBehavior-1724095155.js"></script>
+    <script language="JavaScript" src="lectures-1724095155.js"></script>
+
+
+
+</head>
+
+<body>
+
+
+
+<article class="link">
+    <header>
+        <h2>Week 6: Introducing Proofs</h2>
+    </header>
+
+<p>Suppose you have a set of premises and a conclusion, and you want to know if the premises imply the conclusion. In other words: suppose you have an argument, and you want to know if the argument is valid. What's the best way to find this out? We already know one method, namely truth tables. Unfortunately, truth tables aren't always the best approach. So starting this week, we introduce another technique, the method of <b>proofs</b>.</p>
+
+<p>First off, we need to see why the truth table method isn't always the best choice. The problem is that as an argument gets even moderately complicated, the corresponding truth table gets <em>very</em> complicated. Here's an example that illustrates this problem. Take a look at the following argument:
+<table class="argument">
+<tbody>
+<tr><td><log>A &amp; B</log></tr>
+<tr><td><log>C &amp; D</log></tr>
+<tr><td><log>(A &amp; C) -&gt; (E | F)</log></tr>
+<tr><td><log>~E</log></tr>
+<tr><td><log>F</log></tr>
+</tbody>
+</table>
+<p>That's not really too complicated an argument. You may even be able to tell that it is valid. But the <a href="example.html?week=6&idx=0" target="_blank">corresponding truth table</a> is rather large. You can fill in the truth table if you want; but I wouldn't recommend it.</p>
+
+<p>The reason the truth table is so large is that every time we add a new atomic sentence, we have to <em>double</em> the number of rows in the truth table. Thus, an argument with just one atomic sentence has two rows in its truth table; an argument with two atomic sentences has four rows; three atomic sentences require eight rows; and so on. This argument has six atomic sentences, which requires 64 rows. If we had added a sentence with a new atom <log>G</log>, we would have needed 128 rows. A complicated argument with 20 atomic sentences would require over a million rows.</p>
+
+<h3>Chaining Inferences Together</h3>
+
+<p>So truth tables aren't the way to go for complicated arguments. However, we can often reduce a complicated argument to several simpler ones. If we start with a few simple arguments that we know are valid, we can chain them together.
+
+<p>In the following examples, I'm going to use the letters <log>A</log>, <log>B</log>, <log>C</log>, etc., to represent the basic atomic sentences. None of the examples will depend on what these atomic sentences <em>mean</em>. But to keep the examples from getting too abstract, let's just assume that they have the following meanings.</p>
+<table class="normal">
+<tbody>
+<tr>
+<td><log>A</log>
+<td>Amy is at work
+<tr>
+<td><log>B</log>
+<td>Brian is at home
+<tr>
+<td><log>C</log>
+<td>Claire is sleeping
+<tr>
+<td><log>D</log>
+<td>David is awake
+</tbody>
+</table>
+
+<p>With that, let's see an example of logical inference. Suppose we want to show that the following argument is valid:</p>
+
+<div class="argument">
+    <div>
+        <div><span>A &amp; B</span><span>C &amp; D</span></div>
+        <div>A &amp; C</div>
+    </div>
+</div>
+
+<p>The premises say: "Amy is at work and Brian is at home", and "Claire is sleeping and David is awake", respectively. The conclusion says: "Amy is at work and Claire is sleeping". So if you think about it, the conclusion follows from the premises. We just need to <em>show</em> that it follows from the premises. If we use the truth table method, we get a 16-row truth table, which is pretty big. But we can avoid the need for such a big truth table if we break our argument down into smaller ones. First, we have a very simple argument involving <log>&amp;</log>:</p>
+
+<div class="argument">
+    <div>
+        <div><span>A &amp; B</span></div>
+        <div>A</div>
+    </div>
+</div>
+
+<p>("Amy is at work, and Brian is at home; therefore, Amy is at work.") That's about as simple as arguments get, and this argument is valid. You can show that it's valid using a four-row truth table:</p>
+
+<div parsetree="A&B.A" parse_options="hasTruthTable:true"></div>
+
+<p>(If you'd rather not fill out the truth table, you can just take my word for it.) Here's a similar argument, also valid:</p>
+
+<div class="argument">
+    <div>
+        <div><span>A &amp; B</span></div>
+        <div>B</div>
+    </div>
+</div>
+
+<p>("Amy is at work, and Brian is at home; therefore, Brian is at home." See if you can spot the difference from the previous argument.) And here's yet another argument, also valid.</p>
+
+<div class="argument">
+    <div>
+        <div><span>A</span><span>B</span></div>
+        <div>A &amp; B</div>
+    </div>
+</div>
+
+<p>(Premises: "Amy is at work", "Brian is at home". Conclusion: "Amy is at work and Brian is at home".) Now let's apply all this to our original argument, which again is as follows:</p>
+
+<div class="argument">
+    <div>
+        <div><span>A &amp; B</span><span>C &amp; D</span></div>
+        <div>A &amp; C</div>
+    </div>
+</div>
+
+<p>We start by working on the first premise, <log>A &amp; B</log>. We've already seen that this sentence implies <log>A</log>. (That was our first mini-argument.) Next, look at the second premise, <log>C &amp; D</log>. Here, our first mini-argument still applies, except that we have to change the letters:</p>
+
+<div class="argument">
+    <div>
+        <div><span>C &amp; D</span></div>
+        <div>C</div>
+    </div>
+</div>
+
+<p>("Claire is sleeping and David is awake; therefore, Claire is sleeping.") So we can derive <log>C</log> from the second premise, <log>C &amp; D</log>. We have therefore shown that our premises imply the sentences <log>A</log> and <log>C</log>. Finally, we know that the following argument is valid:</p>
+
+<div class="argument">
+    <div>
+        <div><span>A</span><span>C</span></div>
+        <div>A &amp; C</div>
+    </div>
+</div>
+
+<p>This is just one of our three basic arguments, but with <log>C</log> in place of <log>B</log>. Thus, we know that the sentences <log>A</log> and <log>C</log> imply <log>A &amp; C</log>. And that was the conclusion of our original argument, so we've shown that the premises of that argument do indeed imply the conclusion. Thus, we've shown that the argument is valid.</p>
+
+<p>To summarize, these are the steps we took in showing that the argument is valid.</p>
+
+<table class="informal-proof">
+<tbody>
+<tr><td>1<td>A &amp; B<td>Premise</tr>
+<tr><td>2<td>C &amp; D<td>Premise</tr>
+<tr><td>3<td>A<td>From step 1</tr>
+<tr><td>4<td>C<td>From step 2</tr>
+<tr><td>5<td>A &amp; C<td>From steps 3 and 4</tr>
+</tbody>
+</table>
+
+<p>The first two lines are just the premises of the argument. The third line, <log>A</log>, is implied by the premise <log>A &amp; B</log> via our first mini-argument. Likewise, the fourth line, <log>C</log>, is implied by the premise <log>C &amp; D</log> via a mini-argument. Finally, the fifth line, <log>A &amp; C</log>, is implied by the sentences on lines 3 and 4, namely <log>A</log> and <log>C</log>, via a mini-argument.</p>
+
+<p>There are two key points to take away from this little exercise.</p>
+
+<ol>
+<li>Just by knowing that three very simple arguments are valid, we were able to show that a more complicated argument is valid.
+<li>We showed this by stringing our simple arguments together in a chain of reasoning.
+</ol>
+
+<p>The chain of reasoning we created is called a <b>proof</b>, and we're going to spend quite a bit of time on proofs.</p>
+
+<h3>Rules of Inference</h3>
+
+<p>The mini-arguments from the last section are more properly known as <b>rules of inference</b>. Rules of inference are the foundation of proofs, since they are what you chain together to show that complicated arguments are valid.</p>
+
+<p>A rule of inference has two parts: its <b>premises</b>, and its <b>conclusion</b>. Notice that an argument also has premises and a conclusion, which makes sense because a rule of inference is a kind of argument. But it's important not to confuse the premises or conclusion of a rule with the premises or conclusion of the entire argument that you're trying to prove.</p>
+
+<p>We use the following notation for rules of inference:</p>
+
+<div class="argument">
+    <div>
+        <div><span>A &amp; B</span></div>
+        <div>A</div>
+    </div>
+</div>
+
+<p>Above the line are the premises, and below the line is the conclusion. In this rule, there is just one premise, namely <log>A &amp; B</log>. There is always a single conclusion, which in this case is the sentence <log>A</log>. Another rule of inference, which we've also seen before, is:
+
+<div class="argument">
+    <div>
+        <div><span>A</span><span>B</span></div>
+        <div>A &amp; B</div>
+    </div>
+</div>
+
+<p>Here, there are <em>two</em> premises, namely the sentences <log>A</log> and <log>B</log>. The conclusion is the sentence <log>A &amp; B</log>.
+
+<p>Rules of inference also have a subtle but useful feature, which I will now explain. Let's go back to the rule of inference</p>
+
+<div class="argument">
+    <div>
+        <div><span>A &amp; B</span></div>
+        <div>A</div>
+    </div>
+</div>
+
+<p>In practical terms, this rule tells you that if you have a sentence <log>A &amp; B</log>, you can <b>infer</b> the sentence <log>A</log>. As we saw, it doesn't matter that the exact letters <log>A</log> and <log>B</log> are used. If you have a sentence <log>X &amp; Y</log>, you could infer <log>X</log>, for example.</p>
+
+<p>It turns out you can do more than that with this rule. If you replace the letters <log>A</log> and <log>B</log> with more complicated sentences, then the result is still a valid argument. Thus, for example, the following argument is valid:</p>
+
+<div class="argument">
+    <div>
+        <div><span>(C -&gt; D) &amp; ~(U | V)</span></div>
+        <div>C -&gt; D</div>
+    </div>
+</div>
+
+<p>We don't need to do a full truth table to see that this argument is valid. The above argument is what you get when you replace <log>A</log> in the original argument with <log>C -&gt; D</log>, and you replace <log>B</log> with <log>~(U | V)</log>. Since the original argument is valid, so is the derived argument.</p>
+
+<p>Let me go over this again to make sure you have it. Our original rule of inference, again, was:</p>
+
+<div class="argument">
+    <div>
+        <div><span>A &amp; B</span></div>
+        <div>A</div>
+    </div>
+</div>
+
+<p>The letter <log>A</log> stands for <em>any sentence</em>, and it appears twice, once as part of the premise and once as the conclusion. Since it stands for any sentence, we are allowed to replace it with any sentence, as long as we replace it with the <em>same</em> sentence wherever it occurs. In our example, we replaced it with the more complicated sentence <log>C -&gt; D</log>. If we substitute this sentence for <log>A</log>, what we get is:</p>
+
+<div class="argument">
+    <div>
+        <div><span>(C -&gt; D) &amp; B</span></div>
+        <div>C -&gt; D</div>
+    </div>
+</div>
+
+<p>We likewise get to replace <log>B</log> with anything we want, because it stands for any sentence. In this case, there is only one occurrence of <log>B</log>, in the premise. Replacing it with the more complicated sentence <log>~(U | V)</log> gives us our example:</p>
+
+<div class="argument">
+    <div>
+        <div><span>(C -&gt; D) &amp; ~(U | V)</span></div>
+        <div>C -&gt; D</div>
+    </div>
+</div>
+
+<p>One interesting implication is that we can see that the above argument is valid, even if we don't quite understand what it means. For this example, I just picked a complicated-looking sentence; I didn't even have any particular interpretation in mind. But you can see that it's valid, just by observing that it comes from the much simpler valid argument (<log>A &amp; B</log> / <log>A</log>) by substitution.</p>
+
+
+<h3>Deductive Systems</h3>
+
+<p>OK, so we have the basic idea of a proof &mdash; we chain inferences together using a set of inference rules. But <em>which</em> inference rules? It turns out that there is no one right answer, because there are many different sets of rules, each of which yields the same results. Different logic texts use different sets of rules. A set of rules is called a <b>deductive system.</b></p>
+
+<p>The deductive system we're using in this course belongs to a family called <em>Fitch-style</em> systems, named after the logician <a href="http://en.wikipedia.org/wiki/Frederic_Brenton_Fitch" target="_blank">Frederic Fitch</a>. I'm going to introduce the rules gradually; by the end of the course, you'll know all of them.</p>
+
+<p>We've already seen a couple rules of the system; now it's time to learn their names. First, recall the following:</p>
+
+<div class="argument">
+    <div>
+        <div><span>A &amp; B</span></div>
+        <div>A</div>
+    </div>
+    <div>
+        <div><span>A &amp; B</span></div>
+        <div>B</div>
+    </div>
+</div>
+
+<p>These form a single rule called <b>conjunction elimination</b>. &quot;Conjunction elimination&quot; is a mouthful, so we usually shorten the name to <b><log>&amp;</log> Elim</b>. The <log>&amp;</log> Elim rule entitles you to infer, from a conjunction, either of its conjuncts. So for example, if you know that Amy is at work and Brian is at home, then the <log>&amp;</log> Elim rule lets you infer that Amy is at work, and it also lets you infer that Brian is at home.</p>
+
+<p>The <log>&amp;</log> Elim rule has a companion rule, which we've also seen before, called <b>conjunction introduction</b>. Again, this is a bit of a mouthful, and we'll abbreviate the name to <b><log>&amp;</log> Intro</b>. We've seen this rule before, too:</p>
+
+<div class="argument">
+    <div>
+        <div><span>A</span><span>B</span></div>
+        <div>A &amp; B</div>
+    </div>
+</div>
+
+<p>In other words, the <log>&amp;</log> Intro rule entitles you to infer a conjunction if you already have <em>both</em> of its conjuncts. So for example, if you know that Amy is at work, and you separately know that Brian is at home, then the <log>&amp;</log> Intro rule lets you infer that Amy is at work <em>and</em> Brian is at home.</p>
+
+<p>In our system, every connective has an associated introduction and elimination rule. (There are also three rules, which we'll learn about later, that are not introduction or elimination rules.) Here's how you can remember which rules is an introduction rule and which is an elimination rule. In the rule <log>&amp;</log> Elim, the connective <log>&amp;</log> always appears in the rule's premise. It does <em>not</em> appear in the conclusion: it has been &quot;eliminated.&quot; On the other hand, in the <log>&amp;</log> Intro rule, the connective <log>&amp;</log> appears in the rule's <em>conclusion</em>. It doesn't appear in the premises; the rule &quot;introduces&quot; it into the conclusion.</p>
+
+<p>There are other rules besides <log>&amp;</log> Elim and <log>&amp;</log> Intro, but we'll wait a bit before introducing them.</p>
+
+<h3>Formal Proofs</h3>
+
+<p>We're finally ready to look at our first example of a formal proof. It's actually the same proof we gave earlier, just in a slightly different format.</p>
+
+<div proof="json">
+{"premises":[{"s":"A & B","l":1},{"s":"C & D","l":2}],"body":[{"s":"A","l":3,"r":"& Elim","c":[1]},{"s":"C","l":4,"r":"& Elim","c":[2]},{"s":"A & C","l":5,"r":"& Intro","c":[3,4]}],"goal":"A & C","hasDialog":false}
+</div>
+
+<p>There's a lot of information in the box above, so let's go over it carefully. At the top we see the <b>goal</b> of the proof. This is the sentence we are trying to prove. The goal is also called the <b>conclusion</b>, because it is the conclusion of the argument we're proving. Below the goal, running down the left, there is a column of sentences. The first two sentences, <log>A &amp; B</log> and <log>C &amp; D</log>, are the <b>premises</b> of the proof. These are the premises of our argument; our aim is to show that the premises imply the goal sentence.</p>
+
+<p>After the premises, you'll notice a small horizontal line. This separates the premises from the rest of the proof. The sentences below the line, starting on line 3, are the <b>steps</b> of the proof. These are the sentences that we have inferred from the premises, using the inference rules.</p>
+
+<p>Running down the right hand side of the proof is another column, called the <b>justification</b> column. This column states which rules were used to derive the steps, and which previous steps or premises were used in the derivation. For example, let's look at line 3. On that line, the step is <log>A</log>. The corresponding justification reads &quot;<log>&amp;</log> Elim 1&quot;. That means that the step <log>A</log> was derived using the <log>&amp;</log> Elim rule from the sentence on line 1, namely <log>A &amp; B</log>. Likewise, the next line has the step <log>C</log> and the justification &quot;<log>&amp;</log> Elim 2,&quot; meaning that <log>C</log> was derived from the sentence on line 2 &mdash; namely <log>C &amp; D</log> &mdash; using the <log>&amp;</log> Elim rule. Finally, on line 5, we have the step <log>A &amp; C</log> with the justification &quot;<log>&amp;</log> Intro 3, 4&quot;. This means that the sentence <log>A &amp; C</log> was derived, using <log>&amp;</log> Intro, from the sentences on lines 3 and 4, namely <log>A</log> and <log>C</log>.</p>
+
+<p>The check marks to the right of the steps indicate that the steps are correctly justified. Each check mark indicates that the corresponding rule was applied properly, and that the step does indeed follow from the stated premises. The check mark next to the goal indicates that the goal has been successfully proved.</p>
+
+<p>One more thing before we move to the next example. Click any of the justifications in the above proof. You'll see the proof change its appearance. The line you clicked will be highlighted in green, and all the steps that are cited from that line are also highlighted. That way, you can see exactly what sentences were cited, without having to look them up by line number. You can use the arrow keys to select different lines and see what happens. Click anywhere outside the proof and things will return to normal.</p>
+
+<h3>Writing Your First Proof</h3>
+
+<p>The proof box in the last section is actually a proof <em>editor</em>, which you will be using to create proofs. To get practice entering and editing proofs, let's start with a <a href="example.html?week=6&idx=1" target="_blank">simple example</a>. Go ahead and click the example now; it will open in a new browser tab.</p>
+
+<p>In this example, we have a proof that is correct, <em>except</em> that the citations are missing. The citations are the numbers in the rightmost column; they indicate what previous steps were used in the derivation. For example, on line 3, we have the rule <log>&amp;</log> Elim, indicating that the sentence <log>~B</log> on line 3 was derived from some earlier line using the <log>&amp;</log> Elim rule. But it doesn't say <em>which</em> earlier line. Your task is to rectify this situation.</p>
+
+<p>Click the justification on line 3. You'll notice a new box appears on the screen. This is the <b>justification editor</b>, and you'll use it to enter or modify a justification. The bottom half of the justification editor &mdash; i.e., the part in gray &mdash; is for specifying a rule of inference. You don't need to worry about this part right now, since the rule has already been selected for you. The top part of the justification editor is what interests us now. There, you'll see the sentence you're trying to justify, under a line. (Namely, you'll see the sentence <log>~B</log>, because <log>~B</log> is the sentence you're trying to justify.) You need to specify <em>which line</em> the sentence <log>~B</log> came from via the <log>&amp;</log> Elim rule.</p>
+
+<p>In this case, <log>~B</log> came from the sentence <log>A &amp; ~B</log> on line 1. At this point, click the sentence <log>A &amp; ~B</log> on line 1. <b>Make sure to click the sentence itself</b>, not the space to the left or right of the sentence. If everything went as it should, you'll notice that three things happened.</p>
+<ol>
+<li>The sentence on line 1, <log>A &amp; B</log>, is now highlighted. That means that it is being cited from the active step, i.e., the step now highlighted in green.
+<li>The cited sentence <log>A &amp; B</log> also appears in the top portion of the justification editor, above the line. Now you can see what the top part of the editor is: it shows you the specific inference you're making. Below the line is the sentence you're trying to justify, and above the line are the previous sentences that you're citing as part of that justification. The lower sentence is now <em>derived</em> from the upper sentence via the <log>&amp;</log> Elim rule.
+<li>The red X on line 3 has turned into a check mark. Step 3 has now been successfully justified.
+</ol>
+
+<p>Feel free to play around with this example to see how it works. At any given time, (at most) one step is <b>active</b>, meaning it's the step whose justification you are editing. Clicking on the justification part of a step makes that step active. When a step is active, clicking on a sentence adds or removes that sentence from the citation list for the active step. At any given time, the software will tell you whether your step is correctly justified.</p>
+
+<p>To activate a different step, just click its justification. Make sure you click the justification part of the line, as clicking the sentence part of the line adds that sentence to the citation list of the active line. You can also select a new line by using the up and down arrow keys. You can also navigate the proof with the tab keys and the left and right arrow keys.</p>
+
+<p>Now that line 3 is justified, try justifying the other lines. Remember, in each case, the rule of inference has been specified, and you just have to specify the premises of that rule, i.e., the previous lines of the proof that were used to derive the step in question. When you make a correct selection, the X-mark will become a check mark. Once <em>all</em> the steps of the proof are justified, the goal is considered to be justified as well, and the proof is complete. This is indicated by a check mark after the goal.</p>
+
+<h3>Entering Rules</h3>
+
+<p>Here's <a href="example.html?week=6&idx=2" target="_blank">another example</a>. In this case, you have to enter a complete justification for each line: both the rule and the citations. Before tackling this problem, let's step back and see what's going on. There is just one premise, <log>A &amp; (B &amp; C)</log>. The goal is <log>(A &amp; B) &amp; C</log>, which is practically the same: it's the same atomic sentence, but grouped differently. Our proof strategy is as follows. First, we take apart the sentence, step by step, into its constituent parts, <log>A</log>, <log>B</log>, and <log>C</log>. We do this by using the <log>&amp;</log> Elim rule repeatedly. Then, we put these three sentences back together to form the goal sentence, using the <log>&amp;</log> Intro rule.</p>
+
+<p>The actual steps of the proof have been given to you; you just have to supply the justifications. So let's start with the first step, on line 2. Go ahead and click the justification, which right now just reads &quot;rule?&quot;. The sentence on this line is <log>A</log>, and you need to specify two things: <em>which line</em> it was derived from, and <em>what rule</em> was used in the derivation.</p>
+
+<p>Since there is only one previous line, there is only one line that this step could have come from, namely step 1. So go ahead and click the sentence on step 1 to cite it. In the top part of the justification editor, you see the sentence you just selected, <log>A &amp; (B &amp; C)</log>, on top, and the active step, <log>A</log>, on the bottom. That is, you see an inference from <log>A &amp; (B &amp; C)</log> to <log>A</log>. You have to determine <em>which rule</em> justifies this inference. There are only two choices at this stage: <log>&amp;</log> Intro and <log>&amp;</log> Elim.</p>
+
+<p>If you recall how these two rules work, you'll see that <log>&amp;</log> Elim is the correct choice. We just have to select that rule in the justification editor. In the gray part of the justification editor, you'll see <em>Elim</em> with a row of symbols underneath, and also <em>Intro</em> with a row of symbols underneath. To select <log>&amp;</log> Elim, simply click the <log>&amp;</log> that is underneath the word <em>Elim</em>. (You'll also notice that most of the symbols are grayed out. That won't be the case in general.)</p>
+
+<p>Once you select the rule <log>&amp;</log> Elim, the following things will happen.</p>
+<ol>
+<li>The word &quot;rule?&quot; on line 2 will be replaced by &quot;<log>&amp;</log> Elim.&quot;
+<li>In the justification editor itself, the <log>&amp;</log> under <em>Elim</em> will be highlighted.
+<li>Line 2 now has a check mark, indicating that it is fully justified.
+</ol>
+
+<p>I encourage you to work on the remaining lines. In each line, you have to select one or more previous steps, and pick a rule of inference. Just remember that you have to enter <em>both</em> a rule <em>and</em> cite one or more sentences. You can do this in either order: rule first, or citation first.</p>
+
+<h3>A Full Proof</h3>
+
+<p>In our <a href="example.html?week=6&idx=3" target="_blank">next example</a>, you need to create a whole proof: steps, rules, and citations. In this case, the proof is pretty easy. You just have to prove the goal <log>A</log> from the premise <log>A &amp; B</log>. The proof has just one step. The point of the exercise is to show you how to edit steps in a proof.</p>
+
+<p>First, click on line 2, in the space under the little bar. You can now start typing a sentence, which in this case is just <log>A</log>. You will immediately see a red X. Don't be alarmed; the X just tells you that you're not done justifying the sentence you just entered. Next, either click on the &quot;rule?&quot; or press the tab key to get to it. As before, you need to justify the step <log>A</log>. By now you should be a pro at this. The correct rule is <log>&amp;</log> Elim, and the line to cite is the only one you <em>can</em> cite, namely line 1. Once you're done, you'll get a checkmark after the goal for your trouble.</p>
+
+<h3>A Longer Proof</h3>
+
+<p>In our <a href="example.html?week=6&idx=4" target="_blank">next example</a>, we're proving that <log>A &amp; B</log> implies <log>B &amp; A</log>. This is a little different from before. The proof is going to require more than one step. The last step is going to be the same as the goal sentence: in fact, the last line of a correct proof is always the same as the goal. But there are also going to be two intermediate steps, and you are going to have to figure out what they should be.</p>
+
+<p>In experimenting with this example, you'll also learn how to enter multiple steps in a proof. It's basically just like entering text in a word processor. You can create new lines with the Return (or Enter) key, and you can delete blank lines with the Backspace key. (On a Mac, this key is called Delete.) You can use the arrow keys or the tab key to move around within the proof, or click on a line to select it for editing. Just remember that clicking on a line to edit is different from clicking on a justification.</p>
+
+<p>If you're not sure how to proceed with this proof, here's a hint. The <log>&amp;</log> Elim rule breaks sentences down into shorter sentences. The <log>&amp;</log> Intro rule joins sentences together to make larger sentences. The proof is going to involve breaking the premise down, then building the goal sentence up.</p>
+
+<p>(If you really can't get this one, here's the answer. First derive <log>A</log> via <log>&amp;</log> Elim. Next, derive <log>B</log> in the same manner. Finally, derive <log>B &amp; A</log> using <log>&amp;</log> Intro.)</p>
+
+<h3>A Note on Order</h3>
+
+<p>In a rule of inferences, the order of the premises doesn't matter. So, for example, the <log>&amp;</log> Intro rule,</p>
+
+<div class="argument">
+    <div>
+        <div><span>A</span><span>B</span></div>
+        <div>A &amp; B</div>
+    </div>
+</div>
+
+<p>can also be written as follows:</p>
+
+<div class="argument">
+    <div>
+        <div><span>B</span><span>A</span></div>
+        <div>A &amp; B</div>
+    </div>
+</div>
+
+<p><em>All that matters</em> is that one of the premises of the inference is <log>A</log> and the other is <log>B</log>. For this reason, the proof editor doesn't keep track of the order in which you cite your sentences. They are simply listed in the order that they occur in the proof.</p>
+
+<h3>A Note on Line Numbers</h3>
+
+<p>In the citation column of the proof editor, the previous lines you cite are listed by line number. However, these numbers automatically update when you edit a proof. For example, have a look at <a href="example.html?week=6&idx=5" target="_blank">this proof</a>. Try adding some new lines to the proof and see what happens. (Remember, use the Enter key to add a new line, just as you would with a word processor.) For example, add a new blank line before step 2.</p>
+
+<p>Now look at the last line. Previously, that line cited lines 2 and 3. Now, it cites lines 3 and 4. It cites the same <em>sentences</em> as before, but those sentences have different line numbers because a new line has been added. Notice also that the last line is still marked correct.</p>
+
+
+
+</article>
+
+</body>
+</html>

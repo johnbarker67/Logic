@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>PHI 401 Logic - Create Account</title>
+    <meta charset="UTF-8" />
+
+<link rel="stylesheet" type="text/css" href="logic-1724095155.css" />
+
+  <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-database.js"></script>
+
+<script language="JavaScript" src="logic-1724095155.js"></script>
+
+<script language="JavaScript">
+
+var createAccountServer = null;
+
+function _loading()
+{
+  createAccountServer = new Server(function(id, email) { }, function() { });
+}
+
+</script>
+
+</head>
+
+<body onload="_loading()">
+
+<article>
+
+<h1>PHI 401 Logic &mdash; Create Account</h1>
+
+<table class="stylized" id="newaccountform">
+<tbody>
+
+<tr>
+<td colspan="2">
+<h1>Create Account</h1>
+<p></p>
+</td>
+</tr>
+
+<tr>
+<td class="labelcol">
+<label>First Name
+<span class="small"></span>
+</label>
+<td class="inputcol errcol">
+<input type="text" id="firstnamefield" />
+<br /><span class="error" id="fnerror">&nbsp;</span>
+
+<tr>
+<td class="labelcol">
+<label>Last Name
+<span class="small"></span>
+</label>
+<td class="inputcol errcol">
+<input type="text" id="lastnamefield" />
+<br /><span class="error" id="lnerror">&nbsp;</span>
+
+
+  
+<tr>
+<td class="labelcol">
+<label>UIS Email Address
+<span class="small">Include the "@uis.edu"</span>
+</label>
+<td class="inputcol errcol">
+<input type="text" id="newemailfield" />
+<br /><span class="error" id="emailerror">&nbsp;</span>
+
+<tr>
+<td class="labelcol">
+<label>Password
+<span class="small">Choose a new password. This is NOT your UIS password.</span>
+</label>
+<td class="inputcol errcol">
+<input type="password" id="newpasswordfield" />
+<br /><span class="error" id="passerror">&nbsp;</span>
+
+<tr>
+<td class="labelcol">
+<label>Confirm Password
+<span class="small"></span>
+</label>
+<td class="inputcol errcol">
+<input type="password" id="confirmpasswordfield" />
+<br /><span class="error" id="conferror">&nbsp;</span>
+  
+<tr>
+<td class="labelcol">
+<td class="inputcolbot">
+<button id="docreate" onclick="Account.create()">Create Account</button>
+
+
+
+</tbody></table>
+</article>
+
+
+</body>
+
+</html>

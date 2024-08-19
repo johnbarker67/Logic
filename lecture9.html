@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>PHI 401 Logic - Week 9</title>
+    <meta charset="UTF-8" />
+<link rel="stylesheet" type="text/css" href="logic-1724095155.css" />
+
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-database.js"></script>
+
+<script language="JavaScript" src="logic-1724095155.js"></script>
+    <script language="JavaScript" src="lecture_toolbar-1724095155.js"></script>
+
+    <script language="JavaScript" src="textBehavior-1724095155.js"></script>
+    <script language="JavaScript" src="lectures-1724095155.js"></script>
+    
+
+
+
+</head>
+
+<body>
+
+
+
+<article class="link">
+    <header>
+        <h2>Week 9: More Rules</h2>
+    </header>
+
+<p>This week, we're going to introduce the last of the connective-based rules. If you've been keeping score, there are only two rules left to introduce: <log>&lt;-&gt;</log> Intro and <log>|</log> Elim.</p>
+
+<h3>&lt;-&gt; Intro</h3>
+
+<p>The <b><log>&lt;-&gt;</log> Intro</b> rule is used to prove biconditionals, just as the <log>-&gt;</log> Intro rule is used to prove conditionals. For review, the way you prove a conditional <log>A -&gt; B</log> is to create a subproof with hypothesis <log>A</log> and, within that subproof, prove <log>B</log>. Then, outside the subproof, you enter <log>A -&gt; B</log> and cite the subproof. Proving a biconditional <log>A &lt;-&gt; B</log> involves the same work as proving the two conditionals <log>A -&gt; B</log> and <log>B -&gt; A</log>. Specifically:</p>
+
+<p class="definition">To prove a biconditional <log>A &lt;-&gt; B</log>, you must create <em>two</em> subproofs. The first subproof has hypothesis <log>A</log> and conclusion </log>B</log>. The second subproof has hypothesis <log>B</log> and conclusion <log>A</log>. The sentence <log>A &lt;-&gt; B</log> is then justified via the <log>&lt;-&gt;</log> rule, citing <em>both</em> subproofs.</p>
+
+<p>We can write the <log>&lt;-&gt;</log> Intro rule more succinctly as follows:</p>
+
+<div class="argument">
+    <div>
+        <div>
+            <div class="subproof">
+                <div>A</div>
+                <div>B</div>
+            </div>
+            &nbsp;&nbsp;&nbsp;
+            <div class="subproof">
+                <div>B</div>
+                <div>A</div>
+            </div>
+        </div>
+        <div>A &lt;-&gt; B</div>
+    </div>
+</div>
+
+
+<p>Here's an example:</p>
+
+<div proof="json">
+{"premises":[{"s":"B","l":1}],"body":[{"p":{"premises":[{"s":"A","l":2}],"body":[{"s":"A & B","l":3,"r":"& Intro","c":[2,1]}]},"l":4},{"p":{"premises":[{"s":"A & B","l":5}],"body":[{"s":"A","l":6,"r":"& Elim","c":[5]}]},"l":7},{"s":"A <-> (A & B)","l":8,"r":"<-> Intro","c":[4,7]}],"goal":"A <-> (A & B)","hasDialog":false}
+</div>
+
+<p>(This example, like all examples in this lecture, is &quot;clickable.&quot; You can click on a justification to highlight the cited sentences.) In this example, the goal is a biconditional, <log>A <-> (A & B)</log>. We have one premise, namely <log>B</log>. To prove the goal, we create two subproofs, as described above. The first subproof, on lines 2 and 3, has the left side of the biconditional as its hypothesis, and it has the right side as its conclusion. The second subproof, on lines 4 and 5, is similar, but now the <em>right</em> side of the biconditional is the hypothesis and the <em>left</em> side is the conclusion. On line 6, the goal is justified, which completes the proof. The rule cited is <log>&lt;-&gt;</log> Intro, and the two subproofs are cited.</p>
+
+<p>The technique for proving biconditionals isn't really any different from that for conditionals. It just involves twice as much work, since you have to create two subproofs instead of one.</p>
+
+<h3>Proof By Cases</h3>
+
+<p>This leaves us with just one rule, the <b>Disjunction Elimination</b>, or <b><log>|</log> Elim</b>, rule. Before getting into the rule itself, let's talk about the method of proof that the rule represents.</p>
+
+<p>The method is called <b>proof by cases</b>, and here is an example. Suppose there are two dogs, Fluffy and Muffy, at least one of whom is hungry. If Fluffy is hungry, she'll pester her owner into feeding her. Likewise, if Muffy is hungry, she'll get a meal out of her owner. As anyone who owns multiple dogs knows, if one dog gets fed, the other expects a meal too. So regardless of which dog is hungry, <em>both</em> will get fed in this case. We can summarize our reasoning as follows:</p>
+
+<ol>
+<li>Either Fluffy is hungry or Muffy is hungry.
+<li>If Fluffy is hungry, then both Fluffy and Muffy will get fed.
+<li>If Muffy is hungry, then both Fluffy and Muffy will get fed.
+<li>Either way, both fluffy and muffy will get fed.
+<li>Therefore, both Fluffy and Muffy will get fed.
+</ol>
+
+<p>Now let's step back and look at the general pattern of reasoning here. The argument just given follows the following pattern:</p>
+
+<ol>
+<li>Either <log>A</log> or <log>B</log>.
+<li>If <log>A</log>, then <log>C</log>.
+<li>If <log>B</log>, then <log>C</log>.
+<li>Either way, <log>C</log>.
+<li>Thus, <log>C</log>.
+</ol>
+
+<p>This is called proof by cases, because there are two cases to consider, <log>A</log> and <log>B</log>, and in either case, we can show that <log>C</log>. In the previous example, the two cases are: <em>Fluffy is hungry</em> and <em>Muffy is hungry</em>. In a proof by cases, you show that the desired conclusion, <log>C</log>, holds in both cases. This entitles you to conclude that <log>C</log> holds.</p>
+
+<h3><log>|</log> Elim</h3>
+
+<p>The <log>|</log> Elim rule is a more formal version of proof by cases. In the <log>|</log> Elim rule, you start with a disjunction <log>A | B</log> that has already been proven. <log>A</log> and <log>B</log> are the two &quot;cases.&quot; If <log>C</log> is the conclusion you wish to prove, then you proceed as follows. First, prove <log>C</log> from the assumption <log>A</log>. Then, prove <log>C</log> from the assumption <log>B</log>. The result is a pair of subproofs. Both subproofs will have the conclusion <log>C</log>. One will have the hypothesis <log>A</log>, and the other will have the hypothesis <log>B</log>. You conclude <log>C</log>, and justify it as follows: the rule you use is <log>|</log> Elim, and you cite (1) the sentence <log>A | B</log> and (2) the two subproofs. To summarize:</p>
+
+<p class="definition">In the <b><log>|</log> Elim</b> rule, you justify a sentence <log>C</log> by citing (1) a disjunction <log>A | B</log>, (2) a subproof with hypothesis <log>A</log> and conclusion <log>C</log>, and (3) a subproof with hypothesis <log>B</log> and conclusion <log>C</log>.</p>
+
+<p>We can write the <log>|</log> Elim rule more succinctly, as follows:</p>
+
+<div class="argument">
+    <div>
+        <div>
+            A | B
+            &nbsp;&nbsp;&nbsp;
+            <div class="subproof">
+                <div>A</div>
+                <div>C</div>
+            </div>
+            &nbsp;&nbsp;&nbsp;
+            <div class="subproof">
+                <div>B</div>
+                <div>C</div>
+            </div>
+        </div>
+        <div>C</div>
+    </div>
+</div>
+
+
+
+<p>Here's a concrete example of <log>|</log> Elim in action:</p>
+
+<div proof="json">
+{"premises":[{"s":"A -> C","l":1},{"s":"B -> C","l":2},{"s":"A | B","l":3}],"body":[{"p":{"premises":[{"s":"A","l":4}],"body":[{"s":"C","l":5,"r":"-> Elim","c":[1,4]}]},"l":6},{"p":{"premises":[{"s":"B","l":7}],"body":[{"s":"C","l":8,"r":"-> Elim","c":[2,7]}]},"l":9},{"s":"C","l":10,"r":"| Elim","c":[3,6,9]}],"goal":"C","hasDialog":false}
+</div>
+
+<p>The real action is taking place in the last step, where <log>|</log> Elim is applied. As stated above, that line cites a disjunction, <log>A | B</log>, and two subproofs. Each disjunct of <log>A | B</log> is the hypothesis of one of the subproofs, and both subproofs have the same conclusion, <log>C</log>. This conclusion is also the sentence we're justifying.</p>
+
+<p>What you see above looks formal, but it's really just proof by cases. On a less formal reading, the above proof says: Either <log>A</log> or <log>B</log>; in either case, <log>C</log>; therefore, <log>C</log>.</p>
+
+<h3>Summary</h3>
+
+You have now learned most of the rules that will be covered in this course. More importantly, you have learned <em>all</em> the rules of Boolean logic, the logic of tautologies and tautological implications. Using these rules, you can prove any conclusion from any premises, as long as those premises <em>tautologically</em> imply the conclusion.</p>
+
+<p>For your reference, here are the rules.</p>
+
+<table class="ruletable">
+<tbody>
+<tr><td><log>~</log> Elim <td><log>~</log> Intro
+<tr>
+<td>
+<div class="argument">
+    <div>
+        <div><span>~~A</span></div>
+        <div>A</div>
+    </div>
+    <div>
+        <div>
+            <div class="subproof">
+                <div>~A</div>
+                <div>!</div>
+            </div>
+        </div>
+        <div>A</div>
+    </div>
+</div>
+
+<td>
+<div class="argument">
+    <div>
+        <div>
+            <div class="subproof">
+                <div>A</div>
+                <div>!</div>
+            </div>
+        </div>
+        <div>~A</div>
+    </div>
+</div>
+
+<tr><td><log>&amp;</log> Elim <td><log>&amp;</log> Intro
+<tr>
+<td>
+<div class="argument">
+    <div>
+        <div>A &amp; B</div>
+        <div>A</div>
+    </div>
+    <div>
+        <div>A &amp; B</div>
+        <div>B</div>
+    </div>
+</div>
+
+<td>
+<div class="argument">
+    <div>
+        <div><span>A</span><span>B</span></div>
+        <div>A &amp; B</div>
+    </div>
+</div>
+
+<tr><td><log>|</log> Elim <td><log>|</log> Intro
+<tr>
+<td>
+<div class="argument">
+    <div>
+        <div>
+            A | B
+            &nbsp;&nbsp;&nbsp;
+            <div class="subproof">
+                <div>A</div>
+                <div>C</div>
+            </div>
+            &nbsp;&nbsp;&nbsp;
+            <div class="subproof">
+                <div>B</div>
+                <div>C</div>
+            </div>
+        </div>
+        <div>C</div>
+    </div>
+</div>
+
+<td>
+<div class="argument">
+    <div>
+        <div>A</div>
+        <div>A | B</div>
+    </div>
+    <div>
+        <div>B</div>
+        <div>A | B</div>
+    </div>
+</div>
+
+<tr><td><log>-&gt;</log> Elim <td><log>-&gt;</log> Intro
+<tr>
+<td>
+<div class="argument">
+    <div>
+        <div><span>A</span><span>A -&gt; B</span></div>
+        <div>B</div>
+    </div>
+</div>
+
+<td>
+<div class="argument">
+    <div>
+        <div>
+            <div class="subproof">
+                <div>A</div>
+                <div>B</div>
+            </div>
+        </div>
+        <div>A -&gt; B</div>
+    </div>
+</div>
+
+
+<tr><td><log>&lt;-&gt;</log> Elim <td><log>&lt;-&gt;</log> Intro
+<tr>
+<td>
+<div class="argument">
+    <div>
+        <div><span>A</span><span>A &lt;-&gt; B</span></div>
+        <div>B</div>
+    </div>
+    <div>
+        <div><span>B</span><span>A &lt;-&gt; B</span></div>
+        <div>A</div>
+    </div>
+</div>
+
+<td>
+<div class="argument">
+    <div>
+        <div>
+            <div class="subproof">
+                <div>A</div>
+                <div>B</div>
+            </div>
+            &nbsp;&nbsp;&nbsp;
+            <div class="subproof">
+                <div>B</div>
+                <div>A</div>
+            </div>
+        </div>
+        <div>A &lt;-&gt; B</div>
+    </div>
+</div>
+
+<tr><td>Reit <td>Contradiction
+<tr>
+<td>
+<div class="argument">
+    <div>
+        <div><span>A</span></div>
+        <div>A</div>
+    </div>
+</div>
+
+<td>
+<div class="argument">
+    <div>
+        <div><span>A</span><span>~A</span></div>
+        <div>!</div>
+    </div>
+</div>
+</tr>
+</tbody>
+</table>
+
+
+
+<p><b>Please study these rules.</b> It is important to actually memorize them.</p>
+
+<h3>Technique</h3>
+
+<p>For the rest of this week, and all next week, we're going to study technique. You have all the rules you need to prove any tautologically valid argument. But logic problems can be very hard, because there's no simple recipe for <em>which</em> rule to apply at <em>which</em> point in the proof.</p>
+
+<p>I'm going to describe some specific techniques for tackling proofs. None of these techniques are guaranteed to work in all cases. Nonetheless, you can get a lot of milage out of them.</p>
+
+<p>Before getting to the techniques, though, let me offer a word of advice. It's easy to get overwhelmed when you see a proof. This is in part because you will have a tendency to focus on the formal symbols, and to see the problem before you as purely formal. And you <em>can</em> always see a logic problem this way. The central truth of logic is that, at least when it comes to tautological inferences (and a few inferences that go beyond the tautological, which we'll cover later in the course), logical argument can be reduced to a mathematical formalism.</p>
+
+<p>But it's very important to understand that logic is not <em>just</em> formal. The sentences in a proof <em>mean</em> something. When you approach a proof, try to keep this in mind. Translate the premises and the goal into English by assigning meanings to the letters. Read out the English translations to yourself, or write them down. Appreciate that the premises and the goal <em>say</em> something. Then, realize that the whole proof represents an <em>argument</em>, where we are trying to demonstrate the goal on the basis of the premises. Think about why the premises might logically imply the goal. Think about how you might explain to a friend, informally, why the goal follows from the premises. Once you have all of this firmly in mind, it may guide your thinking when you put together a formal proof.</p>
+
+<h3>Main Connective</h3>
+
+<p>Now we're going to shift gears a bit and look at some purely formal aspects of proving, which you can't really avoid since your proof must follow the formal rules. There is a very important connection between the connective referenced in a rule (e.g., the connective <log>&amp;</log> in the rule <log>&amp;</log> Elim), and the <b>main connective</b> of the rule's conclusion, or of its major premise, depending on the rule. Specifically:</p>
+
+<ul>
+<li>In an Intro rule, the rule's connective always matches the main connective of the rule's <em>conclusion</em>.
+<li>In an Elim rule, the rule's connective always matches the main connective of the rule's <em>major premise</em>.
+</ul>
+
+<p>Take the rule <log>&amp;</log> Intro, for example. Since this is an Intro rule, its connective has to match the main connective of its conclusion. Since the connective in this rule is <log>&amp;</log>, the conclusion has to have <log>&amp;</log> as its main connective. In other words, the conclusion has to be a conjunction.</p>
+
+<p>Let's illustrate this with a specific case. Look at the following application of the rule <log>&amp;</log> Intro:</p>
+
+<div proof="json">
+{"premises":[{"s":"A | B","l":1},{"s":"~B -> C","l":2}],"body":[{"s":"(A | B) & (~B -> C)","l":3,"r":"& Intro","c":[2,1]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[]}
+</div>
+
+<p>The conclusion of the inference, on line 3, is <log>(A | B) &amp; (~B -> C)</log>. Notice how the main connective of this sentence is <log>&amp;</log>, the same connective referenced in the rule. To demonstrate that the main connective is indeed <log>&amp;</log>, we'll do a parse tree:</p>
+
+<div parsetree="(A|B)&(~B->C)" parse_options="hasTruthTable:false"></div>
+
+<p>Please expand out the parse tree to at least one level. You'll see that <log>&amp;</log> is in fact the main connective. You'll also see something else that is equally important. The two conjuncts &mdash; the two sentences on the second row of the parse tree, descending directly from the <log>&amp;</log> &mdash; are the <em>same</em> as the two premises of the inference in the proof above. This is always the case with this rule.</p>
+
+<p>Let me repeat this. In <log>&amp;</log> Intro, if you make a parse tree for the rule's <b>conclusion</b>, the main connective will always match the rule connective (i.e., it will always be <log>&amp;</log>), and the two sentences growing out of the main connective will always match the rule's <b>premises</b>.</p>
+
+<p>Other Intro rules are similar. If you make a parse tree for the rule's conclusion, the main connective always matches the rule connective. The sentences on the second row of the parse tree, which descend directly from the main connective, always match the premises, or certain specified parts of the premises. For example, let's look at the rule <log>-&gt;</log> Intro:</p>
+
+<div proof="json">
+{"premises":[{"s":"","l":1}],"body":[{"p":{"premises":[{"s":"A | B","l":2}],"body":[{"s":"A & B","l":3,"c":[],"check":false}]},"l":4},{"s":"(A | B) -> (A & B)","l":5,"r":"-> Intro","c":[4]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[]}
+</div>
+
+<p>Line 4 is a correct application of the <log>-&gt;</log> Intro rule, as you can tell by the fact that it has a check mark. Now, just as before, let's do a parse tree for that line:</p>
+
+<div parsetree="(A|B)->(A&B)" parse_options="hasTruthTable:false"></div>
+
+<p>Again, please expand the parse tree to one level. You'll notice that as before, the main connective is <log>-&gt;</log>, which matches that of the rule in question, namely <log>-&gt;</log> Intro. Also, note the sentences on the second row, the ones growing directly out of the connective. They are, respectively, the hypothesis and the conclusion of the subproof that was cited in justifying the inference. This is always the pattern with <log>-&gt;</log> Intro.</p>
+
+<p>Elim rules are similar, except that the rule's connective now matches the main connective of one of the inference's premises. For example:</p>
+
+<div proof="json">
+{"premises":[{"s":"~A -> (B | C)","l":1},{"s":"~A","l":2}],"body":[{"s":"B | C","l":3,"r":"-> Elim","c":[2,1]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[]}
+</div>
+
+<p>This is an example of the <log>-&gt;</log> Elim rule. Since it's an Elim rule, the rule's connective, <log>-&gt;</log>, must appear as the main connective of one of the premises. In this case, it's the fist premise, as we an show with a parse tree:</p>
+
+<div parsetree="~A -> (B|C)" parse_options="hasTruthTable:false"></div>
+
+<p>Again, please expand the tree at least one level. You'll see that the main connective is indeed <log>-&gt;</log>. Now look at the sentences on the second row, which are the antecedent and consequent of the whole sentence. The first of these, <log>~A</log>, matches the other premise of the inference (on line 2). The second one, <log>B | C</log>, matches the inference's conclusion on line 3. This is <em>always</em> the pattern with <log>-&gt;</log> Elim.</p>
+
+<p>To summarize, for every rule, the connective that the rule references must always match the main connective of the rule's conclusion (if it's an Intro rule) or of one of the rule's premises (if it's an Elim rule). Moreover, if this sentence (conclusion or major premise) is parsed out, there is always a match between certain sentences in the resulting parse tree (usually, those in the second row) and certain other sentences involved in the inference (premises, conclusion, hypothesis and conclusion of a subproof). Each rule has its own pattern.</p>
+
+<p><em>Please read over the summary of the rules which was given earlier.</em> In each case, see if you can identify the relations just described. With the exception of Reit and Contradiction, each rule references a specific connective. Where does that connective appear in the statement of the rule? Also, in each case, one or more sentences will appear twice: once as a stand-alone sentence, and again as part of a larger sentence. Can you spot all these repeated sentences?</p>
+
+<h3>Case Studies</h3>
+
+<p>Now let's look at some specific cases, and the techniques needed to solve them.</p>
+
+<p>One of the most effective life strategies is to start with your goals and work backward. This is also true in logic. In logic, working backward means looking at a goal sentence and asking how that sentence could be derived, and what rule could be used to derive it. The answer is usually: It can be derived using the Intro rule corresponding to its main connective. We can see this in the following case.</p>
+
+<h4>Case 1: Goal is a conditional</h4>
+
+<p>Suppose we want to prove the conditional <log>A -&gt; C</log>, and we have the premises <log>A -&gt; B</log> and <log>B -&gt; C</log>:</p>
+
+<div proof="json">
+{"premises":[{"s":"A -> B","l":1},{"s":"B -> C","l":2}],"body":[{"s":"","l":3,"c":[]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"A -> C"}
+</div>
+
+<p>Our goal is a conditional, so the first question to ask yourself is: Of all our rules, which rule is used to derive a conditional? The answer is the conditional introduction rule, or <log>-&gt;</log> Intro. So, that's the rule we'll try to use. That means our proof will look something like this:</p>
+
+<div proof="json">
+{"premises":[{"s":"A -> B","l":1},{"s":"B -> C","l":2}],"body":[{"s":"A -> C","l":3,"r":"-> Intro","c":[]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"A -> C"}
+</div>
+
+<p>Next, we need to think about what <log>A -&gt; C</log> can be derived <em>from</em>. Consulting the <log>-&gt;</log> Intro rule, we see that <log>A -&gt; C</log> needs to be derived from a subproof, with hypothesis <log>A</log> and conclusion <log>C</log>. So, let's go ahead and add that subproof and cite it:</p>
+
+<div proof="json">
+{"premises":[{"s":"A -> B","l":1},{"s":"B -> C","l":2}],"body":[{"p":{"premises":[{"s":"A","l":3}],"body":[{"s":"C","l":4,"c":[]}]},"l":5},{"s":"A -> C","l":6,"r":"-> Intro","c":[5]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"A -> C"}
+</div>
+
+<p>Notice how we now have a check mark on the goal sentence. It has been successfully justified. At the same time, we have introduced a new sentence <log>C</log> on line 4, and this new sentence needs a justification. Nonetheless, we have made real progress on our proof. The new sentence <log>C</log> is <em>simpler</em> than the previous sentence <log>A -&gt; C</log>. That means the proof as a whole is simpler now. If we keep proceeding this way, we can progressively simplify a proof until it is completely solved.</p>
+
+<h4>Case 1, Continued</h4>
+
+<p>To complete this proof, let's focus on justifying the sentence <log>C</log> on line 4. Since the sentence is just a letter, we can't work backward from it the same way we could with <log>A -&gt; C</log>. But, we can work <em>forward</em> from the premises.</p>
+
+<p>Let's start with the first premise, <log>A -&gt; B</log>. We're not trying to derive that sentence, since it is a premise, and so is already given to us. Instead, we want to see what we can derive <em>from</em> it. The sentence is a conditional: Its main connective is <log>-&gt;</log>. And so we ask: What rule lets us derive something from a conditional? The answer is: the conditional elimination rule, or <log>-&gt;</log> Elim. If you look up the rule, you'll see that one of its premises is always a conditional, like <log>A -&gt; B</log>. To apply the rule, we'd need to have an additional premise <log>A</log>, and we could get a conclusion, <log>B</log>.<p>
+
+<p>But we <em>do</em> have the additional premise <log>A</log>, on line 3. This means that we can apply the rule <em>in the subproof</em>, as follows:</p>
+
+<div proof="json">
+{"premises":[{"s":"A -> B","l":1},{"s":"B -> C","l":2}],"body":[{"p":{"premises":[{"s":"A","l":3}],"body":[{"s":"B","l":4,"r":"-> Elim","c":[1,3]},{"s":"C","l":5,"c":[]}]},"l":6},{"s":"A -> C","l":7,"r":"-> Intro","c":[6]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"A -> C"}
+</div>
+
+<p>It may not look like we've made much progress, but we have. The premise <log>A -&gt; B</log>, on line 1, has been effectively "used up." We won't be using it in any more inferences. (The reason is that the only thing we can really derive from it is <log>B</log>, and since we have derived <log>B</log> already, it would be pointless to derive it again.) In effect, the sentence <log>A -&gt; B</log> has been replaced with the simpler sentence <log>B</log>. This makes the whole proof simpler.</p>
+
+<p>Now let's repeat our trick, using the second premise <log>B -&gt; C</log>. Again, we can use <log>-&gt;</log> Elim to derive the sentence <log>C</log>, provided we have the premise <log>B</log>. And, we <em>do</em> have <log>B</log>: It's the sentence we just derived. Also, we have <log>C</log> written down in the proof already: We just haven't <em>justified</em> it yet. So, we just connect things up, justifying <log>C</log> by <log>-&gt;</log> Elim from <log>B -&gt; C</log> and <log>B</log>:</p>
+
+<div proof="json">
+{"premises":[{"s":"A -> B","l":1},{"s":"B -> C","l":2}],"body":[{"p":{"premises":[{"s":"A","l":3}],"body":[{"s":"B","l":4,"r":"-> Elim","c":[1,3]},{"s":"C","l":5,"r":"-> Elim","c":[2,4]}]},"l":6},{"s":"A -> C","l":7,"r":"-> Intro","c":[6]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"A -> C"}
+</div>
+
+<p>And so, we've solved this problem.</p>
+
+<h4>Case 2: Goal of a subproof is a conditional</h4>
+
+<p>Let's continue the theme of deriving conditionals. Take a look at this proof in progress:</p>
+
+<div proof="json">
+{"premises":[{"s":"","l":1}],"body":[{"p":{"premises":[{"s":"A","l":2}],"body":[{"s":"B -> A","l":3,"c":[]}]},"l":4},{"s":"A -> (B -> A)","l":5,"r":"-> Intro","c":[4]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"A -> (B -> A)"}
+</div>
+
+<p>Here we've applied the method from before. The goal is a conditional <log>A -&gt; (B -&gt; A)</log>, and we assume that we'll be deriving it using <log>-&gt;</log> Intro. Such a derivation requires a subproof; the subproof's hypothesis must match the antecedent <log>A</log>; and the subproof's conclusion must match the consequent, which is <log>B -&gt; A</log>. We have already set all this up.</p>
+
+<p>Our original goal has now been replaced by a new goal, on line 3: the sentence <log>B -&gt; A</log>. Notice that this goal, like the original goal, is a conditional. We treat this conditional the way we treat other conditionals. We assume that it is to be derived using <log>-&gt;</log> Intro. Such a derivation requires a subproof. The hypothesis of the subproof has to match the goal's antecedent, <log>B</log>. Its conclusion has to match the goal's consequent, <log>A</log>. So we go ahead and add the new subproof and use it to justify the goal:</p>
+
+<div proof="json">
+{"premises":[{"s":"","l":1}],"body":[{"p":{"premises":[{"s":"A","l":2}],"body":[{"p":{"premises":[{"s":"B","l":3}],"body":[{"s":"A","l":4,"c":[]}]},"l":5},{"s":"B -> A","l":6,"r":"-> Intro","c":[5]}]},"l":7},{"s":"A -> (B -> A)","l":8,"r":"-> Intro","c":[7]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"A -> (B -> A)"}
+</div>
+
+<p>Notice that we put our new subproof just before the sentence we're trying to justify. This puts our subproof inside an existing subproof, creating a nested subproof. Finishing the proof is now just a matter of justifying <log>A</log> on line 4. Can you see how to do this?</p>
+
+<h4>Case 3: Goal is a negated sentence</h4>
+
+<p>Next, suppose the main connective of our goal is <log>~</log>, as in the following proof:</p>
+
+<div proof="json">
+{"premises":[{"s":"A -> B","l":1},{"s":"~B","l":2}],"body":[{"s":"","l":3,"c":[]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"~A"}
+</div>
+
+<p>Just as before, we examine our rules to find one that can derive a negated sentence. The rule <log>~</log> Intro fits the bill. With <log>~</log> Intro, we derive the negated sentence <log>~A</log> from a subproof, whose hypothesis is the sentence <log>A</log> and whose conclusion is the contradiction symbol <log>!</log>.</p>
+
+<div proof="json">
+{"premises":[{"s":"A -> B","l":1},{"s":"~B","l":2}],"body":[{"p":{"premises":[{"s":"A","l":3}],"body":[{"s":"!","l":4,"c":[]}]},"l":5},{"s":"~A","l":6,"r":"~ Intro","c":[5]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"~A"}
+</div>
+
+<p>To complete the proof, we just have to justify line 4. Since line 4 contains the contradiction symbol, we justify line 4 by deriving a contradiction inside the subproof. To derive a contradiction, you need to derive some sentence, along with the negation of that sentence. You may already see how to do this, but suppose you don't. You can proceed as follows. The sentence <log>A -&gt; B</log> hasn't been used yet. So let's see if we can derive something from it using <log>-&gt;</log> Elim. To make such a derivation, we also need line 1's antecedent, <log>A</log>. But we have <log>A</log> on line 3. So, we can go ahead and derive line 1's consequent, <log>B</log>:</p>
+
+<div proof="json">
+{"premises":[{"s":"A -> B","l":1},{"s":"~B","l":2}],"body":[{"p":{"premises":[{"s":"A","l":3}],"body":[{"s":"B","l":4,"r":"-> Elim","c":[1,3]},{"s":"!","l":5,"c":[]}]},"l":6},{"s":"~A","l":7,"r":"~ Intro","c":[6]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"~A"}
+</div>
+
+<p>And now we are ready to complete the proof. We have <log>B</log> on line 4, and we have its negation, <log>~B</log>, on line 2. Citing these two lines, we can justify line 5 and finish the proof.</p>
+
+<div proof="json">
+{"premises":[{"s":"A -> B","l":1},{"s":"~B","l":2}],"body":[{"p":{"premises":[{"s":"A","l":3}],"body":[{"s":"B","l":4,"r":"-> Elim","c":[1,3]},{"s":"!","l":5,"r":"Contradiction","c":[4,2]}]},"l":6},{"s":"~A","l":7,"r":"~ Intro","c":[6]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"~A"}
+</div>
+
+<h4>Case 4: Goal is <log>A -&gt; ~B</log></h4>
+
+<p>This example combines the preceding techniques. Consider the following proof:</p>
+
+<div proof="json">
+{"premises":[{"s":"A -> C","l":1},{"s":"B -> ~C","l":2}],"body":[{"s":"","l":3,"c":[]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"A -> ~B"}
+</div>
+
+<p>The goal includes <em>both</em> the connectives <log>~</log> and <log>-&gt;</log>. How should we approach this case? Here is where it's important to be able to recognize a sentence's main connective. The goal's main connective is <log>-&gt;</log>, and that means we want to derive it using <log>-&gt;</log> Intro. Let's go ahead and set this up:</p>
+
+<div proof="json">
+{"premises":[{"s":"A -> C","l":1},{"s":"B -> ~C","l":2}],"body":[{"p":{"premises":[{"s":"A","l":3}],"body":[{"s":"~B","l":4,"c":[]}]},"l":5},{"s":"A -> ~B","l":6,"r":"-> Intro","c":[5]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"A -> ~B"}
+</div>
+
+<p>So far, so good. Our new goal is <log>~B</log> on line 4. This is a negated sentence &mdash; its main (and only) connective is <log>~</log> &mdash; so we use the technique for negated sentences. That is, we assume that it will be derived using the <log>~</log> Intro rule, which means our proof will have to look like this:</p>
+
+<div proof="json">
+{"premises":[{"s":"A -> C","l":1},{"s":"B -> ~C","l":2}],"body":[{"p":{"premises":[{"s":"A","l":3}],"body":[{"p":{"premises":[{"s":"B","l":4}],"body":[{"s":"!","l":5,"c":[]}]},"l":6},{"s":"~B","l":7,"r":"~ Intro","c":[6]}]},"l":8},{"s":"A -> ~B","l":9,"r":"-> Intro","c":[8]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"A -> ~B"}
+</div>
+
+<p>And so now our whole problem reduces to justifying line 5. As before, we can't work backward from the goal <log>!</log>, so we work forward from the premises. Each premise can be used to derive a further conclusion via <log>-&gt;</log> Elim, and when we do this we get the following result:</p>
+
+<div proof="json">
+{"premises":[{"s":"A -> C","l":1},{"s":"B -> ~C","l":2}],"body":[{"p":{"premises":[{"s":"A","l":3}],"body":[{"p":{"premises":[{"s":"B","l":4}],"body":[{"s":"C","l":5,"r":"-> Elim","c":[3,1]},{"s":"~C","l":6,"r":"-> Elim","c":[4,2]},{"s":"!","l":7,"c":[]}]},"l":8},{"s":"~B","l":9,"r":"~ Intro","c":[8]}]},"l":10},{"s":"A -> ~B","l":11,"r":"-> Intro","c":[10]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"A -> ~B"}
+</div>
+
+<p>And now it's apparent how to complete the proof.</p>
+
+<h4>Case 5: Goal is a conjunction</h4>
+
+<p>Next, suppose the goal is a conjunction:</p>
+
+<div proof="json">
+{"premises":[{"s":"C -> A","l":1},{"s":"C -> B","l":2},{"s":"C","l":3}],"body":[{"s":"","l":4,"c":[]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"A & B"}
+</div>
+
+<p>As before, we'll assume that the goal is to be derived using the appropriate Intro rule. The main (and only) connective is <log>&amp;</log>, so our only choice is <log>&amp;</log> Intro. With <log>&amp;</log> Intro, we derive a conjunction by citing both of its conjuncts. So to use <log>&amp;</log> Intro, we would have to have both conjuncts, <log>A</log> and <log>B</log>, already. So let's go and put them in:</p>
+
+<div proof="json">
+{"premises":[{"s":"C -> A","l":1},{"s":"C -> B","l":2},{"s":"C","l":3}],"body":[{"s":"A","l":4,"c":[]},{"s":"B","l":5,"c":[]},{"s":"A & B","l":6,"r":"& Intro","c":[5,4]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"A & B"}
+</div>
+
+<p>So here our original goal <log>A &amp; B</log> has been replaced by the two simpler goals <log>A</log> and <log>B</log>. We just have to justify those new goals. In fact, we can do this just by citing the existing sentences, as follows:</p>
+
+<div proof="json">
+{"premises":[{"s":"C -> A","l":1},{"s":"C -> B","l":2},{"s":"C","l":3}],"body":[{"s":"A","l":4,"r":"-> Elim","c":[3,1]},{"s":"B","l":5,"r":"-> Elim","c":[2,3]},{"s":"A & B","l":6,"r":"& Intro","c":[5,4]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"A & B"}
+</div>
+
+<h4>Case 6: Goal is <log>(A | B) &amp; ~(C -&gt; D)</log></h4>
+
+<p>This is a much more intimidating-looking goal than we've seen so far, but we can handle it just fine using the above techniques.</p>
+
+<div proof="json">
+{"premises":[{"s":"A","l":1},{"s":"A -> C","l":2},{"s":"C -> ~D","l":3}],"body":[{"s":"","l":4,"c":[]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"(A | B) & ~(C -> D)"}
+</div>
+
+<p>First we ask: What is the goal's main connective? It's <log>&amp;</log>, so we use the technique for deriving conjunctions. We assume the goal is derived using <log>&amp;</log> Intro, which requires us to have each conjunct as a separate line of the proof:</p>
+
+<div proof="json">
+{"premises":[{"s":"A","l":1},{"s":"A -> C","l":2},{"s":"C -> ~D","l":3}],"body":[{"s":"A | B","l":4,"c":[]},{"s":"~(C -> D)","l":5,"c":[]},{"s":"(A | B) & ~(C -> D)","l":6,"r":"& Intro","c":[5,4]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"(A | B) & ~(C -> D)"}
+</div>
+
+<p>The goal has now been replaced by two substantially simpler goals, on lines 4 and 5. Line 4 is a disjunction, and we don't have any special way of working backward from a disjunction, so we'll leave line 4 alone for now. Line 5, on the other hand, is a negation: Its main connective is <log>~</log>. (Again, here's where you really need to be able to recognize the main connective.) Thus, we assume that line 5 will be derived using the <log>~</log> Intro rule.</p>
+
+<p>Now this sentence, <log>~(C -&gt; D)</log>, is the negation of the shorter sentence <log>C -&gt; D</log>. To derive <log>~(C -&gt; D)</log> via <log>~</log> Intro, we need to cite a prior subproof, and this subproof has to have hypothesis <log>C -&gt; D</log> and conclusion <log>!</log>. Let's set this up:</p>
+
+<div proof="json">
+{"premises":[{"s":"A","l":1},{"s":"A -> C","l":2},{"s":"C -> ~D","l":3}],"body":[{"s":"A | B","l":4,"c":[]},{"p":{"premises":[{"s":"C -> D","l":5}],"body":[{"s":"!","l":6,"c":[]}]},"l":7},{"s":"~(C -> D)","l":8,"r":"~ Intro","c":[7]},{"s":"(A | B) & ~(C -> D)","l":9,"r":"& Intro","c":[8,4]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"(A | B) & ~(C -> D)"}
+</div>
+
+<p>We have now worked backward as much as we can, so let's see if we can work forward from the premises. From the premises <log>A</log> and <log>A -&gt; C</log> we can derive <log>C</log>, so let's do that:</p>
+
+<div proof="json">
+{"premises":[{"s":"A","l":1},{"s":"A -> C","l":2},{"s":"C -> ~D","l":3}],"body":[{"s":"C","l":4,"r":"-> Elim","c":[2,1]},{"s":"A | B","l":5,"c":[]},{"p":{"premises":[{"s":"C -> D","l":6}],"body":[{"s":"!","l":7,"c":[]}]},"l":8},{"s":"~(C -> D)","l":9,"r":"~ Intro","c":[8]},{"s":"(A | B) & ~(C -> D)","l":10,"r":"& Intro","c":[9,5]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"(A | B) & ~(C -> D)"}
+</div>
+
+<p>Notice that I chose to introduce <log>C</log> on line 4. I could also have introduced it in the subproof on lines 6-7. In this case, it wouldn't have made much difference where I introduced it. But in general, line 4 is a better choice, because it is more visible, i.e., there are more points in the proof from which we could cite it.</p>
+
+<p>Now that we have <log>C</log>, we can derive a couple new sentences. From <log>C -&gt; ~D</log> on line 3, we can get <log>~D</log>. And from <log>C -&gt; D</log> on line 6, we can get <log>D</log>. Let's make both derivations:</p>
+
+<div proof="json">
+{"premises":[{"s":"A","l":1},{"s":"A -> C","l":2},{"s":"C -> ~D","l":3}],"body":[{"s":"C","l":4,"r":"-> Elim","c":[2,1]},{"s":"A | B","l":5,"c":[]},{"p":{"premises":[{"s":"C -> D","l":6}],"body":[{"s":"~D","l":7,"r":"-> Elim","c":[3,4]},{"s":"D","l":8,"r":"-> Elim","c":[6,4]},{"s":"!","l":9,"c":[]}]},"l":10},{"s":"~(C -> D)","l":11,"r":"~ Intro","c":[10]},{"s":"(A | B) & ~(C -> D)","l":12,"r":"& Intro","c":[11,5]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"(A | B) & ~(C -> D)"}
+</div>
+
+<p>Notice that I derived both sentences inside the subproof. Sentence <log>D</log> <em>has</em> to be derived in the subproof, because it was derived from <log>C -&gt; D</log>, which is also in the subproof (and hence is not available for citation from outside the subproof). The sentence <log>~D</log> can be derived either inside or outside the subproof.</p>
+
+<p>At this point, we're just about ready to wrap up the proof. First, notice that we have a contradictory pair <log>D</log> and <log>~D</log> inside the subproof, which is enough to justify the subproof goal <log>!</log>. This takes care of line 9. The remaining sentence, line 5, isn't too hard if we remember our rules. The sentence is a disjunction, and the rule that produces a disjunction is <log>|</log> Intro. To justify a disjunction using that rule, we just need to cite <em>one</em> of the disjuncts. And we have one of the disjuncts, <log>A</log>, by itself on line 1. Putting all this together gives us:</p>
+
+<div proof="json">
+{"premises":[{"s":"A","l":1},{"s":"A -> C","l":2},{"s":"C -> ~D","l":3}],"body":[{"s":"C","l":4,"r":"-> Elim","c":[2,1]},{"s":"A | B","l":5,"r":"| Intro","c":[1]},{"p":{"premises":[{"s":"C -> D","l":6}],"body":[{"s":"~D","l":7,"r":"-> Elim","c":[3,4]},{"s":"D","l":8,"r":"-> Elim","c":[6,4]},{"s":"!","l":9,"r":"Contradiction","c":[8,7]}]},"l":10},{"s":"~(C -> D)","l":11,"r":"~ Intro","c":[10]},{"s":"(A | B) & ~(C -> D)","l":12,"r":"& Intro","c":[11,5]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"(A | B) & ~(C -> D)"}
+</div>
+
+<p>I hope these examples give you some feel for doing proofs. The main trick is to look at your goal, and work backward: think about how that goal could be derived. To do this, look at the goal's main connective, and then look at the Intro rule for that connective. This intro rule will always allow you to derive your goal, as long as you have something suitable to derive it from. Sometimes, you derive your goal from one or more prior sentences. Other times, you derive it from one or more prior subproofs. Either way, you fill in the prior sentence(s) and/or subproof(s) that are needed to complete the derivation. That takes care of your goal, and introduces one or more simpler goals. Keep going in this way until your goals have been broken down as much as possible. Then, look at your premises, and try to work forward from them. See what can be derived from them. Your best bet in general is to look at the main connective of your premise, and then look at the corresponding Elim rule for that connective. See if you have enough sentences on hand to apply that rule, and see what can be derived using that rule. Proceeding in this way, you can make a lot of progress on a proof.</p>
+
+
+
+
+
+
+</article>
+
+</body>
+</html>

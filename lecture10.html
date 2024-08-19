@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>PHI 401 Logic - Week 10</title>
+    <meta charset="UTF-8" />
+<link rel="stylesheet" type="text/css" href="logic-1724095155.css" />
+
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-database.js"></script>
+
+<script language="JavaScript" src="logic-1724095155.js"></script>
+    <script language="JavaScript" src="lecture_toolbar-1724095155.js"></script>
+
+    <script language="JavaScript" src="textBehavior-1724095155.js"></script>
+    <script language="JavaScript" src="lectures-1724095155.js"></script>
+
+<script>
+
+"use strict";
+
+var examples = [];
+
+examples[1] = {"premises":[{"s":"","l":1}],"body":[{"s":"A","l":2,"c":[]},{"s":"B","l":3,"c":[]},{"s":"A & B","l":4,"r":"& Intro","c":[2,3]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"A & B"};
+
+examples[2] = {"premises":[{"s":"","l":1}],"body":[{"p":{"premises":[{"s":"A","l":2}],"body":[{"s":"B","l":3,"c":[]}]},"l":4},{"s":"A -> B","l":5,"r":"-> Intro","c":[4]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"A -> B"};
+
+examples[3] = {"premises":[{"s":"A & B","l":1}],"body":[{"s":"A","l":2,"r":"& Elim","c":[1]},{"s":"B","l":3,"r":"& Elim","c":[1]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[]};
+
+examples[4] = {"premises":[{"s":"A -> B","l":1},{"s":"A","l":2}],"body":[{"s":"B","l":3,"r":"-> Elim","c":[2,1]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[]};
+
+examples[5] = {"premises":[{"s":"A | B","l":1}],"body":[{"s":"","l":2,"c":[]},{"s":"G","l":3,"c":[]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"G"};
+
+examples[6] = {"premises":[{"s":"A | B","l":1}],"body":[{"p":{"premises":[{"s":"A","l":2}],"body":[{"s":"G","l":3,"c":[]}]},"l":4},{"p":{"premises":[{"s":"B","l":5}],"body":[{"s":"G","l":6,"c":[]}]},"l":7},{"s":"G","l":8,"r":"| Elim","c":[7,4,1]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"G"};
+
+examples[7] = {"premises":[{"s":"A | B","l":1},{"s":"A -> C","l":2},{"s":"B -> C","l":3}],"body":[{"s":"C","l":4,"c":[]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"C"};
+
+examples[8] = {"premises":[{"s":"A | B","l":1},{"s":"A -> C","l":2},{"s":"B -> C","l":3}],"body":[{"p":{"premises":[{"s":"A","l":4}],"body":[{"s":"C","l":5,"c":[]}]},"l":6},{"p":{"premises":[{"s":"B","l":7}],"body":[{"s":"C","l":8,"c":[]}]},"l":9},{"s":"C","l":10,"r":"| Elim","c":[9,6,1]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[]};
+
+examples[9] = {"premises":[{"s":"A | B","l":1},{"s":"A -> C","l":2},{"s":"B -> C","l":3}],"body":[{"p":{"premises":[{"s":"A","l":4}],"body":[{"s":"C","l":5,"r":"-> Elim","c":[2,4]}]},"l":6},{"p":{"premises":[{"s":"B","l":7}],"body":[{"s":"C","l":8,"r":"-> Elim","c":[7,3]}]},"l":9},{"s":"C","l":10,"r":"| Elim","c":[9,6,1]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[]};
+
+examples[10] = {"premises":[{"s":"A | B","l":1},{"s":"C","l":2}],"body":[{"s":"","l":3,"c":[]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"(A & C) | (B & C)"};
+
+examples[11] = {"premises":[{"s":"A | B","l":1},{"s":"C","l":2}],"body":[{"p":{"premises":[{"s":"A","l":3}],"body":[{"s":"(A & C) | (B & C)","l":4,"c":[]}]},"l":5},{"p":{"premises":[{"s":"B","l":6}],"body":[{"s":"(A & C) | (B & C)","l":7,"c":[]}]},"l":8},{"s":"(A & C) | (B & C)","l":9,"r":"| Elim","c":[8,5,1]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"(A & C) | (B & C)"};
+
+examples[12] = {"premises":[{"s":"A | B","l":1},{"s":"C","l":2}],"body":[{"p":{"premises":[{"s":"A","l":3}],"body":[{"s":"A & C","l":4,"r":"& Intro","c":[3,2]},{"s":"(A & C) | (B & C)","l":5,"r":"| Intro","c":[4]}]},"l":6},{"p":{"premises":[{"s":"B","l":7}],"body":[{"s":"(A & C) | (B & C)","l":8,"c":[]}]},"l":9},{"s":"(A & C) | (B & C)","l":10,"r":"| Elim","c":[9,6,1]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"(A & C) | (B & C)"};
+
+examples[13] = {"premises":[{"s":"A | B","l":1},{"s":"C","l":2}],"body":[{"p":{"premises":[{"s":"A","l":3}],"body":[{"s":"A & C","l":4,"r":"& Intro","c":[3,2]},{"s":"(A & C) | (B & C)","l":5,"r":"| Intro","c":[4]}]},"l":6},{"p":{"premises":[{"s":"B","l":7}],"body":[{"s":"B & C","l":8,"r":"& Intro","c":[7,2]},{"s":"(A & C) | (B & C)","l":9,"r":"| Intro","c":[8]}]},"l":10},{"s":"(A & C) | (B & C)","l":11,"r":"| Elim","c":[10,6,1]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"(A & C) | (B & C)"};
+
+examples[14] = {"premises":[{"s":"A","l":1},{"s":"B","l":2},{"s":"(A & B) -> (C & D)","l":3}],"body":[{"s":"","l":4,"c":[]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"C"};
+
+examples[15] = {"premises":[{"s":"A","l":1},{"s":"B","l":2},{"s":"(A & B) -> (C & D)","l":3}],"body":[{"s":"","l":4,"c":[]},{"s":"A & B","l":5,"c":[]},{"s":"","l":6,"c":[]},{"s":"C","l":7,"c":[]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"C"};
+
+examples[16] = {"premises":[{"s":"A","l":1},{"s":"B","l":2},{"s":"(A & B) -> (C & D)","l":3}],"body":[{"s":"A & B","l":4,"r":"& Intro","c":[2,1]},{"s":"","l":5,"c":[]},{"s":"C","l":6,"c":[]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"C"};
+
+examples[17] = {"premises":[{"s":"A","l":1},{"s":"B","l":2},{"s":"(A & B) -> (C & D)","l":3}],"body":[{"s":"A & B","l":4,"r":"& Intro","c":[2,1]},{"s":"C & D","l":5,"r":"-> Elim","c":[4,3]},{"s":"C","l":6,"r":"& Elim","c":[5]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"C"};
+
+</script>
+
+</head>
+
+<body>
+
+
+
+<article class="link">
+    <header>
+        <h2>Week 10: Proof Technique</h2>
+    </header>
+
+<p>This week, we'll continue studying proof technique. We'll start by reviewing the techniques we studied last week.</p>
+
+<h3>Goals, Working Backward and Working Forward</h3>
+
+<p>The method from last week is a way of progressively simplifying a proof. The proof initially has one or more <b>premises</b>, and a single <b>goal</b>. We simultaneously work forward from the premises, and backward from the goal. Each time we work backward from a goal, we create one or more new goals.</p>
+
+<p>To <b>work backward</b> from a goal, you first identify the goal's main connective. Then you insert into the proof the sentence(s) and/or subproof(s) that would be needed to derive that goal, using the Intro rule for that connective. You then connect up the goal to these new items, citing them and specifying the Intro rule, which will cause the goal to become justified. The goal is now taken care of. In its place are one or more new goals. If any sentence was inserted as a premise of the inference, it is a new goal. And if any subproof was inserted, then its conclusion is a new goal.</p>
+
+<p>For example, to work backward from the sentence <log>A &amp; B</log>, you first identify that sentence's main connective, which is <log>&amp;</log>. This means that you will be using the <log>&amp;</log> Intro rule to derive the sentence. Next, you insert the sentences that you would need in order to derive the goal using this rule. In this case, the sentences are <log>A</log> and <log>B</log>. Finally, you justify the goal, citing the sentences you inserted. At the end, your proof should look like this:</p>
+
+<div proof="1"></div>
+
+<p>There are two very important things to notice about this proof. First, notice that the original goal, <log>A &amp; B</log>, has been fully justified; it has a check mark. This is because we've cited the new sentences and selected the <log>&amp;</log> Intro rule. It's very important to do this, since otherwise it's too easy to lose track of the structure of your proof. The check mark also means that you no longer have to worry about that sentence. It's been justified, and you can concentrate on other sentences. The second thing to notice is that the new sentences, <log>A</log> and <log>B</log>, have red X's. This identifies them as the new goals. If you follow my instructions consistently, you will always be able to identify the current goals as the sentences marked with X.</p>
+
+<p>As a second example, suppose the goal of the proof is <log>A -&gt; B</log>, you again identify the main connective, which is <log>-&gt;</log>. This tells you that you're going to derive the goal using the <log>-&gt;</log> Intro rule. This rule derives <log>A -&gt; B</log> from a subproof, with hypothesis <log>A</log> and conclusion <log>B</log>. So you insert such a subproof, and derive the goal from it. Your proof should look like this:</p>
+
+<div proof="2"></div>
+
+<p>Again, notice how the former goal cites the subproof and invokes the appropriate Intro rule, and so gets a check mark, indicating that you don't need to worry about it any more. Notice also that we have a new goal, the sentence <log>B</log>, which is also the conclusion of the subproof. Again, this goal can be identified by the red X, which indicates a sentence that needs justifying.</p>
+
+<p>In general, you can work backward from a sentence whose main connective is <log>~</log>, <log>&amp;</log>, <log>-&gt;</log> or <log>&lt;-&gt;</log>. You <em>can't</em> work backward from a sentence whose main connective is <log>|</log>, or from the contradiction symbol <log>!</log>, or from a sentence letter like <log>A</log>. A good strategy is to keep working backward until you just can't work backward any more.</p>
+
+<p><b>Working forward</b> is the opposite, in that you work from a <b>premise</b>, or a <b>fully justified</b> step, and you use Elim rules, not Intro rules. To work forward from a sentence, you first identify that step's main connective, just as you did when working backward. You then determine what sentence(s) can be derived <em>from</em> that sentence, using the Elim rule for that connective. For example, suppose you want to work forward from <log>A &amp; B</log>. First, you identify the main connective, which is <log>&amp;</log>. Then, ask yourself what sentences can be derived from that sentence using the <log>&amp;</log> Elim rule. Here, the sentences <log>A</log> and <log>B</log> can both be derived. So you go ahead and derive them, justifying your work. Your proof will then look like this:</p>
+
+<div proof="3"></div>
+
+<p>The derived sentences now have check marks, which indicates that they can be the source of further inferences, i.e., you can work forward from them as well.</p>
+
+<p>As another example, suppose you have a premise <log>A -&gt; B</log>. To work forward from this sentence, you again identify the main connective, <log>-&gt;</log>, and see what you can derive using the corresponding Elim rule. In this case it's a bit tricky, because you can derive <log>B</log>, but to do so you need a premise <log>A</log> in addition to the premise <log>A -&gt; B</log>. If you don't have the premise <log>A</log>, you won't be able to work forward from <log>A -&gt; B</log>. If you do have <log>A</log>, however, you can proceed, and your proof will look like this:</p>
+
+<div proof="4"></div>
+
+<p>The general strategy, again, is to work backward and forward, until the goals have been simplified to the point where they can be easily derived from the premises and from the steps you've derived from the premises by working forward.</p>
+
+<h3>When You Can't Work Backward or Forward</h3>
+
+<p>In any given proof, you will eventually reach a point where it is no longer possible to work either forward or backward. You cannot work backward from a goal when any of the following hold:</p>
+<ul>
+<li>The goal is a sentence letter.
+<li>The goal is the contradiction symbol.
+<li>The goal is a disjunction <log>A | B</log>.
+</ul>
+<p>You cannot work <b>forward</b> form a sentence when any of the following apply:</p>
+<ul>
+<li>The sentence is a sentence letter.
+<li>The sentence is the contradiction symbol.
+<li>The sentence is a disjunction <log>A | B</log>.
+<li>The sentence is a conditional <log>A -&gt; B</log>, and the antecedent <log>A</log> is not available on its own.
+<li>The sentence is a biconditional <log>A &lt;-&gt; B</log>, and neither side <log>A</log> nor <log>B</log> is available on its own.
+<li>The sentence is a negation, but is not a double negation <log>~~A</log>. That is, you can't work forward from <log>~A</log>, <log>~(A &amp; B)</log>, <log>~(A | B)</log>, <log>~(A -&gt; B)</log> or <log>~(A &lt;-&gt; B)</log>.
+</ul>
+
+<p>So you see that you usually cannot work forward! This doesn't mean that there is no way to deal with these sentences. It just means that we need to use different methods, which we'll describe below.</p>
+
+<h3>Working with Disjunctions</h3>
+
+<p>Looking back over the two lists just given, you'll notice that you can't work either backward or forward from a disjunction. The reason you can't work backward is that the <log>|</log> Intro rule derives a disjunction <log>A | B</log> from one of its disjuncts, <log>A</log> or <log>B</log>, but there's no way to know <em>which</em> disjunct you're going to be deriving it from. You can't insert <log>A</log> to derive <log>A | B</log>, because for all you know, the correct way to derive <log>A | B</log> is to derive it from <log>B</log>. For the same reason, you can't derive the disjunct from <log>B</log>, because for all you know you should be deriving it from <log>A</log>. So when a goal is a disjunction, there's not too much you can do with it.</p>
+
+<p>When a disjunction appears as a premise (or justified step), the situation is a little better. There is a way of working with the disjunction, but it involves simultaneously working forward from the disjunction and working backward from the goal. Normally, when you work backward from a goal, you ask yourself how that goal could be derived, using the Intro rule for the goal's main connective. Here, on the other hand, you're asking how the goal could be derived, <em>using the <log>|</log> Elim rule, from the premise</em> which is a disjunction. That is, suppose you have a premise <log>A | B</log> and a goal <log>G</log>, so your proof looks like this:</p>
+
+<div proof="5"></div>
+
+<p>How can that goal be derived from that premise using the <log>|</log> Elim rule? Given the way the rule works, we would need to have two subproofs, one with hypothesis <log>A</log> (i.e., the first disjunct), the other with hypothesis <log>B</log> (the second disjunct), and both with conclusion <log>G</log>. In other words, the inference will look like this:</p>
+
+<div proof="6"></div>
+
+<p>So in this method, you go ahead and insert the subproofs and justify the goal, just as I've done here. You now have two subproof conclusions to justify, which are identical to the original goal.</p>
+
+<p>This may not look like progress, because in place of justifying the goal <log>G</log> once, you now have to justify it twice, once in the first subproof and once in the second. However, within the subproofs, you have new tools at your disposal. In the first subproof, you have the assumption <log>A</log>, which you can use freely. In the second subproof, you have the assumption <log>B</log>. By contrast, in the main proof, you have the weaker assumption <log>A | B</log>.</p>
+
+<p>Here's an example of the method in action. Consider the following problem:</p>
+
+<div proof="7"></div>
+
+<p>None of the working forward or working backward methods are applicable. However, we do have a disjunction <log>A | B</log>, so we can use our disjunction method. As before, we assume that the goal will be derived from that disjunction via <log>|</log> Elim, which requires two new subproofs, which we insert, giving the following result:</p>
+
+<div proof="8"></div>
+
+<p>The original goal <log>C</log> now has a check mark, but the same sentence <log>C</log> appears as a goal in each subproof. But in the first and second subproof, we get to use the assumptions <log>A</log> and <log>B</log>, respectively, and this makes all the difference. In fact, we don't even need to derive any new sentences; we just connect things up as follows:</p>
+
+<div proof="9"></div>
+
+<p>(Please look at how the subproof conclusions are justified, and how they use the subproof hypotheses, which aren't available in the main proof.) Here's another example. Sometimes the goal of a proof is a disjunction, and a premise is also a disjunction. This is the case in the following proof:</p>
+
+<div proof="10"></div>
+
+<p>The goal is a disjunction, and we can't work backward from a disjunction using <log>|</log> Intro. But we can work with <em>any</em> goal using <log>|</log> Elim, provided some premise is a disjunction. If the goal were to be derived from the premise <log>A | B</log> using <log>|</log> Elim, the proof would look like this:</p>
+
+<div proof="11"></div>
+
+<p>The pattern is the same as before. The overall goal has become the goal of each subproof, and the subproofs' hypotheses are simply the disjuncts of the premise <log>A | B</log>. The fact that the goal is a disjunction is not relevant here. The goal could be any sentence at all, and in this case it just <em>happens</em> to be a disjunction.</p>
+
+<p>To justify the subproof goals, we can't really use the above methods, but we can complete the proof by using a little ingenuity. In the first subproof, we have the sentences <log>A</log> and <log>C</log> to work with. From these we can derive <log>A &amp; C</log>, which gives us the goal <log>(A &amp; C) | (B &amp; C)</log> via <log>|</log> Intro:</p>
+
+<div proof="12"></div>
+
+<p>We can treat the second subproof in a similar way, and this completes the whole proof:</p>
+
+<div proof="13"></div>
+
+<p>So let's pause to take stock. We have a number of methods by which we can close the gap between the premises of a proof and the goal. These methods work by replacing the goal with one or more simpler goals, or by replacing the premise (or step derived from the premises) by one or more simpler sentences. As a first approach to a proof, it's a good strategy to use these methods until they give out. The result is a simpler problem, involving simpler goals and simpler premises.</p>
+
+<h3>Intermediate Goals</h3>
+
+<p>Sometimes, to get from one point to another, you need to aim at a point in between. In a proof, this is called an <em>intermediate goal</em>. An intermediate goal splits the difference between the premises and the (main) goal. Getting from the premises to the intermediate goal is doable, and getting from the intermediate goal to the final goal is doable, and each is easier than going right from the premises to the final goal.</p>
+
+<p>The following is a simple example where an intermediate goal is helpful:</p>
+
+<div proof="14"></div>
+
+<p>The working-backward and working-forward methods aren't much use in this proof. But we can tackle the proof by aiming for the intermediate goal <log>A &amp; B</log>:</p>
+
+<div proof="15"></div>
+
+<p>The sentences on lines 5 and 7 are both goals, but line 5 holds an intermediate goal, while line 7 is the final goal. The idea here is that it's not hard to prove line 5 from the premises, and it's not hard to get from line 5 to line 7. We can prove the intermediate goal in one step:</p>
+
+<div proof="16"></div>
+
+<p>(Obviously, proving an intermediate goal won't always be this easy.) Now we're closer to the final goal. In particular, we can now apply the working-forward method. Whether we do this, or just think through the problem directly, the final goal can be proved in two steps:</p>
+
+<div proof="17"></div>
+
+<p>Notice that our intermediate goal was the antecedent of a conditional, and that the conditional was one of our premises. This is often the way with intermediate goals. More generally, when we have a conditional that is available, either because it has been proved or because it is a premise, it is often a good strategy to try to prove the conditional's antecedent. Once we do that, we can deduce the conditional's consequent via <log>-&gt;</log> Elim.</p>
+
+<h3>The De Morgan Laws</h3>
+
+<p>Looking back over the rules for working forward, we see that there is one large class of cases where that method doesn't apply, namely: when our sentence is a negation, but not a double negation. Specifically, we tend to get stuck when we want to work forward from any of the following sentences:</p>
+
+<ul>
+<li><log>~(A &amp; B)</log>
+<li><log>~(A | B)</log>
+<li><log>~(A -&gt; B)</log>
+<li><log>~(A &lt;-&gt; B)</log>
+</ul>
+
+<p>The reason we get stuck is that there is no Elim rule for any of these cases. However, it turns out that we <em>can</em> deal with these cases; it just takes some ingenuity.</p>
+
+<p>It turns out that each of these sentences is tautologically equivalent to a different sentence that is easier to handle. These equivalences are summarized in the following table.</p>
+
+<table class="normal">
+<thead>
+<tr>
+<th>Sentence
+<th>Equivalent to
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>~(A &amp; B)
+<td>~A | ~B
+<tr>
+<td>~(A | B)
+<td>~A &amp; ~B
+<tr>
+<td>~(A -&gt; B)
+<td>A &amp; ~B
+<tr>
+<td>~(A &lt;-&gt; B)
+<td>A &lt;-&gt; ~B
+</tbody>
+</table>
+
+<p>Each sentence in the left column is equivalent to the corresponding sentence in the right column. This is great news, because we can work forward from any sentence in the right column. Each is covered by an Elim rule. The only trouble is that to do this, we have to actually <em>prove</em> the equivalence in our deductive system, which is tricky.</p>
+
+<p>The first two equivalences are called the <em>De Morgan laws</em>, after the 19th century logician Augustus De Morgan. They express a rather beautiful symmetry between conjunction and disjunction. If you can remember one, you can remember the other, because the only difference between them is that the roles of <log>&amp;</log> and <log>|</log> are reversed.</p>
+
+<p>I invite you to test the first De Morgan law yourself, with the following truth table.</p>
+
+<div parsetree="~(A&B).~A|~B" parse_options="hasTruthTable:true"></div>
+
+<p>At the very least, please expand out the trees, to see the difference in structure between the two sentences. The other De Morgan law is very similar:</p>
+
+<div parsetree="~(A|B).~A&~B" parse_options="hasTruthTable:true"></div>
+
+<p>Now suppose you have a proof with a premise <log>~(A | B)</log>. The natural thing is to turn that sentence into <log>~A & ~B</log> via the De Morgan laws. The trouble is that we don't have a formal rule of inference for the De Morgan laws. There is no rule of inference that takes you from <log>~(A | B)</log> to <log>~A &amp; ~B</log>. But you <em>can</em> get from the former to the latter using the existing rules. The proof is rather tricky. You may want to <a href="example.html?week=10&idx=0" target="_blank">try it yourself</a> before seeing <a href="example.html?week=10&idx=1" target="_blank">the answer</a>.</p>
+
+
+
+
+</article>
+
+</body>
+</html>

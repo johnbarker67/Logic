@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<link rel="stylesheet" type="text/css" href="logic-1724095155.css" />
+
+	<script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-auth.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-database.js"></script>
+
+<script language="JavaScript" src="logic-1724095155.js"></script>
+	<script language="JavaScript" src="lecture_toolbar-1724095155.js"></script>
+
+
+<script language="javascript">
+
+function addrow()
+{
+	var body = document.getElementById('ptable');
+	var e = {};
+	(new ElementRef(body)).child('tr') .cap(e,'row') .child('td','Sentence:') .sibling('td') .child('input', {type:'text', size:'60'}).cap(e, 'input') .parent() .sibling('td') .child('button') .cap(e, 'button').text('Remove') .parent(2).sibling('td', {colspan:'2'});
+	e.button.addEventListener('click', function() {
+		body.removeChild(e.row);
+	}, false);
+	addParenBlink(e.input, 200);
+}
+
+var ui = null;
+
+function parse()
+{
+	var sentences = [];
+	var body = document.getElementById('ptable');
+	getSentences(body, sentences);
+
+  sentences = sentences.filter(s => !/^\s*$/.test(s));
+  let errors = sentences.filter(s => !parseSentence(s));
+  if (errors.length) {
+    alert('The sentence '+errors[0]+' is not well formed.');
+    return;
+  }
+
+	// for (var i=0; i<sentences.length; i++) {
+	// 	if (/^\s*$/.test(sentences[i])) {
+	// 		sentences.splice(i--, 1);
+	// 		continue;
+	// 	}
+	// 	try {
+	// 		(new Parser(sentences[i])).parseStep();
+	// 	}
+	// 	catch (error) {
+	// 		alert('The sentence "'+sentences[i]+'" is not well formed.');
+	// 		return;
+	// 	}
+	// }
+
+	var options = {sentences: sentences, collapsed: true, hasTruthTable: document.getElementById('ttbox').checked, errbox: true, mode: 'composing', undoButton: 'true'};
+	if (ui)
+		ui.remove();
+	ui = new ParseTreeUI(options, document.body);
+	//(new ElementRef(document.body)).child('div', 'Hello world');
+
+	function getSentences(elt, s) {
+		if (elt.tagName == 'INPUT' && elt.getAttribute('type') == 'text') {
+			s.push(elt.value);
+		}
+		else if (elt.childNodes) {
+			for (var i=0; i<elt.childNodes.length; i++) {
+				getSentences(elt.childNodes[i], s);
+			}
+		}
+	}
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+	var button = document.getElementById('parsebutton');
+	button.addEventListener('click', parse, false);
+	button = document.getElementById('addbutton');
+	button.addEventListener('click', addrow, false);
+	var input = document.getElementById('sentencefield');
+	addParenBlink(input, 200);
+}, false);
+
+
+</script>
+
+</head>
+
+<body>
+
+<div class="gradebook-container">
+	<div id="contents">
+		<table>
+		<tbody id="ptable">
+		<tr>
+		<td>Sentence:<td><input size="60" type="text" id="sentencefield" />
+		<td><button id="addbutton">More Sentences</button>
+		<td><input type="checkbox" id="ttbox"/>Include truth table
+		<td><button id="parsebutton"> Go! </button>
+		</tr>
+		</tbody>
+		</table>
+	</div>
+</div>
+
+
+
+</body>
+
+</html>

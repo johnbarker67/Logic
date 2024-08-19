@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>PHI 401 Logic - Week 15</title>
+    <meta charset="UTF-8" />
+<link rel="stylesheet" type="text/css" href="logic-1724095155.css" />
+
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-database.js"></script>
+
+<script language="JavaScript" src="logic-1724095155.js"></script>
+    <script language="JavaScript" src="lecture_toolbar-1724095155.js"></script>
+
+    <script language="JavaScript" src="textBehavior-1724095155.js"></script>
+    <script language="JavaScript" src="lectures-1724095155.js"></script>
+
+
+
+</head>
+
+<body>
+
+
+
+<article class="link">
+    <header>
+        <h2>Week 15: Wrapping Up</h2>
+    </header>
+
+<p>At this point in the course, you have learned the entire system of logic: what logicians call <b>first-order logic</b>. You have learned all the logical symbols: the Boolean connectives, the identity sign, and the quantifiers. And you have learned a complete deductive system: anything that is logically valid can be proved in the system you have learned. This week, we're going to end by learning some general techniques for proof. The general method is the same as the one you learned a few weeks ago; here, we are simply extending it to take account of the new rules.</p>
+
+<h3>Working Forward and Backward</h3>
+
+<p>Our basic proof strategy is something we've seen before: working forward from the premises, and backward from the goal. As you may recall, when you work backward from a goal, you start by asking yourself what rule could be used to derive the goal. Suppose for example that you are asked to prove the following argument:</p>
+
+<div class="argument">
+    <div>
+        <div>Ax ~~F(x)</div>
+        <div>Ax F(x)</div>
+    </div>
+</div>
+
+<p>In this case, the goal is <log>Ax F(x)</log>, and we know that sentences of this form can be derived using the <log>A</log> Intro rule. Now that you know what rule can derive the goal, you ask yourself <em>how</em> that rule can derive the goal. This is a matter of remembering how the rule works. For the <log>A</log> Intro rule, the sentence <log>Ax F(x)</log> needs to be derived from a subproof, with a name <log>a</log> as the hypothesis and the sentence <log>F(a)</log> as the conclusion. So, our proof is going to have to look something like this:</p>
+
+<div proof="json">
+{"premises":[{"s":"Ax ~~F(x)","l":1}],"body":[{"p":{"premises":[{"s":"a","l":2}],"body":[{"s":"F(a)","l":3,"c":[]}]},"l":4},{"s":"Ax F(x)","l":5,"r":"A Intro","c":[4]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"Ax F(x)"}
+</div>
+
+<p>At this point, the goal has been correctly justified from the subproof, and we can concentrate on justifying the conclusion of that subproof, in this case the sentence <log>F(a)</log> on line 3. There is no obvious way to work backward from <log>F(a)</log>, so instead we try working forward from our premise <log>Ax ~~F(x)</log>. Remember what working forward means: it means applying an applicable Elim rule. What Elim rule is applicable depends in turn on what the main connective of the premise is. In this case, the main connective is <log>A</log>, so the applicable rule is <log>A</log> Elim. So now we have to think about how we might apply <log>A</log> Elim to the sentence <log>Ax ~~F(x)</log>.</p>
+
+<p>In fact, there are many different ways to apply <log>A</log> Elim to this sentence. We can derive any of the following sentences:</p>
+
+<ul>
+<li><log>~~F(a)</log>, <log>~~F(b)</log>, <log>~~F(c)</log>, ....
+</ul>
+
+<p>When applying <log>A</log> Elim, you are allowed to use any name you want. Above, we used the names <log>a</log>, <log>b</log>, <log>c</log>, etc. However, of all the names you are allowed to use, the name <log>a</log> is the best choice. It is the best choice because it already appears in the proof, and when you use <log>A</log> Elim, you should generally use a name that already appears in the proof. So now we know what rule to use, and we know what name to substitute for <log>x</log> when we use that rule; let's go ahead and do it:</p>
+
+<div proof="json">
+{"premises":[{"s":"Ax ~~F(x)","l":1}],"body":[{"p":{"premises":[{"s":"a","l":2}],"body":[{"s":"~~F(a)","l":3,"r":"A Elim","c":[1]},{"s":"F(a)","l":4,"c":[]}]},"l":5},{"s":"Ax F(x)","l":6,"r":"A Intro","c":[5]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"Ax F(x)"}
+</div>
+
+<p>Our proof still isn't complete, but our task is much simpler now. We just have to derive <log>F(a)</log> from <log>~~F(a)</log>. Hopefully you remember how to do this. You simply use the <log>~</log> Elim rule. This gives the following result:</p>
+
+<div proof="json">
+{"premises":[{"s":"Ax ~~F(x)","l":1}],"body":[{"p":{"premises":[{"s":"a","l":2}],"body":[{"s":"~~F(a)","l":3,"r":"A Elim","c":[1]},{"s":"F(a)","l":4,"r":"~ Elim","c":[3]}]},"l":5},{"s":"Ax F(x)","l":6,"r":"A Intro","c":[5]}],"hasDialog":false}
+</div>
+
+<p>And, our proof is complete.</p>
+
+<p>When we worked backward from <log>Ax F(x)</log>, we created a subproof with hypothesis <log>a</log> and conclusion <log>F(a)</log>. We could have used a different name than <log>a</log>; we could have created a subproof with hypothesis <log>b</log> and conclusion <log>F(b)</log>, for example. In our proof, it didn't matter. In general, though, when you work backward via <log>A</log> Intro, you need to remember that the name you use has to be new to the proof. This issue arises in the following case. Suppose we have the same premise and goal as before, but we also have an additional premise <log>G(a)</log>:</p>
+
+<div proof="json">
+{"premises":[{"s":"Ax ~~F(x)","l":1},{"s":"G(a)","l":2}],"body":[{"s":"","l":3,"c":[]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"Ax F(x)"}
+</div>
+
+<p>As before, we work backward from our goal. Let's suppose we work backward the same way we did previously, by creating a subproof with hypothesis <log>a</log> and conclusion <log>F(a)</log>:</p>
+
+<div proof="json">
+{"premises":[{"s":"Ax ~~F(x)","l":1},{"s":"G(a)","l":2}],"body":[{"p":{"premises":[{"s":"a","l":3}],"body":[{"s":"F(a)","l":4,"c":[]}]},"l":5},{"s":"Ax F(x)","l":6,"r":"A Intro","c":[5]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"Ax F(x)"}
+</div>
+
+<p>This time, the proof editor marked the goal <log>Ax F(x)</log> incorrect. Why did it do this? It did this because the name <log>a</log> on line 3 is not new to the proof. It already appeared on line 2. To fix this, we need to use a different name than <log>a</log>. Any name will do, so let's use <log>b</log>. When we work backwards using <log>b</log>, this is what we get:</p>
+
+<div proof="json">
+{"premises":[{"s":"Ax ~~F(x)","l":1},{"s":"G(a)","l":2}],"body":[{"p":{"premises":[{"s":"b","l":3}],"body":[{"s":"F(b)","l":4,"c":[]}]},"l":5},{"s":"Ax F(x)","l":6,"r":"A Intro","c":[5]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"Ax F(x)"}
+</div>
+
+<p>Now the goal checks, and we can proceed as we did previously. The only tricky part is that when we work forward form the premise <log>Ax ~~F(x)</log>, we need to replace <log>x</log> with <log>b</log>, not <log>a</log>:</p>
+
+<div proof="json">
+{"premises":[{"s":"Ax ~~F(x)","l":1},{"s":"G(a)","l":2}],"body":[{"p":{"premises":[{"s":"b","l":3}],"body":[{"s":"~~F(b)","l":4,"r":"A Elim","c":[1]},{"s":"F(b)","l":5,"c":[]}]},"l":6},{"s":"Ax F(x)","l":7,"r":"A Intro","c":[6]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"Ax F(x)"}
+</div>
+
+<p>Deriving <log>~~F(a)</log> instead of <log>~~F(b)</log> would have been legal, but it would not have gotten us any closer to completing the proof. Finally, we just use the <log>~</log> Elim rule to derive line 5 from line 4, just as we did before, and we're done:</p>
+
+<div proof="json">
+{"premises":[{"s":"Ax ~~F(x)","l":1},{"s":"G(a)","l":2}],"body":[{"p":{"premises":[{"s":"b","l":3}],"body":[{"s":"~~F(b)","l":4,"r":"A Elim","c":[1]},{"s":"F(b)","l":5,"r":"~ Elim","c":[4]}]},"l":6},{"s":"Ax F(x)","l":7,"r":"A Intro","c":[6]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"Ax F(x)"}
+</div>
+
+<p>So that's the basic idea behind working backwards from a sentence with the quantifier <log>A</log>. We can also work backward from an <log>E</log>-sentence, i.e., a sentence like <log>Ex F(x)</log>. Suppose, for example, that our goal is <log>Ex G(x)</log>, and our premise is <log>Ax F(x)</log>. Let's see if we can work backward from the goal. As always, working backward from a sentence means using an Intro rule to derive that sentence, and we work backward by thinking about what such a derivation would have to look like. In this case, the Intro rule we want is <log>E</log> Intro, because the sentence we're trying to derive is an <log>E</log>-sentence. And the way the <log>E</log> Intro rule works is as follows: we derive <log>Ex F(x)</log> from a sentence <log>F(a)</log>. Thus, we set up this problem as follows:</p>
+
+<div proof="json">
+{"premises":[{"s":"Ax F(x)","l":1}],"body":[{"s":"F(a)","l":2,"c":[]},{"s":"Ex F(x)","l":3,"r":"E Intro","c":[2]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"Ex F(x)"}
+</div>
+
+<p>And now we just have to focus on proving <log>F(a)</log> on line 2. We now shift gears and work forward from the premise <log>Ax F(x)</log>. As before, there are a number of sentences we can derive from <log>Ax F(x)</log>. We can derive <log>F(a)</log>, or <log>F(b)</log>, or <log>F(c)</log>, etc. But as a rule, we try not to introduce a new name into a proof unless we have to. So, we go with the existing name <log>a</log>, and derive <log>F(a)</log>. As luck would have it, though, <log>F(a)</log> is already in the proof. So working forward, in this case, just means justifying the existing sentence <log>F(a)</log> with <log>A</log> Elim:</p>
+
+<div proof="json">
+{"premises":[{"s":"Ax F(x)","l":1}],"body":[{"s":"F(a)","l":2,"r":"A Elim","c":[1]},{"s":"Ex F(x)","l":3,"r":"E Intro","c":[2]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"Ex F(x)"}
+</div>
+
+<p>At this point, we have seen how to work backward from <log>Ax F(x)</log> and <log>Ex F(x)</log>, and how to work forward from <log>Ax F(x)</log>. This leaves one case: working forward from <log>Ex F(x)</log>. We work forward from <log>Ex F(x)</log> by using <log>E</log> Elim to derive the sentence <log>F(a)</log>, where <log>a</log> is a <em>new name</em>, a name that does not appear <em>earlier</em> in the proof than the derived sentence <log>F(a)</log>. It's OK if the name appears later, it just can't appear earlier.</p>
+
+<p>For example, suppose the goal is <log>Ex F(x)</log> and the premise is <log>Ex ~~F(x)</log>. You can either work backward from the goal or forward from the premise. In this case, suppose you decide to work forward from the premise. Then your proof will look like this:</p>
+
+<div proof="json">
+{"premises":[{"s":"Ex ~~F(x)","l":1}],"body":[{"s":"~~F(a)","l":2,"r":"E Elim","c":[1]},{"s":"Ex F(x)","l":3,"c":[]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"Ex F(x)"}
+</div>
+
+<p>Next, we shift gears and work backward from the goal, which means we use <log>E</log> Intro to derive the goal <log>Ex F(x)</log> from the sentence <log>F(a)</log>. We could also derive the goal from <log>F(b)</log>, since that would be equally legal under the <log>E</log> Intro rule. But where possible, we try to use names that already exist in the proof. Thus, working backwards gives us the following:</p>
+
+<div proof="json">
+{"premises":[{"s":"Ex ~~F(x)","l":1}],"body":[{"s":"~~F(a)","l":2,"r":"E Elim","c":[1]},{"s":"F(a)","l":3,"c":[]},{"s":"Ex F(x)","l":4,"r":"E Intro","c":[3]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"Ex F(x)"}
+</div>
+
+<p>Our only remaining task is to justify line 3, which we can easily do using the <log>~</log> Elim rule as we did before:</p>
+
+<div proof="json">
+{"premises":[{"s":"Ex ~~F(x)","l":1}],"body":[{"s":"~~F(a)","l":2,"r":"E Elim","c":[1]},{"s":"F(a)","l":3,"r":"~ Elim","c":[2]},{"s":"Ex F(x)","l":4,"r":"E Intro","c":[3]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"Ex F(x)"}
+</div>
+
+<h3>Prioritizing</h3>
+
+<p>To recap what we've learned so far, the basic method for proofs is to work forward and backward. Sometimes, you have a choice of whether to work forward or backward. That is, you have a goal that you can work backward from, and you also have a premise or step that you can work forward from. It turns out to matter which one you do first.</p>
+
+<p>To see why it matters, consider the following problem.</p>
+
+<div proof="json">
+{"premises":[{"s":"Ax [F(x) -> G(x)]","l":1},{"s":"Ex F(x)","l":2}],"body":[{"s":"","l":3,"c":[]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"Ex G(x)"}
+</div>
+
+<p>We have two premises to work forward from. Which should we work forward from first? Suppose we start with the first premise. We work forward from that premise as follows.</p>
+
+<div proof="json">
+{"premises":[{"s":"Ax [F(x) -> G(x)]","l":1},{"s":"Ex F(x)","l":2}],"body":[{"s":"F(a) -> G(a)","l":3,"r":"A Elim","c":[1]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"Ex G(x)"}
+</div>
+
+<p>And now that we're done working forward form the first premise, we can tackle the second premise. Our first impulse is to derive <log>F(a)</log>. But in this case, we can't, because the name <log>a</log> already appears in the proof. The <log>E</log> Elim rule requires a new name. Thus, we have to choose a different name, <log>b</log>:</p>
+
+<div proof="json">
+{"premises":[{"s":"Ax [F(x) -> G(x)]","l":1},{"s":"Ex F(x)","l":2}],"body":[{"s":"F(a) -> G(a)","l":3,"r":"A Elim","c":[1]},{"s":"F(b)","l":4,"r":"E Elim","c":[2]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"Ex G(x)"}
+</div>
+
+<p>Unfortunately, there's nothing we can derive from the sentences <log>F(a) -&gt; G(a)</log> and <log>F(b)</log>. The name <log>a</log> appears in one, while a different name <log>b</log> appears in the other. We need to go back to the first premise, and apply the <log>A</log> Elim rule again, this time with the name <log>b</log>:</p>
+
+<div proof="json">
+{"premises":[{"s":"Ax [F(x) -> G(x)]","l":1},{"s":"Ex F(x)","l":2}],"body":[{"s":"F(a) -> G(a)","l":3,"r":"A Elim","c":[1]},{"s":"F(b)","l":4,"r":"E Elim","c":[2]},{"s":"F(b) -> G(b)","l":5,"r":"A Elim","c":[1]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"Ex G(x)"}
+</div>
+
+<p>And now we're back on track. We would have been better off, though, if we had started with the second premise and then tackled the first premise. Starting from the second premise gives us this:</p>
+
+<div proof="json">
+{"premises":[{"s":"Ax [F(x) -> G(x)]","l":1},{"s":"Ex F(x)","l":2}],"body":[{"s":"F(a)","l":3,"r":"E Elim","c":[2]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"Ex G(x)"}
+</div>
+
+<p>Then, we work forward from the first premise. As I mentioned before, when we work forward from an <log>A</log>-sentence, we can use any name we want, but we prefer to use a name that already exists, in this case <log>a</log>. Therefore, we work forward from line 1 as follows:</p>
+
+<div proof="json">
+{"premises":[{"s":"Ax [F(x) -> G(x)]","l":1},{"s":"Ex F(x)","l":2}],"body":[{"s":"F(a)","l":3,"r":"E Elim","c":[2]},{"s":"F(a) -> G(a)","l":4,"r":"A Elim","c":[1]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"Ex G(x)"}
+</div>
+
+<p>Now we can continue working forward from steps 3 and 4, or we can work backward from the goal. Let's keep working forward and see what we get. From lines 3 and 4, we can derive <log>G(a)</log>:</p>
+
+<div proof="json">
+{"premises":[{"s":"Ax [F(x) -> G(x)]","l":1},{"s":"Ex F(x)","l":2}],"body":[{"s":"F(a)","l":3,"r":"E Elim","c":[2]},{"s":"F(a) -> G(a)","l":4,"r":"A Elim","c":[1]},{"s":"G(a)","l":5,"r":"-> Elim","c":[3,4]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"Ex G(x)"}
+</div>
+
+<p>And now we can derive the goal in one step:</p>
+
+<div proof="json">
+{"premises":[{"s":"Ax [F(x) -> G(x)]","l":1},{"s":"Ex F(x)","l":2}],"body":[{"s":"F(a)","l":3,"r":"E Elim","c":[2]},{"s":"F(a) -> G(a)","l":4,"r":"A Elim","c":[1]},{"s":"G(a)","l":5,"r":"-> Elim","c":[3,4]},{"s":"Ex G(x)","l":6,"r":"E Intro","c":[5]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"Ex G(x)"}
+</div>
+
+<p>So why did we go wrong before, and how can we avoid that kind of mistake? A general principle that we should follow is to minimize the number of names that appear in a proof. Having too many names makes it too easy to go down blind alleys. So whenever we can, we avoid introducing new names into a proof. The trouble with our first proof is that it generated the unnecessary name <log>a</log>. This in turn happened because we applied <log>A</log> Elim before we applied <log>E</log> Elim. In order to avoid this sort of thing, there are a couple of rules of thumb we should follow.</p>
+
+<p class="definition">Where possible, the rules <log>A</log> Intro and <log>E</log> Elim, which require new names, should be used <em>before</em> the rules <log>A</log> Elim and <log>E</log> Intro, which do not.</p>
+
+<p>Following this principle would have avoided the trouble we had earlier.</p>
+
+<p>There is also a possible issue that can arise when we work backward from a sentence <log>Ex F(x)</log>. As we've seen, working backwards from <log>Ex F(x)</log> means deriving that sentence from an earlier sentence <log>F(a)</log>, and if no such sentence exists, we invent one and make it the new goal. However, suppose that there are two names in the proof, say <log>a</log> and <log>b</log>. In that case, it may happen that we can prove one of <log>F(a)</log> and <log>F(b)</log>, but not both. In that case, it's risky to work backwards from <log>Ex F(x)</log>, because we don't know whether we should try to derive it from <log>F(a)</log> or from <log>F(b)</log>. For this reason, we should put off working backward from <log>Ex F(x)</log> as long as possible.</p>
+
+<p class="definition">Working backward from a sentence like <log>Ex F(x)</log>, where <log>E</log> is the main connective, should only be done <em>after</em> other strategies have already been tried.</p>
+
+<h3>More Complicated Sentences</h3>
+
+<p>Now that we have a basic strategy in place, let's see how it applies when things get more complicated. To start with, suppose the sentence you're working from is something like one of the following:
+<ul>
+<li><log>Ax [F(x) -&gt; G(x)]</log>
+<li><log>Ex [F(x) &amp; G(x)]</log>
+<li><log>Ax Ay L(x,y)</log>
+<li><log>Ex Ay R(x,y)</log>
+</ul>
+In other words, suppose a quantifier is still the main connective, even though the sentence is more complicated than <log>Ax F(x)</log> or <log>Ax G(x)</log>. In this case, the basic strategy still applies. We can still work forward or backward from one of these sentences. In fact, we've already seen one case like this, which I'll repeat here:</p>
+
+<div proof="json">
+{"premises":[{"s":"Ax [F(x) -> G(x)]","l":1},{"s":"Ex F(x)","l":2}],"body":[{"s":"F(a)","l":3,"r":"E Elim","c":[2]},{"s":"F(a) -> G(a)","l":4,"r":"A Elim","c":[1]},{"s":"G(a)","l":5,"r":"-> Elim","c":[3,4]},{"s":"Ex G(x)","l":6,"r":"E Intro","c":[5]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"Ex G(x)"}
+</div>
+
+<p>On line 3, we work forward from <log>Ex F(x)</log>, giving us <log>F(a)</log>. On line 4, we work forward from <log>Ax [F(x) -&gt; G(x)]</log>, giving us <log>F(a) -&gt; G(a)</log>. In the latter case, we're doing exactly the same thing we always do when we work forward: we apply the applicable Elim rule. This means stripping away the quantifier <log>Ax</log> and replacing each remaining <log>x</log> with the same name <log>a</log>. Just don't be distracted by the complexity of the sentence.</p>
+
+<p>As another example, suppose you had a sentence <log>Ex Ay F(x, y)</log> that you wanted to work forward from. Again, the principle is the same as before: apply the applicable Elim rule. Here, we select a name <log>a</log>, which must be new to the proof, and substitute it for <log>x</log>. The result is <log>Ay F(a, y)</log>. Notice that the quantifier <log>Ay</log> is <em>not</em> replaced when we do this.</p>
+
+<p>The other case we have to consider is when a sentence contains a quantifier, but the quantifier is not the main connective. The following sentences all have this feature:
+<ul>
+<li><log>Ax F(x) -&gt; Ex G(x)</log>
+<li><log>Ex F(x) &amp; Ex G(x)</log>
+<li><log>Ax F(x) | Ey Ez H(y, z)</log>
+</ul>
+The main connectives of these sentences are <log>-&gt;</log>, <log>&amp;</log>, and <log>|</log>, respectively. That means that you <em>cannot</em> work backward or forward from them in the way described above. Those methods only work when the main connective is a quantifier. How should you handle such a case?</p>
+
+<p>The answer is that no matter what sentence you're working with, you work backwards or forwards from it using the rule that goes with its <b>main connective</b>. If a sentence's main connective is <log>-&gt;</log>, for example, then you can work forward from it using <log>-&gt;</log> Elim, or work backward using <log>-&gt;</log> Intro. This is <em>exactly what you did</em> in previous lessons. The fact that the sentence contains a quantifier doesn't change this.</p>
+
+<p>Let's illustrate this with an example. Suppose your goal is <log>Ax F(x) -&gt; Ax G(x)</log> and your one premise is <log>Ax [F(x) -&gt; G(x)]</log>:</p>
+
+<div proof="json">
+{"premises":[{"s":"Ax [F(x) -> G(x)]","l":1}],"body":[{"s":"","l":2,"c":[]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"Ax F(x) ->Ax G(x)"}
+</div>
+
+<p>We're going to attack this problem by working backward from the goal. Now the goal's main connective is <log>-&gt;</log>, and we work backward the same way we work backward from any conditional: we create a subproof whose hypothesis and conclusion are the conditional's antecedent and consequent, respectively.</p>
+
+<div proof="json">
+{"premises":[{"s":"Ax [F(x) -> G(x)]","l":1}],"body":[{"p":{"premises":[{"s":"Ax F(x)","l":2}],"body":[{"s":"Ax G(x)","l":3,"c":[]}]},"l":4},{"s":"Ax F(x) -> Ax G(x)","l":5,"r":"-> Intro","c":[4]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"Ax F(x) ->Ax G(x)"}
+</div>
+
+<p>Again, this is nothing different from what we would have done five weeks ago. Don't let the quantifiers distract you.</p>
+
+<p>At this point, the sentence on line 3 is the new goal. As it happens, both our new goal and our premise are <log>A</log>-sentences: each has the quantifier <log>A</log> as its main connective. So we can work forward from the premise or backward from the new goal. As we saw earlier, we should generally work backward from an <log>A</log>-sentence <em>before</em> working forward from another <log>A</log>-sentence, so that's what we'll do.</p>
+
+<div proof="json">
+{"premises":[{"s":"Ax [F(x) -> G(x)]","l":1}],"body":[{"p":{"premises":[{"s":"Ax F(x)","l":2}],"body":[{"p":{"premises":[{"s":"a","l":3}],"body":[{"s":"G(a)","l":4,"c":[]}]},"l":5},{"s":"Ax G(x)","l":6,"r":"A Intro","c":[5]}]},"l":7},{"s":"Ax F(x) -> Ax G(x)","l":8,"r":"-> Intro","c":[7]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"Ax F(x) ->Ax G(x)"}
+</div>
+
+<p>Here, we've worked backward from line 5, and now the sentence on line 4 is our new goal. This leaves us with two sentences to work forward from, on lines 1 and 2, and it doesn't really matter what order we do them in.</p>
+
+<div proof="json">
+{"premises":[{"s":"Ax [F(x) -> G(x)]","l":1}],"body":[{"p":{"premises":[{"s":"Ax F(x)","l":2}],"body":[{"p":{"premises":[{"s":"a","l":3}],"body":[{"s":"F(a) -> G(a)","l":4,"r":"A Elim","c":[1]},{"s":"F(a)","l":5,"r":"A Elim","c":[2]},{"s":"G(a)","l":6,"c":[]}]},"l":7},{"s":"Ax G(x)","l":8,"r":"A Intro","c":[7]}]},"l":9},{"s":"Ax F(x) -> Ax G(x)","l":10,"r":"-> Intro","c":[9]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"Ax F(x) ->Ax G(x)"}
+</div>
+
+<p>On line 4, we've worked forward from line 1; and on line 5, we've worked forward from line 2. We used the name <log>a</log> in each case, because that name was already in the proof. And finally, we step back and notice that we are basically done: we just have to justify line 6, which we can readily do.</p>
+
+<div proof="json">
+{"premises":[{"s":"Ax [F(x) -> G(x)]","l":1}],"body":[{"p":{"premises":[{"s":"Ax F(x)","l":2}],"body":[{"p":{"premises":[{"s":"a","l":3}],"body":[{"s":"F(a)","l":4,"r":"A Elim","c":[2]},{"s":"F(a) -> G(a)","l":5,"r":"A Elim","c":[1]},{"s":"G(a)","l":6,"r":"-> Elim","c":[5,4]}]},"l":7},{"s":"Ax G(x)","l":8,"r":"A Intro","c":[7]}]},"l":9},{"s":"Ax F(x) -> Ax G(x)","l":10,"r":"-> Intro","c":[9]}],"hasDialog":false}
+</div>
+
+<p>Finally, let's look at one more example. Suppose you need to solve this proof:</p>
+
+<div proof="json">
+{"premises":[{"s":"Ex Ay F(x, y)","l":1},{"s":"Ax Ay [F(x, y) -> G(x, y)]","l":2}],"body":[{"s":"","l":3,"c":[]}],"hasToolbar":false,"hasDialog":true,"enabledRules":[],"goal":"Ax Ey G(x,y)"}
+</div>
+
+<p>I'm just going to give you the completed proof and then walk you through it:</p>
+
+<div proof="json">
+{"premises":[{"s":"Ex Ay F(x, y)","l":1},{"s":"Ax Ay [F(x, y) -> G(x, y)]","l":2}],"body":[{"p":{"premises":[{"s":"a","l":3}],"body":[{"s":"Ay F(b, y)","l":4,"r":"E Elim","c":[1]},{"s":"F(b, a)","l":5,"r":"A Elim","c":[4]},{"s":"Ay [F(b, y) -> G(b, y)]","l":6,"r":"A Elim","c":[2]},{"s":"F(b, a) -> G(b, a)","l":7,"r":"A Elim","c":[6]},{"s":"G(b, a)","l":8,"r":"-> Elim","c":[7,5]},{"s":"Ex G(x, a)","l":9,"r":"E Intro","c":[8]}]},"l":10},{"s":"Ay Ex G(x, y)","l":11,"r":"A Intro","c":[10]}],"hasDialog":false}
+</div>
+
+<p>The first thing we did was to work backward from the goal. That gave us the subproof on lines 3-9, and made the sentence <log>Ex G(x, a)</log> on line 9 the new goal. We then have three options: work backward from this goal, work forward from the first premise, or work forward from the second premise. The correct option is to work forward from the first premise, since that's what our guidelines tell us to do in this case. When we work forward from the first premise, we get a new sentence <log>Ay F(b, y)</log> on line 4. We got that sentence by substituting the name <log>b</log> for <log>x</log>. Note that we had to choose a name different from <log>a</log>, since the <log>E</log> Elim rule demands it. (There's no way to avoid having two different names in this proof.)</p>
+
+<p>At this point, we are left with working forward from <log>A</log>-sentences, which we do as many times as we can. This gave us the sentences on lines 5, 6 and 7. Notice that when I derived these sentences, I sometimes substituted the name <log>a</log> and I sometimes substituted the name <log>b</log>. How did I know to do this? The truth is that I just used my intuition. A more mechanical way of proceeding would have made substitutions using both names on each sentence and would have resulted in a more longwinded proof. Anyway, on line 8, I noticed that the sentence <log>G(b, a)</log> follows from the already derived sentences <log>F(b, a)</log> and <log>F(b, a) -&gt; G(b, a)</log>, so I derived that sentence. I then noticed that this sentence directly implies the new goal sentence, <log>Ex G(x, a)</log>, so I made that derivation and ended the proof.</p>
+
+<p>In completing this problem, I had to use my intuition a bit. A more mechanical approach would have worked too, but it would have produced a more longwinded proof. If you were to use formal logic in a more realistic setting, you would start to develop intuitions of your own. The methods of proof that I've included in this lesson are designed to give you some general guidance about how to do a proof, but the truth is that you don't <em>have</em> to follow them, and you can follow them selectively if you want. The only things you actually have to follow are the rules of inference, but you have a lot of flexibility in terms of what rule to apply and when.</p>
+
+
+
+
+</article>
+
+</body>
+</html>

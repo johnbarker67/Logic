@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>PHI 401 Logic - Week 1</title>
+    <meta charset="UTF-8" />
+<link rel="stylesheet" type="text/css" href="logic-1724095155.css" />
+
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-database.js"></script>
+
+<script language="JavaScript" src="logic-1724095155.js"></script>
+    <script language="JavaScript" src="lecture_toolbar-1724095155.js"></script>
+
+
+
+</head>
+
+<body>
+
+<article class="link">
+    <header>
+        <h2>Welcome to PHI 401: Logic</h2>
+    </header>
+
+<h3>Logic Basics</h3>
+
+<p>Logic is the study of deductive reasoning. Deductive reasoning, in turn, involves relations of <em>implication</em> beween statements. For example, if Benny is a cat and all cats are mammals, then it follows that Benny is a mammal. That is, the statements &quot;Benny is a cat&quot; and &quot;All cats are mammals&quot; jointly imply the statement &quot;Benny is a mammal.&quot;</p>
+
+<p>In order to study logical implication scientifically, it turns out to be necessary to devise a formal language. And so we will spend most of our time studying, and working within, a certain formal language. &quot;Formal&quot; here simply means that there are exact rules governing the language, as opposed to natural language, where the rules are a bit looser.</p>
+
+<p>This week, we&apos;re going to start learning the language, and we&apos;re going to keep it very simple for now. The basic building blocks of the language are called <em>names</em> and <em>predicates</em>.
+
+<p>In our language, a name is simply a sequence of letters, or of letters and numbers, that starts with a lowercase letter. Thus, the following are all names:
+<ul>
+<li><log>a</log>
+<li><log>jason</log>
+<li><log>loisLane</log>
+<li><log>talulaDoesTheHulaFromHawaii</log></li>
+</ul>
+The following are <em>not</em> legal names:
+<ul>
+<li> <log>Jason</log> (wrong: starts with an uppercase letter)
+<li> <log>4sure</log> (wrong: starts with a number)
+<li> <log>ke$ha</log> (wrong: contains the illegal character &apos;$&apos;)
+</ul>
+Also, the letters <log>u</log> through <log>z</log> are special: they are considered <em>variables</em>, not names. You won't have to deal with variables until week 12. For now, just be aware that you can't use these letters as names.
+
+<p>Names are used to pick out individuals. (But a name is still a name even if we haven't decided which individual it picks out yet.)
+</p>
+
+<p>The other basic type of symbol is the <em>predicate</em>. The rules for predicates are the same as those for names, except that predicates are required to start with an <em>uppercase</em> letter. Thus, the following are all predicates:
+<ul>
+<li><log>IsACat</log>
+<li><log>BelongsTo</log>
+<li><log>IsRound</log>
+<li><log>Likes2Dance</log>
+</ul>
+The following are <em>not</em> legal predicates:
+<ul>
+<li> <log>isACat</log> (wrong: starts with a lowercase letter)
+<li> <log>Lives@home</log> (wrong: contains the illegal symbol &apos;@&apos;)
+<li> <log>4gotHisHat</log> (wrong: starts with a number)
+</ul>
+</p>
+
+<p>Where names pick out individuals, predicates express <em>properties</em> of individuals, or <em>relations</em> among individuals. For example, <log>IsACat</log> might express the property of being a cat.</em>
+
+<p>It can't be stressed enough that names must start with lowercase letters and predicates must start with uppercase letters. This may seem like a picky requirement, but it gives us a surefire way to tell whether we&apos;re dealing with a name or a predicate. Also, when you start using the software, you&apos;ll find that it is very particular on this point.</p>
+
+<h3>Forming Sentences</h3>
+
+<p>Once you have names and predicates, you can put them together to form sentences. The following are some examples of sentences you can form.
+<ul>
+<li><log>IsACat(benny)</log>
+<li><log>BelongsTo(benny, sally)</log>
+<li><log>IsBetween(a, b, c)</log>
+</ul>
+These sentences say, respectively, that Benny is a cat, that Benny belongs to Sally, and that <em>a</em> is between <em>b</em> and <em>c</em>. The general pattern is: a predicate, followed by one or more names that are separated by commas and enclosed in parentheses. Again, it&apos;s important to get the pattern right, otherwise you&apos;ll have an ill-formed string of characters, not a sentence. The following are all incorrect:
+<ul>
+<li><log>benny IsACat</log> (wrong: predicate must come first)
+<li><log>IsACat benny</log> (wrong: the name <log>benny</log> must be enclosed in parentheses)
+<li><log>IsBetween (a b c)</log> (wrong: names must be separated by commas)
+</ul>
+</p>
+
+<p>There is one further predicate that breaks the usual rules, called the <em>identity</em> predicate. It is written as &apos;=&apos;, and used as follows: <log>a = b</log>. That is, we can form a sentence from two names and the identity symbol by writing one name, followed by the identity symbol, followed by another name. </p>
+
+<p>We also have the <em>non-identity</em> symbol. This symbol is usually written &apos;&ne;&apos;, but since you're doing this course on a computer, and since computer keyboards don&apos;t have an (easily-accessible) &ne;-key, we use the following instead: <log>!=</log>. Thus, the following are ways of saying that two things are not equal:
+<ul>
+<li> <log>a != b</log></li>
+<li> <log>benny != sally</log></li>
+<li> <log>clark != superman</log></li>
+</ul>
+</p>
+
+<h3>Using the Language</h3>
+
+<p>Now that you've seen how names and predicates work, it's time to start using them. And that's where the course software comes in.</p>
+
+<p>The first software app we'll use is the <em>World</em> app, <a href="world.html" target="_blank">which you can access here</a>. (I suggest that you keep that page open in a separate tab while you read this lesson.) You should find three things on the page:
+<ol>
+<li>A square that looks like a chessboard.
+<li>A set of shapes in a box that says "Drag to the board."
+<li>A box that has several lines for entering sentences.
+</ol>
+The chessboard represents a world, and the sentence box contains sentences of our formal language that describe that world. These sentences get automatically evaluated as true or false.
+
+<p>To use the World app, the first thing you need to do is populate the chessboard with shapes. You do this by dragging the shapes from the small box. Go ahead and do this now. You can add whatever shapes you want to whatever squares you want. (The only rule is that you can't have more than one shape on a single square.) Once a shape is on the board, you can move it to another square by dragging it. To remove a shape, just drag it off the board.
+
+<p>Next, you need to assign <em>names</em> to your shapes. Recall what a name is: it is anything beginning with a lower case letter and consisting of letters and (possibly) numbers. To name a shape, double-click it. A text field should pop up. Type the name you want, then type Enter (or Return).
+
+<p>What if you enter a name and then decide to change it? No problem! Just double-click the shape again. Then edit the name in the resulting text box and press Enter. You can also remove a name in the same manner, returning your shape to its un-named state.
+
+<p>There are only two rules when assigning names. First, it has to be a valid, well-formed name. It must start with a lowercase letter and consist entirely of letters and numbers. Second, you cannot give the same name to two different shapes. The computer will enforce both rules.
+
+<p>The reason you can't give the same name to two shapes, by the way, is that doing so would lead to ambiguities. Suppose you gave the name <log>a</log> to a large square, for example, and then gave the same name <log>a</log> to a small diamond. Now suppose you type <log>Square(a)</log> in the sentence box. Should this sentence be considered true or false? The computer has no way of knowing. If <log>a</log> refers to the square, then <log>Square(a)</log> is true in your world. If <log>a</log> refers to the diamond, then <log>Square(a)</log> is false. The name <log>a</log>, in other words, is ambiguous. Ambiguities are not allowed in formal logic, so the computer simply won't allow you to assign a name to multiple objects.
+
+<p>On the other hand, you <em>can</em> assign two different names to the <em>same</em> object. Just double-click the object as usual. In the text box, enter however many names you want, separated by commas. (You can also separate them with spaces.) All the names you enter will be assigned to the object. You can, for example assign the names <log>a</log> and <log>b</log> to the same shape. If the shape is a square, then the sentences <log>Square(a)</log> and <log>Square(b)</log> will both be true.
+
+<p>(Beginners are often confused by multiple names. When an object has two names, it's just like a person having a name and a nickname, like "Mark Twain" and "Samuel Clemens." Either name can be used to talk about the same individual.)
+
+<p>OK, now that you have a few shapes on the board and you've named them, you can write sentences about them. Click on any line in the sentence box. Then start typing a sentence. Remember, a sentence is a predicate followed by one or more names in parentheses. As you type, your sentence will be evaluated as true or false.
+
+<p>For example, suppose you have a large square named <log>a</log>. Then type <log>Square(a)</log> on the first line. The letter "T" should appear, indicating that your sentence is true. Now type <log>Large(a)</log> on the second line. The letter "T" should appear, indicating that this sentence is also true. Now type <log>Diamond(a)</log> on the third line. The letter "F" should appear, indicating that the sentence is false.
+
+<p>There are three different values that can appear in the "Result" column: T, F, and <span style="white-space: nowrap">--</span>. The value "<span style="white-space: nowrap">--</span>" indicates that the sentence could not be evaluated: it is neither true nor false in your world. There are three different reasons why this can happen.
+<ul>
+<li>Your sentence is simply not well formed. You used a name where a predicate is required (or vice versa); you left out a comma where one was needed; you left out a parenthesis; etc. When your sentence is not exactly well formed, the computer doesn't even try to evaluate it.
+<li>You used a name that was not assigned to any shape. For example, if there is no shape named <log>d</log>, then the sentence <log>Square(d)</log> cannot be evaluated.
+<li>You used a predicate that the computer does not recognize. For example, you typed <log>Big(a)</log> &mdash; <log>Big</log> is not recognized by the <em>World</em> program; you have to use <log>Large</log> instead.
+</ul>
+
+<p>To the last point, the following predicates are recognized:
+<table class="predicates"><tbody>
+<tr><td>Square<td>Diamond<td>Octagon<td>Large</tr>
+<tr><td>Small<td>SameShape<td>SameSize<td>LeftOf</tr>
+<tr><td>RightOf<td>Below<td>Above<td>SameRow</tr>
+<tr><td>SameColumn<td>Between<td>=<td>!=</tr>
+</tbody></table>
+
+<h3>Predicates and Arity</h3>
+
+<p>Some of the predicates on the above list take a single name. Thus, the following sentences are all well-formed: <log>Square(a)</log>, <log>Diamond(a)</log>, <log>Octagon(a)</log>, <log>Large(a)</log>, <log>Small(a)</log>. A predicate that takes a single name is said to be <b>unary</b>. Thus, the predicates <log>Square</log>, <log>Diamond</log>, <log>Octagon</log>, <log>Large</log> and <log>Small</log> are unary.
+
+<p>Other predicates take two names. The predicate <log>SameShape</log>, for example, takes two names. This means that <log>SameShape(a,b)</log> is an example of a well-formed sentence; notice the two names, <log>a</log> and <log>b</log>, that are separated by a comma. A predicate that takes two names is called <b>binary</b>. It is an error to use a binary predicate with only a single name. It is an error, for example, to write <log>SameShape(a)</log>. This should make sense: what could it mean, after all, to say that <log>a</log> is the same shape? (The same shape as what?) On the other hand, <log>SameShape(a,b)</log> makes perfect sense: it says that the objects <log>a</log> and <log>b</log> have the same shape. The following predicates are all binary: <log>SameShape</log>, <log>SameSize</log>, <log>LeftOf</log>, <log>RightOf</log>, <log>Below</log>, <log>Above</log>, <log>SameRow</log>, <log>SameColumn</log>.
+
+<p>The predicate <log>Between</log> is <b>ternary</b>. This means it takes <em>three</em> names. Thus, the sentence <log>Between(a,b,c)</log> is legal. It means that the object <log>a</log> is positioned between the objects <log>b</log> and <log>c</log>.
+
+<p>The number of names that a predicate takes is called its <b>arity</b>. Thus, unary predicates have an arity of 1, binary predicates have an arity of 2, and ternary predicates have an arity of 3. (It's possible to have predicates of any arity; we aren't inherently limited to 3.)
+
+<h3>Identity Predicates</h3>
+
+<p>Two predicates on this list are special: they are <log>=</log> and <log>!=</log>. These predicates are binary (i.e., their arity is 2). But they have a nonstandard syntax. Instead of writing <log>=(a,b)</log>, you write <log>a = b</log>. And instead of writing <log>!=(a,b)</log>, you write <log>a != b</log>.
+
+<p>The sentence <log>a = b</log> is true if and only if the names <log>a</log> and <log>b</log> refer to the same object. Thus, the only way to make <log>a = b</log> true is to assign the two names <log>a</log> and <log>b</log> to the same object. On the other hand, <log>a != b</log> is true if and only if <log>a</log> and <log>b</log> refer to different objects. Thus, the way to make <log>a != b</log> true is to assign <log>a</log> to one object and assign <log>b</log> to a different object.
+
+<h3>Doing Your Homework</h3>
+
+<p>All the problems in this week's homework assignment use the <em>World</em> app. Each problem comes with instructions which are hopefully self-explanatory. Here are a few things to be aware of when doing the homework.
+
+<ul>
+<li>You always acces a homework problem from the main page, by clicking on it.
+<li>You need to <b>submit</b> your homework when you are done with it. Use the "Submit" button on the toolbar.
+<li>You need to submit each problem separately. There is no way to submit them all at once.
+<li>Your homework problems are automatically saved as you work on them.
+<li>You can navigate between homework problems with the arrow buttons on the toolbar.
+<li>Clicking "Home" on the toolbar takes you back to the main page.
+</ul>
+
+<p>Please note that submitting a homework problem prevents you from making any further changes to it. This is generally desirable, but occasionally you may submit a homework problem by accident. In that case, you can unlock the problem by clicking the "Unsubmit" button on the toolbar. You can then continue working on the problem. Once the problem is graded, however, you can no longer unsubmit.
+
+
+<h3>Viewing Your Grades</h3>
+
+<p>The main page doubles as a gradebook. It gives the total points earned for any given week. Clicking the down arrow on the right of any row expands that row, and gives you a problem-by-problem breakdown of your weekly grade. Clicking an individual problem will show you your work, together with any feedback I have written. When you score 100%, I don't usually give any feedback apart from the grade. When you score less than 100%, I usually try to explain where you went wrong.
+
+
+</article>
+
+</body>
+</html>

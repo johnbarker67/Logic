@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>PHI 401 Logic - Start Here</title>
+    
+<link rel="stylesheet" type="text/css" href="logic-1724095155.css" />
+
+	<script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-auth.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-database.js"></script>
+
+<script language="JavaScript" src="logic-1724095155.js"></script>
+	<script language="JavaScript" src="lecture_toolbar-1724095155.js"></script>
+
+<style>
+
+#calendar td {
+text-align:left;
+padding-left:10px;
+padding-right:5px;
+/*border-bottom: 1px solid black;*/
+}
+
+#calendar td:nth-child(2) {
+width: 230px;
+}
+
+</style>
+
+
+<article class="link">
+    <header>
+    	<h2>PHI 401: Logic</h2>
+	</header>
+
+<h3>Course Description</h3>
+
+<p>Logic is the study of good and bad arguments, studied in a formal context. More specifically, it is the study of when one statement logically implies another, meaning that if the first statement is known, then the second can be inferred with complete certainty. An example of logical implication is: "All cats have fleas" implies "If Jonesy is a cat, then Jonesy has fleas." If the first statement is true, the second statement has to be true, and so we say that the first statement logically implies the second. 
+
+<p>Logic becomes an exact science when we replace ordinary language with a certain formal language, which you will learn about in this course. Then it becomes possible to prove that one sentence logically implies another, or that it doesn't. 
+
+<p>In this course, you will learn all about the language of formal logic. You will find out how to form sentences in the language; evaluate them for truth or falsehood; evaluate implications between sentences; and construct formal proofs. 
+
+<h3>Course Design</h3>
+
+<p>This course is hosted on an external, non-Canvas site. There <em>is</em> a Canvas site for the course; you just won't be using it very much. The external site hosts all the course materials, as well as a suite of web-based software. Use of the external site is completely free of charge. Because the website includes all the course materials, there is <b>no textbook</b> for this course.
+
+<p>The course software serves two purposes. First, it makes the lessons interactive. You can test you knowledge as you go, and get feedback. Second, you will use the software to submit your homework problems. 
+
+<h3>Topics and Calendar</h3>
+
+<p>The course includes the following topics.
+<ul>
+<li>The <b>language of symbolic logic</b> is presented. This language uses a symbolic notation to make logical relations between sentences clear and explicit.
+<li>The concept of <b>logical implication</b> is defined. 
+<li><b>Formal proofs</b> are presented. Proof is a technique to demonstrate that a logical implication holds. It's a big topic, and we spend several weeks on it.
+<li>The above topics are first presented for the language of <b>Boolean logic</b>. In Boolean logic, all statements are constructed out of basic statements via operators like "and", "or" and "not". 
+<li>Our results are then extended to <b>First order logic</b>. In First order logic, we also have symbols for "all" and "some". 
+<li>Graduate students will have one additional topic, to be announced.
+</ul>
+
+<p>Here is a week-by-week list of topics.
+
+<table class="normal" id="calendar">
+<thead>
+<tr>
+<td>Week<td>Topic<td>Description
+</thead>
+<tbody>
+<tr>
+<td>1<td>Introducing the Language<td>General introduction, and the basic elements of the language of symbolic logic
+<tr>
+<td>2<td>Boolean Connectives<td>Adding and, or, not, if, if and only if to the language
+<tr>
+<td>3<td>Translation<td>Translating between the formal language and natural language (i.e. English)
+<tr>
+<td>4<td>Parsing and Truth Tables<td>Logical structure of formal sentences; evaluating sentences as true and false; how a sentence's truth value depends on that of its parts
+<tr>
+<td>5<td>Logical Implication<td>When does a set of formal sentences logically imply a further sentence?
+<tr>
+<td>6<td>Introducing Proofs<td>The basic idea of a formal proof; examples
+<tr>
+<td>7<td>Proofs, Continued<td>Covering all the "easy" inference rules; more examples of proofs
+<tr>
+<td>8<td>Subproofs<td>An introduction to the "hard" inference rules and the subproof technique
+<tr>
+<td>9<td>More Rules<td>Finishing out the list of formal inference rules, and introducing proof technique and strategy
+<tr>
+<td>10<td>Proof Technique<td>More on proof strategy and technique
+<tr>
+<td>11<td>Identity<td>Introducing the identity operator =, and the associated inference rules
+<tr>
+<td>12<td>Quantifiers<td>Introducing the formal symbols for "all" and "some," and the basic logic of these terms
+<tr>
+<td>13<td>Translation and Implication<td>Translating between the formal language when quantifiers are present
+<tr>
+<td>14<td>Quantifiers and Proofs<td>Introducing the inference rules for "all" and "some"
+<tr>
+<td>15<td>Wrapping Up<td>Some technique for proofs involving quantifiers
+</tbody>
+</table>
+
+<h3>Expectations and Grading</h3>
+
+<p>Your grade will be based on weekly homework assignments. All homework is submitted electronically. There is one homework assignment for each week, or 15 assignments in all.
+
+<p>All homework due dates are listed on the course's main access point, but in general, the homework for a given week is due the Wednesday of the </em>following</em> week. You'll be able to see the results once I grade your homework, and I grade the homework for a given week all at once, <b>after</b> the due date has passed. So if you turn in your homework a week early, for example, I won't get to it until <em>at least</em> one week later. In general, I try to keep the turn-around time short. In a worst case &mdash; if I am unusually busy, say, or out of town for a conference &mdash; it may take me up to a week to get to your homework. If I take any longer than that, please feel free to drop me an email, since it may indicate that something has gone wrong. The most common problem is that a student thinks they have submitted an exercise, but it turns out they haven't. If this happens, or you don't see your grade for some reason, don't stew over it for weeks: let me know!</p>
+
+<p>As noted earlier, your grade is based entirely on your weekly homework assignments. Each is graded on a 100-point scale, so there are 1500 points possible. Your grade is based on the number of points you earn, in the customary way. So, for example, if you earn 85% of points possible &mdash; i.e., 1275 out of a possible 1500 &mdash; then your grade for the course will be B. I reserve the right to exercise some discretion in the assignment of final grades, however (i.e., I can increase your grade in a borderline case).</p>
+
+<h3>Late Submission</h3>
+
+<p>In general, I expect you to turn in your homework by the specified due date. Late submission may result in points deducted. Having said that, it is <b>far better</b> to turn in a homework late than not at all. The due dates, while important, are there for your benefit, not mine.</p>
+
+<p>When you submit homework late, I will grade it when I do my weekly round of grading. For example, if you turn in an assignment on Friday that was due Wednesday, and I happen to have graded that assignment on Thursday, I won't grade your late submission until I grade the <em>following</em> week's assignment.</p>
+
+<h3>Where Are My Grades?</h3>
+
+<p>The course website's main page doubles as a gradebook. This is actually a <em>far better</em> arrangement than Canvas's built-in gradebook. For this reason, I will not be keeping the Canvas gradebook up to date.
+
+<h3>Contacting Me</h3>
+
+<p>Feel free to contact me any time, either for help with the material or for technical assistance with any aspect of the course website. If there's a technical glitch, I can generally fix it. Don't be shy about this: while the courseware has been tested, the only way I can truly know if it's working for you is if you tell me.</p>
+
+<p>Preferred methods of contacting me are email and the discussion board on Canvas. You can generally expect me to respond to an email within one working day. If you catch me within working hours (9:00-5:00 Monday-Friday, central time), I usually respond fairly quickly; just be aware that since I have meetings, other classes, etc., I cannot respond instantly. I will also monitor the discussion board, but in general you can expect a faster response to an email. My email address is <a href="mailto:jbark3@uis.edu">jbark3@uis.edu</a>.</p>
+
+<h3>Discussion Board</h3>
+
+<p>This is a bit of an unusual online class in that there is no required discussion. The reason for this is that you already have weekly homework assignments, and a weekly required discussion on top of that would be a bit much.</p>
+
+<p>However, I do have a discussion board set up for <em>voluntary</em> discussions, and I will monitor it and respond if appropriate. That way, students can help each other, and/or pose questions of general interest to the class.</p>
+
+<h3>Special Note on the Website</h3>
+
+<p>As I mentioned earlier, this course has interactive elements. This is especially true for the homework assignments, but the lessons themselves often have interactive elements. For this reason, I recommend reading the lessons on-screen, instead of printing them out. At least, read the lessons through once, working on the interactive elements as you go.</p>
+
+<h3>Technical Requirements</h3>
+
+<p>To take this course, you need to have access to a computer that is capable of running the course software. This should generally not be a problem, but there are a couple potential issues to be aware of.</p>
+
+<p>The website has been tested on recent versions of Mozilla Firefox and Google Chrome. It <em>should</em> run on any modern browser. It <em>will not</em> work on Internet Explorer, a product Microsoft discontinued several years ago in favor of Edge. If you find that your preferred browser is not well supported, please install either Chrome or Firefox, at least for this course. Both are free; please use the following links to download <a href="http://www.mozilla.org/en-US/firefox/new/" target="_blank">Firefox</a> or <a href="https://www.google.com/intl/en/chrome/browser/" target="_blank">Chrome</a>. Apologies for any inconvenience.</p>
+
+
+<p>You also need to have JavaScript and cookies enabled. This is the default setting on every browser anyway, so it is unlikely to be an issue. Some people disable Javascript and/or cookies out of security or privacy concerns. While these concerns are understandable, it just isn't technically possible for this website to work without them enabled.
+
+<p>Finally, while the website should work on nearly any computer, it will not (yet) work correctly on a phone or tablet.</p>
+
+
+
+</article>
+
+</body>
+
+</html>

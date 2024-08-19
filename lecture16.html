@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>PHI 401 Logic - Week 9</title>
+    <meta charset="UTF-8" />
+<link rel="stylesheet" type="text/css" href="logic-1724095155.css" />
+
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-database.js"></script>
+
+<script language="JavaScript" src="logic-1724095155.js"></script>
+    <script language="JavaScript" src="lecture_toolbar-1724095155.js"></script>
+
+    <script language="JavaScript" src="textBehavior-1724095155.js"></script>
+    <script language="JavaScript" src="lectures-1724095155.js"></script>
+
+<style>
+
+.ttable {
+font-family:"Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif;
+text-align:center;
+cursor:default;
+border-collapse:collapse;
+margin-top: 10px;
+}
+
+.ttable thead {
+border-bottom: 1px solid black;
+}
+
+.ttable td {
+padding-left:10px;
+padding-right:10px;
+}
+
+.sep-1 td:last-child {
+border-left: 1px solid black;
+}
+
+.sep-2 td:nth-last-child(2) {
+border-left: 1px solid black;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<article class="link">
+    <header>
+        <h2>Supplemental Lesson for Graduate Students: Completeness</h2>
+    </header>
+
+<p>There are two different notions of what it is for a set of sentences (the premises) to logically imply another sentence (the conclusion). On the one hand, the premises may <b>tautologically imply</b> the conclusion, which means that there is no row in their joint truth table in which the premises are true and the conclusion is false. On the other hand, the conclusion may be <b>provable</b> from the premises, which means that there is some correct proof, using only the rules we've used so far, starting with the premises and ending with the conclusion.
+
+<p>On the face of it, these two notions are very different. So it may be a bit surprising that they are also completely equivalent. If a conclusion is provable from a set of premises, then those premises tautologically imply that conclusion; and conversely, if a set of premises tautologically imply a conclusion, then that conclusion is provable from those premises. These facts are called <b>soundness</b> and <b>completeness</b>, respectively, and they are the cornerstone of logical theory.
+
+<p>Soundness and completeness belong to what is called <b>logical metatheory</b>. Logical metatheory is a subject in which mathematical logicians prove results <em>about</em> logic. This is different form deriving results <em>within</em> a formal system of logic, such as you have been doing the last few weeks. Logical metatheory is an enormously powerful subject that has all sorts of applications, in fields including mathematics, computer science, and philosophy.
+
+<p>In this supplemental lesson, I'm going to give you a taste of logical metatheory by taking you through a proof of soundness and completeness. This is a bit more advanced than the material you've been studying thus far, as befits a graduate lesson.
+
+<a name="soundness"></a><h3>Soundness</h3>
+
+<p>We will be proving two results in this lesson, soundness and completeness. We start with soundness.
+
+<p class="definition"><b>Soundness.</b> If a conclusion is provable from a set of premises, then the premises tautologically imply the conclusion.</p>
+
+<p>Soundness basically just means that we didn't make any mistakes when we set up our formal rules of deduction. Between soundness and completeness, soundness is by far the easier result to understand and prove, and the proof I give here will be fairly brief and informal.
+
+<p>As a first step, let's unpack the definition of soundness. We do so by spelling out the definitions of "provable" and "tautologically implies", giving us the following:
+
+<p class="definition"><b>Soundness.</b> Let <log>P<sub>1</sub></log> ... <log>P<sub>n</sub></log> be premises, and let <log>C</log> be the conclusion. Suppose there is a correct proof with premises <log>P<sub>1</sub></log> ... <log>P<sub>n</sub></log> and conclusion <log>C</log>. Then in any truth table row in which all of <log>P<sub>1</sub></log> ... <log>P<sub>n</sub></log> are true, <log>C</log> is also true.
+
+<p>The reason why soundness holds is, basically, that the individual rules of inference are valid arguments. If the premises of a rule are true (in any given truth table row), then the conclusion of that rule is also true (in that truth table row). A proof, in turn, is just a chain of reasoning made up of applications of the individual rules. Therefore, if the premises of a proof are true (in a truth table row), then anything that you can derive from those premises using the basic rules is also true (in that row), and this includes the conclusion. Thus, soundness holds.
+
+<p>For example, consider rule <log>&amp;</log> Intro:
+<div class="argument">
+    <div>
+        <div><span>A</span><span>B</span></div>
+        <div>A &amp; B</div>
+    </div>
+</div>
+The premises <log>A</log> and <log>B</log> tautologically imply the conclusion <log>A &amp; B</log>. Thus, if <log>A</log> and <log>B</log> are both true in a given row, then <log>A &amp; B</log> is also true in that row. Now if we have a proof where all the sentences are true (in a given row), and we derive a new sentence using the <log>&amp;</log> Intro rule, then we are guaranteed that the new sentence is also true (in that row). Since the same goes for <em>all</em> the inference rules, we know that any way of deriving a new sentence in a proof results in a true sentence, provided the sentences already in the proof were true. Thus, if we start with a true set of premises and repeatedly apply the rules, we will get a proof consisting entirely of true sentences. The conclusion itself will therefore also be true.
+
+<p>Strictly speaking, this argument ignores subproofs. When subproofs are involved, not all of a proof's steps have to be true, even if its premises are true. For example, consider the following proof:
+<div proof="json">
+{"ro":3,"premises":[{"s":"B -> A","l":1,"ro":1}],"body":[{"p":{"premises":[{"s":"B","l":2,"ro":1}],"body":[{"s":"A","l":3,"r":"-> Elim","c":[1,2],"ro":7}]},"l":4}],"hasToolbar":false,"hasDialog":false,"enabledRules":[]}</div>
+Now consider a truth table row in which <log>A</log> and <log>B</log> are both false. In this row, the premise <log>B-&gt; A</log>, is true. However, the sentence <log>A</log> on line 3 is obviously false in this row. Likewise, the hypothesis <log>B</log> on line 2 is false. So, we have a proof in which the premises are all true, but not every step is true.
+
+<p>What <em>is</em> the case, however, is that <log>A</log> on line 3 is true in every row that makes the premise <log>B -> A</log> true <em>and which also makes the hypothesis <log>B</log> on line 2 true</em>. In general, the following holds.
+
+<p class="definition"><b>Generalized Soundness.</b> In any correct proof, every sentence <log>S</log> that is not a premise or a subproof hypothesis is a tautological consequence of the set consisting of (a) the premises, and (b) all the subproof hypotheses, if any, that are visible from <log>S</log>.
+
+<p>If we can establish Generalized Soundness, then Soundness will follow as a special case. To see this, suppose Generalized Soundness holds, and consider a correct proof. From Generalized Soundness, we know that the conclusion is a tautological consequence of the set consisting of (a) the premises of the proof and (b) all subproof hypotheses that are visible from the conclusion. But there <em>are</em> no subproof hypotheses visible from the conclusion. A conclusion must occur at the top level of a proof, i.e., not in a subproof. By contrast, a subproof's hypothesis is only visible within that subproof. It follows that the conclusion is a tautological consequence of the premises alone; and this is exactly what Soundness asserts.
+
+
+
+<p>Thus, to prove Soundness it is sufficient to prove Generalized Soundness. To prove <em>that</em>, we proceed as follows. Pick a set of premises, and consider all the possible proofs that can be written using exactly those premises. We want to show that all these proofs satisfy Generalized Soundness. We first observe that the shortest of these proofs &mdash; the proof consisting of just the premises themselves, with no extra steps &mdash; trivially satisfies Generalized Soundness. We then show that if a proof satisfies Generalized Soundness, then any way of extending the proof &mdash; i.e., any way of adding a step or subproof to it &mdash; results in a proof that also satisfies Generalized Soundness. Once we show this, it will follow that all proofs satisfy Generalized Soundness.
+
+<p>There are exactly three ways to extend a proof.
+<ol>
+<li>Add a new step, and derive it from previous steps via non-subproof rules.
+<li>Add a new step, and derive it using a rule that cites at least one subproof.
+<li>Add a new subproof.
+</ol>
+Thus, we need to prove that when a proof satisfies Generalized Soundness, then extending it via any of 1-3 results in a proof that also satisfies Generalized Soundness. That is, given a proof that satisfies Generalized Soundness, we need to prove three things: (1) using a non-subproof rule to derive a new step results in a proof that satisfies Generalized Soundness; (2) using a subproof-base rule to derive a new step results in a proof that satisfies Generalized Soundness; and (3) adding a new subproof results in a proof that satisfies Generalized Soundness.
+
+<p>To make this a little more concrete, suppose we start with the following proof:
+<div proof="json">
+{"ro":1,"premises":[{"s":"A -> C","l":1,"ro":1},{"s":"C -> B","l":2,"ro":1}],"body":[{"p":{"premises":[{"s":"A","l":3,"ro":1}],"body":[{"s":"C","l":4,"r":"-> Elim","c":[1,3],"ro":7}]},"l":5}],"hasToolbar":false,"hasDialog":false,"enabledRules":[]}
+</div>
+<p>There is just one non-hypothes, non-premise step, namely <log>C</log> on line 4. If we pull together the premises and hypotheses that are visible from this step, we get the sentences <log>A -> C</log>, <log>C -> B</log> and <log>A</log>. And the sentence <log>C</log> is a tautological consequence of the latter sentences. The proof therefore satisfies Generalized Soundness. We would like to show that when we extend this proof, it still satisfies Generalized Soundness.
+
+<p>The first way of extending it is to add a step and justify it with a non-subproof rule. For example:
+<div proof="json">
+{"ro":1,"premises":[{"s":"A -> C","l":1,"ro":1},{"s":"C -> B","l":2,"ro":1}],"body":[{"p":{"premises":[{"s":"A","l":3,"ro":1}],"body":[{"s":"C","l":4,"r":"-> Elim","c":[1,3],"ro":7},{"s":"B","l":5,"r":"-> Elim","c":[4,2],"ro":7}]},"l":6}],"hasToolbar":false,"hasDialog":false,"enabledRules":[]}
+</div>
+<p>Here we've added a new step on line 5, and justified it with the <log>-></log> Elim rule, which is a non-subproof rule. (We apply the rule <em>within</em> a subproof, but the rule does not <em>cite</em> any subproofs; hence it is a non-subproof rule.) We need to show that the new, enlarged proof satisfies Generalized Soundness. To show this, we need to show that every non-premise, non-hypothesis step follows tautologically from the premises and hypotheses that are visible to it. An to show that all such steps do this, we only need to show that the <em>new</em> step on line 5 does this, because the other steps belong to the original proof, which is already known to satisfy Generalized Soundness. So, we just have to show that <log>B</log> on line 5 is a tautological consequence of the premises and hypotheses visible from line 5: that is, that it is a tautological consequence of <log>A -> C</log>, <log>C -> B</log> and <log>A</log>. It's not hard to see that it is; proving Generalized Soundness involves showing that a new step is <em>always</em> a consequence of the visible premises and hypotheses. I'll leave it to you to think through why this is so. The key fact is that in a non-subproof rule, the conclusion of the rule is always a tautological consequence of the rule's premise.
+
+<p>Suppose we further extend the proof, this time using a subproof-based rule.
+<div proof="json">
+{"ro":1,"premises":[{"s":"A -> C","l":1,"ro":1},{"s":"C -> B","l":2,"ro":1}],"body":[{"p":{"premises":[{"s":"A","l":3,"ro":1}],"body":[{"s":"C","l":4,"r":"-> Elim","c":[1,3],"ro":7},{"s":"B","l":5,"r":"-> Elim","c":[4,2],"ro":7}]},"l":6},{"s":"A -> B","l":7,"r":"-> Intro","c":[6],"ro":7}],"hasToolbar":false,"hasDialog":false,"enabledRules":[]}
+</div>
+<p>Here, the new step is <log>A -> B</log> on line 6, and it was justified by citing the subproof on lines 3-5. Again, to prove that the enlarged proof satisfies Generalized Soundness, we just have to prove that the new step follows tautologically from all the premises and hypotheses that are visible to it. In this case, that means it follows tautologically from the premises <log>A -> C</log> and <log>C -> B</log>; the hypothesis <log>A</log> on line 3 is <em>not</em> visible from line 6, so we do not include it. Now a little thought (or a truth table) will show that line 6 is in fact a tautological consequence of the premises. The task in proving Generalized Soundness is showing that this must always be the case: when a proof is extended by adding a step and citing one or more subproofs, the step follows tautologically from the premises and visible hypotheses. In the proof of Generalized Soundness, this is the trickiest step.
+
+<p>The one remaining way of extending a proof is to add a new subproof, for example:
+<div proof="json">
+  {"ro":1,"premises":[{"s":"A -> C","l":1,"ro":1},{"s":"C -> B","l":2,"ro":1}],"body":[{"p":{"premises":[{"s":"A","l":3,"ro":1}],"body":[{"s":"C","l":4,"r":"-> Elim","c":[1,3],"ro":7},{"s":"B","l":5,"r":"-> Elim","c":[4,2],"ro":7}]},"l":6},{"s":"A -> B","l":7,"r":"-> Intro","c":[6],"ro":7},{"p":{"premises":[{"s":"~B","l":8,"ro":1}],"body":[{"s":"","l":9,"c":[]}]},"l":10}],"hasToolbar":false,"hasDialog":false,"enabledRules":[]}
+</div>
+<p>Here we've extended the proof by adding the subproof on lines 7 and 8. I'll leave it to you to see that this proof satisfies Generalized Soundness. In fact, it is <em>trivial</em> that the new proof satisfies Generalized Soundness if the old one does &mdash; though it may take some thought to see that this is trivial.
+
+<p>Overall, subproofs greatly complicate the proof of soundness; but the general idea of why soundness holds is simple. Every rule of inference is valid, meaning that it only allows true conclusions to be derived from true premises. A proof, in turn, is a chain of such inferences. Thus, if the premises are true, and every step in the proof is truth-preserving, then the conclusion must be true also.
+
+
+
+<a name="completeness"></a><h3>Completeness</h3>
+
+<p>The converse of soundness is completeness:
+
+<p class="definition"><b>Completeness.</b> If a sentence <log>C</log> is a tautological consequence of a set of sentences <log>P<sub>1</sub></log> ... <log>P<sub>n</sub></log>, then there exists a proof with premises <log>P<sub>1</sub></log> ... <log>P<sub>n</sub></log> and conclusion <log>C</log>.
+
+<p>Completeness basically says that our logical system has enough rules to do everything a logical system should do. It has enough rules to prove all the the logical consequences of a given set of premises.
+
+<p>Completeness is an amazing result, if you think about it. There are infinitely many logical inferences that you can make: infinitely many logically valid arguments. And yet they can all be reduced to a finite set of rules which is actually quite small. We have 5 introduction rules, 5 elimination rules, and 2 extra rules, or 12 rules in all. Furthermore, for the most part the rules are very simple and straightforward. Any kind of logically valid reasoning can be reduced to a chain of very simple steps, drawn from a small, fixed pool of basic logical principles.
+
+<p>Mathematicians implicitly assumed something like completeness for millennia. Euclid, for example, assumed 5 postulates and 5 axioms; the latter correspond loosely to the rules of logical inference. Aritstotle, who lived around the same time, came up with a list of logical principles called syllogisms. Both thinkers assumed their logical systems were complete; if they didn't think so, they would have added extra principles. Now in fact their systems <em>weren't</em> complete, and truly complete systems of formal logic didn't exist until relatively late in the 19th century. Even then, no one knew how to <em>prove</em> any of these systems were complete until the early 20th century. When completeness was finally proved, it started a new era in logic and math.
+
+<p>I'm going to walk you through the proof of completeness for Boolean logic. Later on in the course, we're going to extend Boolean logic to something called First Order Logic. Our extended system will also be complete, and complete in a richer sense than ordinary Boolean logic, but the proof is a little more involved. The completeness proof for Boolean logic is a bit intricate itself, but not impossibly so.
+
+<h3>Preliminaries</h3>
+
+<p>In dealing with Boolean logic, we can simplify things greatly by dispensing with the connectives <log>-&gt;</log> and <log>&lt;-&gt;</log>. The reason we can get away with this is that they are redundant. The conditional <log>A -&gt; B</log> has exactly the same truth table as the sentence <log>~A | B</log>. Thus, we can treat the former as an abbreviation of the latter. Likewise, the biconditional <log>A &lt;-&gt; B</log> is tautologically equivalent to <log>(A &amp; B) | (~A &amp; ~B)</log>. Thus, we can view the former as an abbreviation of the latter.
+
+<p>It follows that if we work in a language whose only connectives are <log>~</log>, <log>&amp;</log> and <log>|</log>, we can say exactly the same things that we can in the full language with all five connectives. We lose nothing by working in the more austere, three-connective language. We also make the task of proving completeness a fair bit easier.
+
+<p>When we ditch the connectives <log>-&gt;</log> and <log>&lt;-&gt;</log>, we also ditch the associated introduction and elimination rules. Thus, when we work with the reduced language, we also work with a reduced system of rules: the introduction and elimination rules for the remaining three connectives, plus the Reit and Contradiction rules, making eight rules altogether. We will prove that the system of these eight rules is complete with respect to our reduced language, in the sense that any tautologically valid argument that can be written down in the reduced, three-connective language can be proved using only these eight rules.
+
+<p>It is also true that the <em>full</em> system is complete with respect to the full, five-connective language. We just won't prove this fact. However, the proof of completeness for the reduced language and system really isn't too hard to extend to the full language and system; it's just that the extra steps are rather tedious and don't add any real insights.
+
+<h3>Row Descriptions and Literals</h3>
+
+<p>With that, let's get started. We're going to spend a lot of time talking about two special kinds of sentences: atomic sentences, and negations of atomic sentences. We will do this so often, in fact, that it makes sense to give them a collective name.
+
+<p class="definition">A <b>literal</b> is an atomic sentence or a negation of an atomic sentence.
+
+<p>Thus, if <log>A</log> and <log>B</log> are our atomic sentences, then our literals are <log>A</log>, <log>B</log>, <log>~A</log>, and <log>~B</log>. Nothing else is a literal, even if it is equivalent to a literal. For example, <log>~~A</log> is not a literal, even though it is equivalent to <log>A</log>.
+
+<p>Now consider truth table rows. A row represents a way of assigning truth values to a fixed set of atomic sentences. In a truth table for the atomic sentences <log>A</log> and <log>B</log>, for example, each row represents a way of assigning truth values to <log>A</log> and <log>B</log>. There are four possible ways to make such an assignment, and thus, four rows in such a truth table:
+<table class="ttable">
+<thead>
+<tr><td>A<td>B</tr>
+</thead>
+<tbody>
+<tr><td>T<td>T</tr>
+<tr><td>T<td>F</tr>
+<tr><td>F<td>T</tr>
+<tr><td>F<td>F</tr>
+</tbody>
+</table>
+<p>Now on each row, we're going to write down a set of literals. Specifically, we will write <log>A</log> if <log>A</log> is true on that row, and otherwise we'll write <log>~A</log>; and we'll write <log>B</log> if <log>B</log> is true on that row, otherwise we'll write <log>~B</log>:
+<table class="ttable sep-1" >
+<thead>
+<tr><td>A<td>B<td></tr>
+</thead>
+<tbody>
+<tr><td>T<td>T<td>A, B</tr>
+<tr><td>T<td>F<td>A, ~B</tr>
+<tr><td>F<td>T<td>~A, B</tr>
+<tr><td>F<td>F<td>~A, ~B</tr>
+</tbody>
+</table>
+<p>In general, if an atomic sentence is true on a row, we put that atomic sentence on that row. Otherwise, we put the negation of that atomic sentence. Let's call the resulting set of sentences a <b>row description</b>.
+
+<p>Row descriptions have some nice properties.
+<ol>
+  <li> <em>Every sentence in a row description is true in the corresponding row.</em> If the atomic sentence <log>A</log> is true in a row, then <log>A</log> belongs to the row description; if <log>A</log> is false, then <log>~A</log> belongs to the row description, and furthermore, <log>~A</log> is true. So either way, the literal corresponding to <log>A</log> is true, and likewise for all the other atomic sentences.
+  <li> <em>The description of a row consists of all literals true in that row.</em> For example, on the second row of the above truth table, the literals <log>A</log> and <log>~B</log> are true; the only other literals that can receive a truth value are <log>~A</log> and <log>B</log>, and they are both false.
+  <li> <em>A row's description is not true in any <u>other</u> row.</em> That is, any other row makes at least one of its sentences false.
+  <li> <em>If a sentence is true in a row, then that sentence is tautologically implied by the corresponding row description.</em>
+</ol>
+
+
+<p>Property (4) may not be obvious, so let's illustrate it with an example and then show why it holds in general. We start with a sentence made from the atomic sentences <log>A</log> and <log>B</log>. The sentence could be anything; for definiteness, let's use <log>A | ~B</log>. Let's add this sentence to the truth table:
+
+<table class="ttable sep-1 sep-2" >
+<thead>
+<tr><td>A<td>B<td>A | ~B<td></tr>
+</thead>
+<tbody>
+<tr><td>T<td>T<td>T<td>A, B</tr>
+<tr><td>T<td>F<td>T<td>A, ~B</tr>
+<tr><td>F<td>T<td>F<td>~A, B</tr>
+<tr><td>F<td>F<td>T<td>~A, ~B</tr>
+</tbody>
+</table>
+
+<p>The sentence <log>A | ~B</log> is true on the first, second and fourth rows. By property (4), it is therefore tautologically implied by the row description for the first row; by the row description for the second row; and by the row description for the fourth row. For example, the sentences <log>A</log> and <log>~B</log> form the row description for the second row, and so they jointly imply <log>A | ~B</log>.
+
+<p>To see <em>why</em> this holds, think about what it means to say that <log>A</log> and <log>~B</log> jointly imply <log>A | ~B</log>. It means that on any truth table row in which both <log>A</log> and <log>~B</log> are true, <log>A | ~B</log> is true. But there is <em>only one</em> row in which both <log>A</log> and <log>~B</log> are true, namely the row for which they form a row description. (This follows from properties (1) and (3).) So as long as <log>A | ~B</log> is true on <em>that</em> row, it is tautologically implied by <log>A</log> and <log>~B</log>. The same reasoning holds for any row: as long as the sentence is true on that row, it is tautologically implied by the corresponding row description.
+
+<a name="central"></a><p>Our first step toward proving completeness is to show that row descriptions have one additional feature, namely:
+
+<p class="definition"><b>Central Lemma</b>. If a sentence is true in a truth table row, then it is <em>provable</em> from the corresponding row description.
+
+<p>Since we already know that the sentence is a tautological consequence of the row description, the Central Lemma is a special case of completeness: it says that completeness holds specifically when the premises constitute a row description. It is also the key to proving the general case.
+
+<h3>Proof by Induction</h3>
+
+<p>So how do we go about proving the Central Lemma? The first step is to reanalyze the Central Lemma as a statement to the effect that all sentences have a certain property: namely, the property of being provable from an appropriate row description. To this end, let us define a sentence to be <b>good</b> if it is provable from the description of any row in which it is true. With this definition, the Central Lemma simply states that all sentences are good.
+
+<p>To prove that all sentences are good, we will use the following strategy.
+<ol>
+  <li>Prove that all <em>atomic</em> sentences are good.
+  <li>Prove that when a sentence's direct components are good, then so is the sentence.
+</ol>
+(2) means that the negation of a good sentence is also good; that a conjunction of two good sentences is good; that the disjunction of two good sentences is good; and likewise for conditionals and biconditionals. If we can establish (1) and (2), we will have thereby shown that all sentences are good. That is, we will have established the Central Lemma.
+
+<p>To see why, consider an arbitrary sentence, such as the following:
+<div parsetree="~A&(B|~C)" parse_options="collapsed:false"></div>
+<p>Now suppose we know that (1) and (2) hold. By (1), all atomic sentences are good. Thus, the sentences on the bottom-most nodes of the parse tree are all good, namely <log>A</log>, <log>B</log> and <log>C</log>. By (2), if all the direct components of a sentence are good, then so is the sentence itself. The "direct components" of a sentence are simply the sentences that appear directly below it in a parse tree. So looking at the sentence <log>~C</log> above, we see that it has just one direct component, <log>C</log>. But we have already shown that <log>C</log> is good, because it is atomic. It follows from (2) that <log>~C</log> is good also. Working our way up the tree, we come to the sentence <log>B | ~C</log>, which has the two direct components <log>B</log> and <log>~C</log>. We have just seen that both of these sentences are good; by (2), we conclude that <log>B | ~C</log> is good too. The same reasoning shows that <log>~A</log> is good, since <log>A</log> is. Finally, the top sentence, <log>~A & (B | ~C)</log>, has two direct components, <log>~A</log> and <log>B | ~C</log>. We've just seen that both of these sentences are good; by (2), so is the full sentence. We can work our way up any parse tree in the same manner, so we conclude that <em>all</em> sentences are good.
+
+<p>Now you should notice that the reasoning we just gave doesn't depend on what "good" means. The term "good" was just serving as a placeholder. As long as all atomic sentences have some given property (which we're calling "goodness"), and as long as any sentence whose direct components are good is itself good (again, regardless of what "good" means), then it follows that all sentences are good. This reasoning is called <b>induction on the complexity of sentences</b>. It is one of the most powerful techniques in logical metatheory.
+
+<h3>Central Lemma: Strategy</h3>
+
+<p>Based on the foregoing, the natural strategy for proving the Central Lemma is to use induction on the complexity of sentences to show that all sentences are good; that is, to show that (a) all atomic sentences are good, and (b) a sentence whose direct components are good is itself good. Or spelling out the definition of "good," the natural strategy is to show that (a) an atomic sentence is provable from any row description that makes it true, and (b) if each direct component of a sentence <log>S</log> is provable from any row description that makes that component true, then the whole sentence <log>S</log> is provable from any row description that makes <log>S</log> true.
+
+<p>Unfortunately doing it this way doesn't <em>quite</em> work, and we need to make a slight adjustment. To this end, we're going to introduce a new concept:
+
+  <p class="definition">A sentence <log>S</log> is <b>very good</b> if both <log>S</log> and <log>~S</log> are good.
+
+<p>Our strategy will be to show, by induction, that all sentences are very good. It will then follow that all sentences are good, and the Central Lemma will be established. Unpacking the above definition yields the following equivalent form:
+
+<p class="definition">A sentence <log>S</log> is <b>very good</b> if (a) whenever a row makes <log>S</log> true, <log>S</log> is provable from the corresponding row descripiton; and (b) whenever a row makes <log>S</log> <em>false</em>, the sentence <log>~S</log> is provable from the corresponding row description.
+
+<p>The difference between good and very good is subtle. On the one hand, in principle a sentence could be good without being very good. (In fact, this cannot happen: all sentences are both good and very good. But prior to proving the Central Lemma, we have no way of knowing this.) On the other hand, if <em>all</em> sentences are good, then it follows that all sentences are very good. In fact, these two claims &mdash; all sentences are good, and all sentences are very good &mdash; are equivalent.
+
+<p>So why make life difficult for ourselves by proving that all sentences are very good, which seems like it should be harder than simply proving that all sentences are good? The reason will be revealed when we actually prove the Central Lemma. There will be one key step that wouldn't work if we tried to prove directly that all sentences are good.
+
+<h3>The Proof of the Central Lemma</h3>
+
+
+
+
+<p>So, let's get down to business. If we're going to prove the Central Lemma by induction, our first task is to prove that all atomic sentences are very good. That is, we first need to prove the following:
+
+<p class="definition">If <log>A</log> is an atomic sentence, then (1) if <log>A</log> is true in a row, then <log>A</log> is provable from the corresponding row description; and (2) if <log>A</log> is false in a row, then <log>~A</log> is provable form the corresponding row description.
+
+<p>And this is easy to prove. Remember that a row description consists of those literals that are true in a given row. If an atomic sentence <log>A</log> is true, then <log>A</log> actually belongs to the row description. If <log>A</log> is false, then its negation, <log>~A</log>, is true, and so belongs to the row description. Either way, the sentence that we need to show is provable from the row description actually belongs to said row description, and so it can certainly be proven from that row description. For example, suppose we have just two atomic sentences <log>A</log> and <log>B</log>, and a row that assigns true to <log>A</log> and false to <log>B</log>. Then the corresponding row description consists of the sentences <log>A</log> and <log>~B</log>. The sentence <log>A</log> can be easily proven from this row description:
+<div proof="json">
+{"ro":3,"premises":[{"s":"A","l":1,"ro":1},{"s":"~B","l":2,"ro":1}],"body":[{"s":"A","l":3,"r":"Reit","c":[1],"ro":7}],"hasToolbar":false,"hasDialog":false,"enabledRules":[]}
+</div>
+And so can <log>~B</log>:
+<div proof="json">
+{"ro":3,"premises":[{"s":"A","l":1,"ro":1},{"s":"~B","l":2,"ro":1}],"body":[{"s":"~B","l":3,"r":"Reit","c":[2],"ro":7}],"hasToolbar":false,"hasDialog":false,"enabledRules":[]}
+</div>
+
+<p>So that takes care of the atomic sentence case of our proof. To complete the proof of the Central Lemma, we need to show the following:
+
+<p class="definition">If the immediate components of a sentence <log>S</log> are very good, then so is <log>S</log>.
+
+<p>To prove this, let <log>S</log> be any sentence, and assume that <log>S</log>'s immediate components are very good; we need to show that <log>S</log> is also very good. To prove <em>this</em>, we need to consider several cases, depending on what type of sentence <log>S</log> is:
+<ol>
+<li><log>S</log> is a negated sentence <log>~A</log>
+<li><log>S</log> is a conjunction <log>A &amp; B</log>
+<li><log>S</log> is a disjunction <log>A | B</log>
+</ol>
+(The only other possibility is that <log>S</log> is atomic, and we have already covered that case.) We need to show, in each case, that <log>S</log> is very good if its immediate component(s) are.</p>
+
+<blockquote>
+<b>Case 1</b> <log>S</log> is a negated sentence <log>~A</log>. Remember, we are assuming that all of <log>S</log>'s immediate components are very good. <log>S</log> has just one immediate component, namely <log>A</log>, so we can assume that <log>A</log> is very good. In other words, we can assume the following: (1) If <log>A</log> is true in a row, then <log>A</log> is provable from the corresponding row description; and (2) if <log>A</log> is false in a row, then <log>~A</log> is provable from the row description. We need to prove the same thing about <log>S</log>. There are two sub-cases.
+
+<p><b>Case 1a</b> <log>A</log> is true in the row. Then <log>S</log>, which is simply <log>~A</log>, is false in the row, and we need to show that <log>~S</log> is provable from the row description. That is, we need to show that <log>~~A</log> is provable. We can assume that <log>A</log> is provable, because <log>A</log> is true and satisfies the Central Lemma. Thus, to show that <log>~~A</log> is provable, it is enough to produce a proof of <log>~~A</log> directly from <log>A</log>:
+<div proof="json">
+{"ro":3,"premises":[{"s":"A","l":1,"ro":1}],"body":[{"p":{"premises":[{"s":"~A","l":2,"ro":1}],"body":[{"s":"!","l":3,"r":"Contradiction","c":[2,1],"ro":7}]},"l":4},{"s":"~~A","l":5,"r":"~ Intro","c":[4],"ro":7}],"hasToolbar":false,"hasDialog":false,"enabledRules":[]}
+</div>
+
+<p><b>Case 1b</b> <log>A</log> is false. Then <log>~A</log> is provable, by assumption. But <log>~A</log> is none other than <log>S</log>, and so <log>S</log> is provable. Moreover, <log>S</log> is true (because <log>A</log> is false). So <log>S</log> is very good in this case as well.
+</blockquote>
+
+<p>This takes care of the first case. The other two cases are taken care of in a similar manner.</p>
+
+<blockquote>
+<b>Case 2</b> <log>S</log> is a conjunction <log>A &amp; B</log>. Then <log>S</log>'s immediate components are <log>A</log> and <log>B</log>, and we need to show that if they are very good, then so is <log>S</log>. Again, there are two sub-cases to consider.
+
+<p><b>Case 2a</b> <log>S</log> is true (in the row in question). Since <log>S</log> is simply <log>A &amp; B</log>, the only way for <log>S</log> to be true is for <log>A</log> and <log>B</log> to both be true. In that case, <log>A</log> and <log>B</log> are both provable (from the corresponding row description), by assumption. We need to show that <log>A &amp; B</log> is also provable. But <log>A &amp; B</log> is provable from <log>A</log> and <log>B</log>: All it takes is one application of <log>&amp;</log> Intro. Therefore, we can produce a proof of <log>A &amp; B</log> by combining the separate proofs of <log>A</log> and <log>B</log> and deriving <log>A &amp; B</log> via <log>&amp;</log> Intro.
+
+<p><b>Case 2b</b> <log>S</log> is false. That is, <log>A &amp; B</log> is false. Then ether <log>A</log> is false, or <log>B</log> is false (or both). Let's assume it's <log>A</log> that's false; similar reasoning applies if <log>B</log> is false. Since <log>A</log> is false, and since <log>A</log> is very good, <log>~A</log> must be provable (from the description of the row in question). We need to show that <log>~S</log>, or <log>~(A &amp; B)</log>, is also provable. And to show this, it is enough to show that we can prove <log>~(A &amp; B)</log> directly from <log>~A</log>. And indeed we can:
+<div proof="json">
+{"ro":3,"premises":[{"s":"~A","l":1,"ro":1}],"body":[{"p":{"premises":[{"s":"A & B","l":2,"ro":1}],"body":[{"s":"A","l":3,"r":"& Elim","c":[2],"ro":7},{"s":"!","l":4,"r":"Contradiction","c":[3,1],"ro":7}]},"l":5},{"s":"~(A & B)","l":6,"r":"~ Intro","c":[5],"ro":7}],"hasToolbar":false,"hasDialog":false,"enabledRules":[]}
+</div>
+</blockquote>
+
+<p>OK, two down, one to go!</p>
+
+<blockquote>
+<b>Case 3</b> <log>S</log> is a disjunction <log>A | B</log>. Again, there are two sub-cases.
+
+<p><b>Case 3a</b> <log>S</log> is true (in a given row). Then at least one of <log>A</log> and <log>B</log> must be true. Assume it is <log>A</log>; the proof is essentially the same if it is <log>B</log>. Since <log>A</log> is true, it is provable (from the given row description). We need to show that <log>S</log>, or <log>A | B</log>, is also provable. But <log>A | B</log> can be derived directly from <log>A</log> via <log>|</log> Intro.
+
+<p><b>Case 3b</b> <log>S</log> is false (in a given row). That is, <log>A | B</log> is false. Then both <log>A</log> and <log>B</log> are false. Again, since <log>A</log> and <log>B</log> are very good, and since they are both false, the sentences <log>~A</log> and <log>~B</log> are provable from the given row description. We need to show that <log>~S</log>, or <log>~(A | B)</log>, is also provable. And to show <em>that</em>, it is enough to show that <log>~(A | B)</log> can be proved from <log>~A</log> and <log>~B</log>. And indeed it can:
+<div proof="json">
+{"ro":3,"premises":[{"s":"~A","l":1,"ro":1},{"s":"~B","l":2,"ro":1}],"body":[{"p":{"premises":[{"s":"A | B","l":3,"ro":1}],"body":[{"p":{"premises":[{"s":"A","l":4,"ro":1}],"body":[{"s":"!","l":5,"r":"Contradiction","c":[4,1],"ro":7}]},"l":6},{"p":{"premises":[{"s":"B","l":7,"ro":1}],"body":[{"s":"!","l":8,"r":"Contradiction","c":[7,2],"ro":7}]},"l":9},{"s":"!","l":10,"r":"| Elim","c":[9,6,3],"ro":7}]},"l":11},{"s":"~(A | B)","l":12,"r":"~ Intro","c":[11],"ro":7}],"hasToolbar":false,"hasDialog":false,"enabledRules":[]}
+</div>
+</blockquote>
+
+<p>This concludes the proof of the Central Lemma. We are now more than halfway toward proving completeness.
+
+<a name="tautology"></a><h3>Tautologies</h3>
+
+<p>Our next task is to prove the following:
+
+<p class="definition">A tautology is provable from no premises at all.
+
+<p>That is, if <log>T</log> is a tautology, then there is a proof with conclusion <log>T</log> and with no premises. Remember what a tautology is: it is a sentence that is true in every row of a truth table. Like the Central Lemma, this statement is a special case of completeness.
+
+<p>We start by proving a special case: that the tautology <log>A | ~A</log> is provable, for any given sentence <log>A</log>. This is called the principle of <b>excluded middle</b>, because it says that a sentence is either true or false, with no possibilities in between. Anyway, the proof of excluded middle is as follows:
+<div proof="json">
+{"ro":3,"premises":[{"s":"","l":1}],"body":[{"p":{"premises":[{"s":"~(A | ~A)","l":2,"ro":1}],"body":[{"p":{"premises":[{"s":"A","l":3,"ro":1}],"body":[{"s":"A | ~A","l":4,"r":"| Intro","c":[3],"ro":7},{"s":"!","l":5,"r":"Contradiction","c":[2,4],"ro":7}]},"l":6},{"s":"~A","l":7,"r":"~ Intro","c":[6],"ro":7},{"s":"A | ~A","l":8,"r":"| Intro","c":[7],"ro":7},{"s":"!","l":9,"r":"Contradiction","c":[8,2],"ro":7}]},"l":10},{"s":"A | ~A","l":11,"r":"~ Elim","c":[10],"ro":7}],"hasToolbar":false,"hasDialog":false,"enabledRules":[]}
+</div>
+The proof is tricky! But we only have to do it once.
+
+<p>Now let's consider the general case. Let <log>T</log> be a tautology. Then <log>T</log> is true in every row of its truth table, and so, by the Central Lemma, it is provable from the row description of every row on its truth table. For example, let <log>T</log> be the sentence <log>A | ~A | B</log>, which is a tautology. It has the following truth table:
+    <table class="ttable sep-1 sep-2">
+    <thead>
+    <tr><td>A<td>B<td>A | ~A | B<td></tr>
+    </thead>
+    <tbody>
+    <tr><td>T<td>T<td>T<td>A, B</tr>
+    <tr><td>T<td>F<td>T<td>A, ~B</tr>
+    <tr><td>F<td>T<td>T<td>~A, B</tr>
+    <tr><td>F<td>F<td>T<td>~A, ~B</tr>
+    </tbody>
+    </table>
+<p>Here, I've included the row description for each row. Being a tautology, our sentence is true in each row. From the Central Lemma, it is provable from each of the corresponding row descriptions. Thus, there is a proof of our sentence from the premises <log>A</log> and <log>B</log>, a proof from <log>A</log> and <log>~B</log>, etc.
+
+<p>Now consider the first two proofs: the proof from <log>A</log> and <log>B</log>, and the proof from <log>A</log> and <log>~B</log>. I will now show that these proofs can be combined to produce a proof from <log>A</log> alone. The proof looks like this:
+<div proof="json">
+{"ro":3,"premises":[{"s":"A","l":1,"ro":1}],"body":[{"p":{"premises":[{"s":"B","l":2,"ro":1}],"body":[{"s":"...","l":3,"c":[],"ro":1,"check":false},{"s":"T","l":4,"c":[],"ro":1,"check":false}]},"l":5},{"p":{"premises":[{"s":"~B","l":6,"ro":1}],"body":[{"s":"...","l":7,"c":[],"ro":1,"check":false},{"s":"T","l":8,"c":[],"ro":1,"check":false}]},"l":9},{"s":"...","l":10,"ro":5,"check":false},{"s":"B | ~B","l":11,"c":[],"ro":1,"check":false},{"s":"T","l":12,"r":"| Elim","c":[5,9,11],"ro":7}],"hasToolbar":false,"hasDialog":false,"enabledRules":[]}
+</div>
+<p>If you can prove <log>T</log> from the premises <log>A</log> and <log>B</log>, then you can prove <log>T</log> in a subproof with hypothesis <log>B</log> as long as the main proof has the premise <log>A</log>. Since <log>T</log> can be proven from <log>A</log> and <log>B</log> by the Central Lemma, and since we have <log>A</log> as a premise, we can prove <log>T</log> in a subproof with hypothesis <log>B</log>; we do this in lines 2-4 above. Likewise, lines 5-7 represent a subproof of <log>T</log> with hypothesis <log>~B</log>, which is guaranteed to exist by the Central Lemma. Finally, the '...' on line 8 represents a proof of excluded middle, or <log>B | ~B</log>, which I was too lazy to repeat. Line 10 pulls it all together, and justifies our sentence <log>T</log>. The result is a proof of <log>T</log> from <log>A</log> alone, without needing <log>B</log> or <log>~B</log>. (Of course, <log>B</log> and <log>~B</log> appear in the proof, but they are hidden away inside subproofs; they don't count as premises of the main proof.)
+
+<p>Using exactly the same reasoning, we can prove <log>T</log> from <log>~A</log> alone, with no other premises. In fact, the proof looks quite a bit like the one we just gave, except that it has <log>~A</log> where the other proof had <log>A</log>. The key fact is that <log>T</log> can be proven from the premises <log>~A</log> and <log>B</log>, as well as from the premises <log>~A</log> and <log>~B</log>, by the Central Lemma.
+
+<p>Finally, we show how to prove <log>T</log> with no premises at all. It's really very similar to the two proofs just mentioned:
+<div proof="json">
+{"ro":3,"premises":[{"s":"","l":1}],"body":[{"p":{"premises":[{"s":"A","l":2,"ro":1}],"body":[{"s":"...","l":3,"c":[],"ro":1,"check":false},{"s":"T","l":4,"c":[],"ro":1,"check":false}]},"l":5},{"p":{"premises":[{"s":"~A","l":6,"ro":1}],"body":[{"s":"...","l":7,"c":[],"ro":1,"check":false},{"s":"T","l":8,"c":[],"ro":1,"check":false}]},"l":9},{"s":"...","l":10,"c":[],"ro":1,"check":false},{"s":"A | ~A","l":11,"c":[],"ro":1,"check":false},{"s":"T","l":12,"r":"| Elim","c":[11,9,5],"ro":7}],"hasToolbar":false,"hasDialog":false,"enabledRules":[]}
+</div>
+The '...' on line 3 is a proof of <log>T</log> from <log>A</log>, which we've just shown to be possible. The '...' on line 6 is a proof of <log>T</log> from <log>~A</log>, which we've also shown is possible. And the '...' on line 8 is a proof of <log>A | ~A</log>, which again I'm too lazy to write down. We use the same trick as before to get the conclusion <log>T</log>, but this time with no premises at all.
+
+<p>This method works for any tautology that is made up from the two atomic sentences <log>A</log> and <log>B</log>. A very similar trick works for tautologies built up from a different number of atomic sentences. It follows that any tautology can be proven outright, i.e., using a proof with no premises.
+
+<h3>Completeness</h3>
+
+<p>To prove completeness, we need to show that whenever a set of premises tautologically implies a conclusion, there is a proof of the conclusion from the premises. Let's start with the case of a single premise <log>P</log>. Then we need to show that when <log>P</log> tautologically implies <log>C</log>, there is a proof with premise <log>P</log> and conclusion <log>C</log>. In proving this, the following fact is key:
+
+<p class="definition">A sentence <log>P</log> tautologically implies a sentence <log>C</log> if and only if the sentence <log>P -&gt; C</log> is a tautology.
+
+<p>This is not hard to show. It's just a matter of comparing the definition of tautological implication with the truth table for <log>-&gt;</log>. First, suppose that <log>P</log> tautologically implies <log>C</log>. Then in their joint truth table, there is no row that makes <log>P</log> true and <log>C</log> false. Thus, there is no row that makes <log>P -&gt; C</log> false. Therefore, <log>P -&gt; C</log> is a tautology. Conversely, if <log>P -&gt; C</log> is a tautology, then it is true in every row. Therefore, there can be no row that makes <log>P</log> true and <log>C</log> false, for such a row would make <log>P -&gt; C</log> false. Therefore, <log>P</log> tautologically implies <log>C</log>.
+
+<p>With this in mind, suppose <log>P</log> tautologically implies <log>C</log>. Then <log>P -&gt; C</log> is a tautology, and so by our previous results, there is a proof of <log>P -&gt; C</log>. We can turn such a proof into a proof of <log>C</log> from <log>P</log> as follows:
+
+<div proof="json">
+{"ro":3,"premises":[{"s":"P","l":1,"ro":1}],"body":[{"s":"...","l":2,"c":[],"ro":1,"check":false},{"s":"P -> C","l":3,"c":[],"ro":1,"check":false},{"s":"C","l":4,"r":"-> Elim","c":[3,1],"ro":7}],"hasToolbar":false,"hasDialog":false,"enabledRules":[]}
+</div>
+
+<p>The '...' on line 2 is a proof of the tautology <log>P -&gt; C</log>, which is guaranteed to exist.
+
+<p>Strictly speaking, the argument I just gave is a cheat. It <em>would</em> work if we were working in the full language, which includes the connective <log>-&gt;</log>. But we decided to work in a restricted language, which doesn't include <log>-&gt;</log>. We can fix this problem easily enough, though. The sentence <log>P -&gt; C</log> is equivalent to <log>~P | C</log>, which does belong to our restricted language. We therefore have the following:
+
+<p class="definition">A sentence <log>P</log> tautologically implies a sentence <log>C</log> if and only if the sentence <log>~P | C</log> is a tautology.
+
+<p>And just as we can derive <log>C</log> from the sentences <log>P</log> and <log>P -&gt; C</log>, we can derive <log>C</log> from <log>P</log> and <log>~P | C</log>. The derivation is just a little longer:
+<div proof="json">
+{"ro":3,"premises":[{"s":"P","l":1,"ro":1}],"body":[{"s":"...","l":2,"c":[],"ro":1,"check":false},{"s":"~P | C","l":3,"c":[],"ro":1,"check":false},{"p":{"premises":[{"s":"~P","l":4,"ro":1}],"body":[{"p":{"premises":[{"s":"~C","l":5,"ro":1}],"body":[{"s":"!","l":6,"r":"Contradiction","c":[4,1],"ro":7}]},"l":7},{"s":"C","l":8,"r":"~ Elim","c":[7],"ro":7}]},"l":9},{"p":{"premises":[{"s":"C","l":10,"ro":1}],"body":[{"s":"C","l":11,"r":"Reit","c":[10],"ro":7}]},"l":12},{"s":"C","l":13,"r":"| Elim","c":[12,9,3],"ro":7}],"hasToolbar":false,"hasDialog":false,"enabledRules":[]}
+</div>
+
+<p>Again, the '...' on line 3 is a proof of the tautology <log>~P | C</log>. The rest of the proof derives <log>C</log> from <log>P</log> and <log>~P | C</log>.
+
+<p>So, we have now proven completeness for the case of a single premise. We can generalize our work to cover more than one premise. In the fully general case, we use the following:
+
+<p class="definition">A set of sentences <log>P<sub>1</sub></log> ... <log>P<sub>n</sub></log> tautologically implies a sentence <log>C</log> if and only if the sentence <log>~P<sub>1</sub> | ... | ~P<sub>n</sub> | C</log> is a tautology.
+
+<p>(The sentence mentioned is a big disjunction, where each premise <log>P<sub>i</log> appears negated as <log>~P<sub>i</sub></log>, and with the conclusion <log>C</log> as the final disjunct.) Now suppose the premises <log>P<sub>1</sub></log> ... <log>P<sub>n</sub></log> tautologically imply the conclusion <log>C</log>. Our proof of the conclusion from the premises proceeds as follows. First, we derive the big disjunction <log>~P<sub>1</sub> | ... | ~P<sub>n</sub> | C</log>. We know we can do this, because that sentence is a tautology. Then, using the technique just given, we derive the slightly shorter disjunction <log>~P<sub>2</sub> | ... | ~P<sub>n</sub> | C</log> from the big disjunction and the premise <log>P<sub>1</sub></log>. Using the same technique again, we derive the still shorter disjunction <log>~P<sub>3</sub> | ... | ~P<sub>n</sub> | C</log> using the premise <log>P<sub>2</sub></log>. We continue picking off the disjuncts <log>~P<sub>i</sub></log> one by one, until we are left with just <log>C</log>, which is our conclusion.
+
+<p>And thus is proved completeness!</p>
+
+<h3>Exercises</h3>
+
+<ol>
+<li>At the end of the section on soundness, we noted that there are three ways of extending a proof. For each way, we need to show that if the original proof satisfies the boxed statement, then so does the extended proof. The lesson says that this holds trivially in case 3, "add a new subproof." Why is this?
+<li>In proving soundness, we made use of the fact that our rules of inference are valid. This means that if all the premises of a rule are true, then so is its conclusion. But some rules can have subproofs as premises as well as, or instead of, sentences. What does it mean for such a rule to be valid?
+<li>We only proved completeness for the reduced language, without the connectives <log>-&gt;</log> and <log>&lt;-&gt;</log>. Explain how to extend the proof to the full language.
+<li>We provided two different version of the Central Lemma: a simple version, and a more complicated version. It was stated that the complicated version was needed for the proof by induction of the Central Lemma. How would that proof have broken down if we had tried to use the simpler version instead?
+<li>It was stated that the fact that all tautologies are provable is a special case of completeness. Why is this?
+</ol>
+
+
+</article>
+</body>
+
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>PHI 401 Logic - Login</title>
+    <meta charset="UTF-8" />
+
+<link rel="stylesheet" type="text/css" href="logic-1724095155.css" />
+
+	<script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-auth.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-database.js"></script>
+	
+<script language="JavaScript" src="logic-1724095155.js"></script>
+
+</head>
+
+<body>
+
+<article>
+
+<h1>PHI 401 Logic &mdash; Log in</h1>
+
+<p>Welcome to the course! To access the course materials, you must be logged in. If this is your first time using this site, you will need to create an account. You will first be asked to read the course syllabus. Once you create your account, you will have access to all the course materials. <a href="start.html">Click here to set up your account.</a></p>
+
+<div>
+<table class="stylized" id="newaccountform">
+<tbody>
+
+<tr>
+<td colspan="2">
+<h1>Log In</h1>
+<p>You must be logged in to access this course.</p>
+</td>
+</tr>
+
+<tr>
+<td class="labelcol">
+<label>UIS Email
+<span class="small"></span>
+</label>
+<td class="inputcol">
+<input type="text" id="emailfield" />
+
+
+<tr>
+<td class="labelcol">
+<label>Password
+<span class="small"></span>
+</label>
+<td class="inputcol">
+<input type="password" id="passwordfield" />
+<a href="password_reset.html" class="small">Forgot your password?</a>
+
+<tr>
+<td class="labelcol">
+<td class="inputcolbot">
+<button id="dologin" onclick="Account.login()">Log In</button>
+
+</tbody></table>
+</div>
+
+
+
+</article>
+
+</body>
+
+</html>

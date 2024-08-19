@@ -1,0 +1,114 @@
+<html>
+<head>
+    <meta charset="UTF-8" />
+<link rel="stylesheet" type="text/css" href="logic-1724095155.css" />
+
+<script language="JavaScript" src="logic-1724095155.js"></script>
+
+
+
+<script language="javascript">
+
+function load() {
+  var week = 6;
+  var idx = 0;
+  var loc = window.location;
+  var match = /html\?week=([0-9]*)\&idx=([0-9]*)$/.exec(loc);
+  if (match) {
+    week = Number(match[1]);
+    idx = Number(match[2]);
+  }
+  for (var i=0; i<examples.length; i++) {
+    var e = examples[i];
+    if (e.week === week && e.idx === idx) {
+      var c = e.kind;
+      var options = JSON.parse(JSON.stringify(e.data));
+      options.ui_properties = { gradable: false, editable: true, feedback: false };
+      var container = document.getElementById("main");
+      //new c(e.data, document.body);
+      new c(options, container);
+      break;
+    }
+  }
+}
+
+var examples = [
+
+{week:2,idx:1,kind:Chessboard,data:{"pieces":[{"x":3,"y":2,"shape":"square","size":"large","names":[]},{"x":4,"y":2,"shape":"square","size":"small","names":[]},{"x":4,"y":3,"shape":"diamond","size":"small","names":["a"]},{"x":3,"y":3,"shape":"diamond","size":"large","names":[]}],"sentences":["Square(a) & (Large(a) | Small(a))","(Square(a) & Large(a)) | Small(a)"]}},
+
+{week:2,idx:2,kind:Chessboard,data:{"pieces":[{"x":5,"y":3,"shape":"octagon","size":"small","names":["b"]},{"x":3,"y":3,"shape":"square","size":"large","names":["a"]}],"sentences":["~Square(a) & Large(b)","~(Square(a) & Large(b))","","~Diamond(a) | Small(b)","~(Diamond(a) | Small(b))","","~Diamond(a) -> Small(b)","~(Diamond(a) -> Small(b))","","~Square(a) <-> Large(b)","~(Square(a) <-> Large(b))"]}},
+
+{week:6,idx:0,kind:ParseTreeUI,data:{"collapsed":false,"hasTruthTable":true,"errbox":false,"sentences":["A&B","C&D","(A&C)->(E|F)","~E","F"],"ttPosition":"bottom"}},
+
+{week:6,idx:1,kind:ProofController,data:{ro:PREMISES,"goal":"C & ~B","premises":[{"s":"A & ~B","l":1},{"s":"C & ~D","l":2}],"body":[{"s":"~B","l":3,"r":"& Elim","c":[],ro:SENTENCE|RULE},{"s":"C","l":4,"r":"& Elim","c":[],ro:SENTENCE|RULE},{"s":"C & ~B","l":5,"r":"& Intro","c":[],ro:SENTENCE|RULE}],"enabledRules":["& Intro","& Elim"]}},
+
+{week:6,idx:2,kind:ProofController,data:{ro:PREMISES,"goal":"(A & B) & C","premises":[{"s":"A & (B & C)","l":1}],"body":[{"s":"A","l":2,"c":[],ro:SENTENCE},{"s":"B & C","l":3,"c":[],ro:SENTENCE},{"s":"B","l":4,"c":[],ro:SENTENCE},{"s":"C","l":5,"c":[],ro:SENTENCE},{"s":"A & B","l":6,"c":[],ro:SENTENCE},{"s":"(A & B) & C","l":7,"c":[],ro:SENTENCE}],"enabledRules":["& Intro","& Elim"]}},
+
+{week:6,idx:3,kind:ProofController,data:{"goal":"A","ro":PREMISES,"premises":[{"s":"A & B","l":1}],"body":[{"s":"","l":2,"c":[]}],"enabledRules":["& Intro","& Elim"]}},
+
+{week:6,idx:4,kind:ProofController,data:{"goal":"B & A","ro":PREMISES,"premises":[{"s":"A & B","l":1}],"body":[{"s":"","l":2,"c":[]}],"enabledRules":["& Intro","& Elim"]}},
+
+{week:6,idx:5,kind:ProofController,data:{"goal":"~(B | C) & ~A","premises":[{"s":"~A & ~(B | C)","l":1}],"body":[{"s":"~(B | C)","l":2,"r":"& Elim","c":[1]},{"s":"~A","l":3,"r":"& Elim","c":[1]},{"s":"~(B | C) & ~A","l":4,"r":"& Intro","c":[2,3]}],"enabledRules":["& Intro","& Elim"]}},
+
+{week:7,idx:0,kind:ProofController,data:{"premises":[{"s":"~~A & B","l":1},{"s":"A -> C","l":2}],"body":[{"s":"~~A","l":3,"c":[1]},{"s":"B","l":4,"c":[1]},{"s":"A","l":5,"c":[3]},{"s":"C","l":6,"c":[2,5]},{"s":"C | D","l":7,"c":[6]},{"s":"B & (C | D)","l":8,"c":[7,4]}],"goal":"B & (C | D)","enabledRules":["& Intro","& Elim","~ Elim","| Intro","-> Elim","<-> Elim"]}},
+
+{week:7,idx:1,kind:ProofController,data:{"premises":[{"s":"~~A & B","l":1},{"s":"A -> C","l":2}],"body":[{"s":"~~A","l":3,"r":"& Elim","c":[1]},{"s":"B","l":4,"r":"& Elim","c":[1]},{"s":"A","l":5,"r":"~ Elim","c":[3]},{"s":"C","l":6,"r":"-> Elim","c":[2,5]},{"s":"C | D","l":7,"r":"| Intro","c":[6]},{"s":"B & (C | D)","l":8,"r":"& Intro","c":[7,4]}],"goal":"B & (C | D)","enabledRules":["& Intro","& Elim","~ Elim","| Intro","-> Elim","<-> Elim"]}},
+
+{week:7,idx:2,kind:ProofController,data:{"premises":[{"s":"~~A","l":1},{"s":"B -> ~~C","l":2},{"s":"A -> ~~B","l":3},{"s":"C -> ~~D","l":4}],"body":[{"s":"A","l":5,"c":[]},{"s":"~~B","l":6,"c":[]},{"s":"B","l":7,"c":[]},{"s":"~~C","l":8,"c":[]},{"s":"C","l":9,"c":[]},{"s":"~~D","l":10,"c":[]},{"s":"D","l":11,"c":[]}],"goal":"D","enabledRules":["& Intro","& Elim","~ Elim","| Intro","-> Elim","<-> Elim"]}},
+
+{week:7,idx:3,kind:ProofController,data:{"premises":[{"s":"~~A","l":1},{"s":"B -> ~~C","l":2},{"s":"A -> ~~B","l":3},{"s":"C -> ~~D","l":4}],"body":[{"s":"A","l":5,"r":"~ Elim","c":[1]},{"s":"~~B","l":6,"r":"-> Elim","c":[5,3]},{"s":"B","l":7,"r":"~ Elim","c":[6]},{"s":"~~C","l":8,"r":"-> Elim","c":[7,2]},{"s":"C","l":9,"r":"~ Elim","c":[8]},{"s":"~~D","l":10,"r":"-> Elim","c":[9,4]},{"s":"D","l":11,"r":"~ Elim","c":[10]}],"goal":"D","enabledRules":["& Intro","& Elim","~ Elim","| Intro","-> Elim","<-> Elim"]}},
+
+{week:7,idx:4,kind:ProofController,data:{"premises":[{"s":"A & (B & (C & D))","l":1}],"body":[{"s":"B & (C & D)","l":2,"c":[]},{"s":"C & D","l":3,"c":[]},{"s":"D","l":4,"c":[]},{"s":"D | E","l":5,"c":[]},{"s":"(D | E) | F","l":6,"c":[]},{"s":"((D | E) | F) | G","l":7,"c":[]}],"goal":"((D | E) | F) | G","enabledRules":["& Intro","& Elim","~ Elim","| Intro","-> Elim","<-> Elim"]}},
+
+{week:7,idx:5,kind:ProofController,data:{"premises":[{"s":"A & (B & (C & D))","l":1}],"body":[{"s":"B & (C & D)","l":2,"r":"& Elim","c":[1]},{"s":"C & D","l":3,"r":"& Elim","c":[2]},{"s":"D","l":4,"r":"& Elim","c":[3]},{"s":"D | E","l":5,"r":"| Intro","c":[4]},{"s":"(D | E) | F","l":6,"r":"| Intro","c":[5]},{"s":"((D | E) | F) | G","l":7,"r":"| Intro","c":[6]}],"goal":"D","enabledRules":["& Intro","& Elim","~ Elim","| Intro","-> Elim","<-> Elim"]}},
+
+{week:7,idx:6,kind:ProofController,data:{"premises":[{"s":"A","l":1},{"s":"B","l":2},{"s":"C","l":3},{"s":"[A & (B & C)] <-> [(D & E) & F]","l":4}],"body":[{"s":"B & C","l":5,"c":[]},{"s":"A & (B & C)","l":6,"c":[]},{"s":"(D & E) & F","l":7,"c":[]},{"s":"D & E","l":8,"c":[]},{"s":"D","l":9,"c":[]}],"goal":"D","enabledRules":["& Intro","& Elim","~ Elim","| Intro","-> Elim","<-> Elim"]}},
+
+{week:7,idx:7,kind:ProofController,data:{"premises":[{"s":"A","l":1},{"s":"B","l":2},{"s":"C","l":3},{"s":"[A & (B & C)] <-> [(D & E) & F]","l":4}],"body":[{"s":"B & C","l":5,"r":"& Intro","c":[2,3]},{"s":"A & (B & C)","l":6,"r":"& Intro","c":[5,1]},{"s":"(D & E) & F","l":7,"r":"<-> Elim","c":[6,4]},{"s":"D & E","l":8,"r":"& Elim","c":[7]},{"s":"D","l":9,"r":"& Elim","c":[8]}],"goal":"D","enabledRules":["& Intro","& Elim","~ Elim","| Intro","-> Elim","<-> Elim"]}},
+
+{week:7,idx:8,kind:ProofController,data:{"premises":[{"s":"~~A & ~~B","l":1},{"s":"(A & B) -> (C & D)","l":2},{"s":"C <-> ~~E","l":3}],"body":[{"s":"","l":4,"c":[]},{"s":"A","l":5,"c":[]},{"s":"~~B","l":6,"c":[]},{"s":"","l":7,"c":[]},{"s":"A & B","l":8,"c":[]},{"s":"C & D","l":9,"c":[]},{"s":"","l":10,"c":[]},{"s":"~~E","l":11,"c":[]},{"s":"E","l":12,"c":[]}],"goal":"E","enabledRules":["& Intro","& Elim","~ Elim","| Intro","-> Elim","<-> Elim"]}},
+
+{week:7,idx:9,kind:ProofController,data:{"premises":[{"s":"~~A & ~~B","l":1},{"s":"(A & B) -> (C & D)","l":2},{"s":"C <-> ~~E","l":3}],"body":[{"s":"~~A","l":4,"r":"& Elim","c":[1]},{"s":"A","l":5,"r":"~ Elim","c":[4]},{"s":"~~B","l":6,"r":"& Elim","c":[1]},{"s":"B","l":7,"r":"~ Elim","c":[6]},{"s":"A & B","l":8,"r":"& Intro","c":[7,5]},{"s":"C & D","l":9,"r":"-> Elim","c":[2,8]},{"s":"C","l":10,"r":"& Elim","c":[9]},{"s":"~~E","l":11,"r":"<-> Elim","c":[10,3]},{"s":"E","l":12,"r":"~ Elim","c":[11]}],"goal":"E","enabledRules":["& Intro","& Elim","~ Elim","| Intro","-> Elim","<-> Elim"]}},
+
+{week:7,idx:10,kind:ProofController,data:{"premises":[{"s":"A & B","l":1},{"s":"B -> (C -> D)","l":2},{"s":"(A | D) -> C","l":3}],"body":[{"s":"B","l":4,"c":[]},{"s":"","l":5,"r":"-> Elim","c":[2,4]},{"s":"A","l":6,"c":[]},{"s":"","l":7,"r":"| Intro","c":[6]},{"s":"C","l":8,"c":[3,7]},{"s":"D","l":9,"c":[]}],"goal":"D","enabledRules":["& Intro","& Elim","~ Elim","| Intro","-> Elim","<-> Elim"]}},
+
+{week:7,idx:11,kind:ProofController,data:{"premises":[{"s":"A & B","l":1},{"s":"B -> (C -> D)","l":2},{"s":"(A | D) -> C","l":3}],"body":[{"s":"B","l":4,"r":"& Elim","c":[1]},{"s":"C -> D","l":5,"r":"-> Elim","c":[2,4]},{"s":"A","l":6,"r":"& Elim","c":[1]},{"s":"A | D","l":7,"r":"| Intro","c":[6]},{"s":"C","l":8,"r":"-> Elim","c":[3,7]},{"s":"D","l":9,"r":"-> Elim","c":[8,5]}],"goal":"D","enabledRules":["& Intro","& Elim","~ Elim","| Intro","-> Elim","<-> Elim"]}},
+
+{week:7,idx:12,kind:ProofController,data:{"premises":[{"s":"A & (B & C)","l":1},{"s":"B -> (C & D)","l":2},{"s":"C -> ~~E","l":3},{"s":"D -> (E -> ~~F)","l":4}],"body":[{"s":"","l":5,"c":[]}],"enabledRules":["& Elim","~ Elim","-> Elim","<-> Elim"]}},
+
+{week:7,idx:13,kind:ProofController,data:{"premises":[{"s":"A & (B & C)","l":1},{"s":"B -> (C & D)","l":2},{"s":"C -> ~~E","l":3},{"s":"D -> (E -> ~~F)","l":4}],"body":[{"s":"A","l":5,"r":"& Elim","c":[1]},{"s":"B & C","l":6,"r":"& Elim","c":[1]},{"s":"B","l":7,"r":"& Elim","c":[6]},{"s":"C","l":8,"r":"& Elim","c":[6]},{"s":"~~E","l":9,"r":"-> Elim","c":[8,3]},{"s":"E","l":10,"r":"~ Elim","c":[9]},{"s":"C & D","l":11,"r":"-> Elim","c":[2,7]},{"s":"D","l":12,"r":"& Elim","c":[11]},{"s":"E -> ~~F","l":13,"r":"-> Elim","c":[4,12]},{"s":"~~F","l":14,"r":"-> Elim","c":[10,13]},{"s":"F","l":15,"r":"~ Elim","c":[14]}],"enabledRules":["& Elim","~ Elim","-> Elim","<-> Elim"]}},
+
+{week:7,idx:14,kind:ProofController,data:{"premises":[{"s":"A & B","l":1},{"s":"B -> (C & ~~D)","l":2},{"s":"D -> (E | F)","l":3}],"body":[{"s":"","l":4,"c":[]}],"goal":"B & (E | F)","enabledRules":["& Intro","& Elim","~ Elim","| Intro","-> Elim","<-> Elim"]}},
+
+{week:7,idx:15,kind:ProofController,data:{"premises":[{"s":"A & B","l":1},{"s":"B -> (C & ~~D)","l":2},{"s":"D -> (E | F)","l":3}],"body":[{"s":"A","l":4,"r":"& Elim","c":[1]},{"s":"B","l":5,"r":"& Elim","c":[1]},{"s":"C & ~~D","l":6,"r":"-> Elim","c":[2,5]},{"s":"C","l":7,"r":"& Elim","c":[6]},{"s":"~~D","l":8,"r":"& Elim","c":[6]},{"s":"D","l":9,"r":"~ Elim","c":[8]},{"s":"E | F","l":10,"r":"-> Elim","c":[3,9]},{"s":"B & (E | F)","l":11,"r":"& Intro","c":[10,5]}],"goal":"B & (E | F)","enabledRules":["& Intro","& Elim","~ Elim","| Intro","-> Elim","<-> Elim"]}},
+
+{week:7,idx:16,kind:ProofController,data:{"premises":[{"s":"A & B","l":1},{"s":"B -> (C & ~~D)","l":2},{"s":"D -> (E | F)","l":3}],"body":[{"s":"B","l":4,"r":"& Elim","c":[1]},{"s":"C & ~~D","l":5,"r":"-> Elim","c":[2,4]},{"s":"~~D","l":6,"r":"& Elim","c":[5]},{"s":"D","l":7,"r":"~ Elim","c":[6]},{"s":"E | F","l":8,"r":"-> Elim","c":[3,7]},{"s":"B & (E | F)","l":9,"r":"& Intro","c":[8,4]}],"goal":"B & (E | F)","enabledRules":["& Intro","& Elim","~ Elim","| Intro","-> Elim","<-> Elim"]}},
+
+{week:7,idx:17,kind:ProofController,data:{"premises":[{"s":"A & B","l":1},{"s":"C & D","l":2},{"s":"(B & C) -> (D & E)","l":3}],"body":[{"s":"","l":4,"c":[]}],"goal":"E","enabledRules":["& Intro","& Elim","~ Elim","| Intro","-> Elim","<-> Elim"]}},
+
+{week:7,idx:18,kind:ProofController,data:{"premises":[{"s":"A & B","l":1},{"s":"C & D","l":2},{"s":"(B & C) -> (D & E)","l":3}],"body":[{"s":"B","l":4,"r":"& Elim","c":[1]},{"s":"C","l":5,"r":"& Elim","c":[2]},{"s":"B & C","l":6,"r":"& Intro","c":[4,5]},{"s":"D & E","l":7,"r":"-> Elim","c":[3,6]},{"s":"E","l":8,"r":"& Elim","c":[7]}],"goal":"E","enabledRules":["& Intro","& Elim","~ Elim","| Intro","-> Elim","<-> Elim"]}},
+
+{week:7,idx:19,kind:ProofController,data:{"premises":[{"s":"","l":1}],"body":[{"p":{"premises":[{"s":"A","l":2}],"body":[{"p":{"premises":[{"s":"B","l":3}],"body":[{"s":"A & B","l":4,"r":"& Intro","c":[3,2]}]},"l":5},{"s":"B -> (A & B)","l":6,"r":"-> Intro","c":[5]}]},"l":7},{"s":"A -> (B -> (A & B))","l":8,"r":"-> Intro","c":[7]}],"goal":"A -> (B -> (A & B))"}},
+
+{week:10,idx:0,kind:ProofController,data:{"premises":[{"s":"~(A | B)","l":1}],"body":[{"s":"","l":2,"c":[]}],"hasToolbar":true,"hasDialog":true,"enabledRules":["~ Elim","& Elim","| Elim","-> Elim","<-> Elim","~ Intro","& Intro","| Intro","-> Intro","<-> Intro","Reit","Contradiction"],"goal":"~A & ~B"}},
+
+{week:10,idx:1,kind:ProofController,data:{"premises":[{"s":"~(A | B)","l":1}],"body":[{"p":{"premises":[{"s":"A","l":2}],"body":[{"s":"A | B","l":3,"r":"| Intro","c":[2]},{"s":"!","l":4,"r":"Contradiction","c":[3,1]}]},"l":5},{"s":"~A","l":6,"r":"~ Intro","c":[5]},{"p":{"premises":[{"s":"B","l":7}],"body":[{"s":"A | B","l":8,"r":"| Intro","c":[7]},{"s":"!","l":9,"r":"Contradiction","c":[8,1]}]},"l":10},{"s":"~B","l":11,"r":"~ Intro","c":[10]},{"s":"~A & ~B","l":12,"r":"& Intro","c":[11,6]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"~A & ~B"}},
+
+{week:12,idx:0,kind:Chessboard,data:{"pieces":[{"x":3,"y":2,"shape":"diamond","size":"large","names":[]},{"x":3,"y":4,"shape":"square","size":"large","names":[]},{"x":6,"y":2,"shape":"octagon","size":"small","names":[]},{"x":6,"y":4,"shape":"diamond","size":"small","names":[]}],"sentences":["Ex Square(x)","Ex Diamond(x)","Ex (Diamond(x) & Small(x))","Ex (Square(x) & Small(x))","","Ax (Square(x) -> Large(x))","Ax (Large(x) | Small(x))","Ax Square(x)","Ax (Small(x) -> ~Square(x))","","Ax Ey LeftOf(x,y)","Ax Ay (SameRow(x,y))","Ax Ay (SameSize(x,y) -> SameColumn(x,y))","","Ax x=x","Ax Ay (x=y -> y=x)","Ex Ey x != y","Ex x != x"]}},
+
+{week:12,idx:1,kind:Chessboard,data:{"pieces":[{"x":3,"y":2,"shape":"square","size":"large","names":[]},{"x":3,"y":4,"shape":"diamond","size":"small","names":[]}],"sentences":["Ax (Square(x) -> Small(x))","Ax Square(x) -> Ax Small(x)","","Ex (Large(x) & Diamond(x))","Ex Large(x) & Ex Diamond(x)"]}}
+
+];
+
+
+</script>
+
+</head>
+
+
+<body onload="load()">
+
+<div class="example-container" id="main"></div>
+
+</body>
+</html>

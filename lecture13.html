@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>PHI 401 Logic - Week 13</title>
+    <meta charset="UTF-8" />
+<link rel="stylesheet" type="text/css" href="logic-1724095155.css" />
+
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-database.js"></script>
+
+<script language="JavaScript" src="logic-1724095155.js"></script>
+    <script language="JavaScript" src="lecture_toolbar-1724095155.js"></script>
+
+    <script language="JavaScript" src="textBehavior-1724095155.js"></script>
+    <script language="JavaScript" src="lectures-1724095155.js"></script>
+
+</head>
+
+<body>
+
+
+
+<article class="link">
+    <header>
+        <h2>Week 13: Quantifiers: Translation and Implication</h2>
+    </header>
+
+<p>Last week, we studied the internal workings of quantifiers. We looked at how they work together with variables to form complete sentences. This week, we're going to focus more on what they <em>mean</em>. The overall lesson is that much of what we say in ordinary language can be rendered in logical notation with the help of quantifiers.</p>
+
+<p>People often find this material tricky, because the logical form of a sentence often looks very different from its English language equivalent. Even though it's tricky, it can also be rewarding, because the process will tell you something you didn't know about your own language. Logical notation reveals the logical structure of your sentences in a way that ordinary English does not.</p>
+
+<h3>All</h3>
+
+<p>Let's start with a relatively simple English sentence: "All squares are large." How would that sentence be translated into logical notation? You might guess that the translation should have the quantifier <log>A</log> in it somewhere, since <log>A</log> means <em>all</em>. This guess is correct, but it doesn't tell us how to translate the sentence, since there are many different ways to put <log>A</log> into a formal sentence. Try to see if you can get the answer yourself before you read on.</p>
+
+<p>In this case, the correct translation of "All squares are large" is:
+<ul>
+<li><log>Ax [Square(x) -&gt; Large(x)]</log>
+</ul>
+Let's think about why this is the correct translation. If you translate it back into English, it reads: "For all x, if x is square, then x is large." And that's exactly what "All squares are large" means: it's just a more compact way of saying the same thing.</p>
+
+<p>Although the two sentences say the same thing, the sentence in logical notation represents a different way of processing the same thought. "All squares are large" is a generalization: it says something about squares in general. And in logical notation, when you express a generalization, you have to think in terms of an <em>arbitrary individual</em>. The way to describe an arbitrary individual in logical notation is to (1) write a sentence about that arbitrary individual, referring to it by means of a variable, and (2) add a quantifier to the whole sentence to indicate that the sentence is talking about <em>any</em> individual x, not just some particular individual x. Applying this to "All squares are large," we first notice that this sentence makes a statement about an arbitrary individual, which we will call <log>x</log>. Second, we notice what it says about this arbitrary individual: that if it is square, then it is large. This fact about <log>x</log> is expressed as follows:
+<ul>
+<li><log>Square(x) -&gt; Large(x)</log>
+</ul>
+And finally, to indicate that the above applies to <em>any</em> individual <log>x</log>, we need a quantifier, and the quantifier needs to apply to the <em>whole sentence</em>:
+<ul>
+<li><log>Ax [Square(x) -&gt; Large(x)]</log>
+</ul></p>
+
+<p>There are a number of mistakes that beginners sometimes make with sentences like these. For example, sometimes people are tempted to write the following as a translation:
+<ul>
+<li><log>Large(A Square)</log> <b>WRONG</b>
+</ul>
+Let's think carefully about why this is wrong. First of all, it is not a well-formed sentence. A quantifier, like <log>A</log>, simply can't go where it went in this sentence. A quantifier is always followed by a variable, and then a complete sentence: the pattern is always <log>A x S</log>, for some variable <log>x</log> and some sentence <log>S</log>. The above use of <log>A</log> doesn't follow this pattern. Also, the only thing that can go inside <log>Large()</log> is a name. In the sentence above, we tried to put <log>A Square</log> inside <log>Large()</log>, and <log>A Square</log> is not a name. So the first thing that's wrong with the above sentence is that it violates the rules of logical notation.</p>
+
+<p>But there is an even more important reason why it's wrong. Whoever wrote <log>Large(A Square)</log> was trying to impose patterns of English onto logical notation. They were translating the English sentence almost word for word into logical notation. And you can't do that. Translating into logical notation involves taking the thought expressed by the English sentence, and repackaging that thought in the way that logic demands. It's no different in principle from translating English into a foreign language. Foreign languages often require completely different word orders, and completely different constructions, than English does. Logical notation is no different.</p>
+
+<p>To elaborate on this thought, let's look a little more closely at the English sentence to see how it might confuse the translator. Look at the following two English sentences:
+<ul>
+<li>All squares are large.
+<li>Bob is large.
+</ul>
+Both have the same grammatical structure. Namely, each is a subject-predicate sentence. Moreover, the predicate is basically the same in both. Looking at the second sentence, we know from earlier in the course that its correct translation is as follows:
+<ul>
+<li><log>Large(bob)</log>
+</ul>
+That is, we apply the predicate <log>Large</log> to the name <log>bob</log>. We may be very tempted to treat the first sentence similarly, and apply the predicate <log>Large</log> to something that means "all squares." And this is what might lead us to the ill-formed <log>Large(A Square)</log>. Unfortunately, as we have seen, this is not the correct translation. The lesson: although the two sentences may look very similar, they have different logical forms.</p>
+
+<p>Anyway, a general principle of translation is that sentences with "All" are translated in a particular way. They follow the pattern:
+<ul>
+<li>All F are G
+<li><log>Ax [F(x) -&gt; G(x)]
+</ul>
+Here, F and G are just placeholders. In "All squares are large," F stands for "squares" and G stands for "large." Applying this same pattern to other sentences tells you how to translate them. For example:
+<ul>
+<li>All emeralds are green.
+<li><log>Ax [Emerald(x) -&gt; Green(x)]</log>
+</ul>
+Another example:
+<ul>
+<li>All cows are mammals.
+<li><log>Ax [Cow(x) -&gt; Mammal(x)]</log>
+</ul>
+
+<h4>Practice</h4>
+
+<p><em>NOTE: Practice exercises are NOT GRADED.</em></p>
+
+<p>Use predicates <log>Dog, Fish, Swan, White, Happy, HasScales</log>.</p>
+
+<ol>
+<li>All swans are white.
+<div translate="true" expected="Ax [Swan(x) -> White(x)]">
+    Translation: <input t_id="1" size="70"/> <br />
+    <button t_op="translate" t_source="1" t_out="2">Check</button>
+    <span t_id="2"></span>
+    <br />
+    <button t_op="reveal" t_out="3">Show Answer</button>
+    <log t_id="3"></log>
+</div>
+
+<li>All fish have scales.
+<div translate="true" expected="Ax [Fish(x) -> HasScales(x)]">
+    Translation: <input t_id="1" size="70"/> <br />
+    <button t_op="translate" t_source="1" t_out="2">Check</button>
+    <span t_id="2"></span>
+    <br />
+    <button t_op="reveal" t_out="3">Show Answer</button>
+    <log t_id="3"></log>
+</div>
+
+<li> Every dog is happy.
+<div translate="true" expected="Ax [Dog(x) -> Happy(x)].Ax [Dog(x) -> IsHappy(x)]">
+    Translation: <input t_id="1" size="70"/> <br />
+    <button t_op="translate" t_source="1" t_out="2">Check</button>
+    <span t_id="2"></span>
+    <br />
+    <button t_op="reveal" t_out="3">Show Answer</button>
+    <log t_id="3"></log>
+</div>
+</ol>
+
+<h3>Some</h3>
+
+<p>Now let's change examples. How would you translate <em>Some squares are large</em>? The word <em>some</em> might remind you of the quantifier <log>E</log>, and if it does, you're on the right track. As with <em>all</em>, though, you have to remember that the formal translation of <em>Some squares are large</em> has to obey the syntactic rules of logical notation. This rules out anything like the following:</p>
+<ul>
+<li><log>Large(E Square)</log> <b>WRONG</b>
+<li><log>Large(Ex Square(x))</log> <b>WRONG</b>
+</ul>
+As with the other cases, we have to think about this in terms of an unknown individual, <log>x</log>, and what the sentence says about this individual. For this sentence, the  individual <log>x</log> should be seen not as an arbitrary individual, but as an <em>unknown</em> individual. So, what can we say about this unknown individual? We can say that it is a large square, for one thing. As a result, we can say that it is large. We can also say that it is square. Thus, we can say the following:
+<ul>
+<li><log>Square(x) &amp; Large(x)</log>
+</ul>
+So our sentence should say that some, possibly unknown, individual <log>x</log> has the above property. And so, the sentence we want is this:
+<ul>
+<li><log>Ex [Square(x) &amp; Large(x)]</log>
+</ul>
+And this is the correct translation of "Some square is large."</p>
+
+<p>The general pattern is as follows:
+<ul>
+<li>Some F are G
+<li><log>Ex [F(x) &amp; G(x)]</log>
+</ul>
+As before, F and G are placeholders. Here's another example:
+<ul>
+<li>Some mushrooms are edible.
+<li><log>Ex [Mushroom(x) &amp; Edible(x)]</log>
+</ul>
+And another:
+<ul>
+<li>Some tables are wobbly.
+<li><log>Ex [Table(x) &amp; Wobbly(x)]</log>
+</ul>
+And another:
+<ul>
+<li>Some people are mean.
+<li><log>Ex [Person(x) &amp; Mean(x)]</log>
+</ul></p>
+
+<h4>Practice</h4>
+
+<p>Use predicates <log>Cat, Person, Swan, Black, Fat, Strange</log>.</p>
+
+<ol>
+<li>Some people are strange.
+<div translate="true" expected="Ex [Person(x) & Strange(x)]">
+    Translation: <input t_id="1" size="70"/> <br />
+    <button t_op="translate" t_source="1" t_out="2">Check</button>
+    <span t_id="2"></span>
+    <br />
+    <button t_op="reveal" t_out="3">Show Answer</button>
+    <log t_id="3"></log>
+</div>
+
+<li>Some cats are fat.
+<div translate="true" expected="Ex [Cat(x) & Fat(x)]">
+    Translation: <input t_id="1" size="70"/> <br />
+    <button t_op="translate" t_source="1" t_out="2">Check</button>
+    <span t_id="2"></span>
+    <br />
+    <button t_op="reveal" t_out="3">Show Answer</button>
+    <log t_id="3"></log>
+</div>
+
+<li>Some swans are black.
+<div translate="true" expected="Ex [Swan(x) & Black(x)]">
+    Translation: <input t_id="1" size="70"/> <br />
+    <button t_op="translate" t_source="1" t_out="2">Check</button>
+    <span t_id="2"></span>
+    <br />
+    <button t_op="reveal" t_out="3">Show Answer</button>
+    <log t_id="3"></log>
+</div>
+</ol>
+
+<h3>Don't Confuse <em>All</em> with <em>Some</em></h3>
+
+<p>The logical renderings of <em>all</em> and <em>some</em> are similar, but different, and it's important not to confuse them. Here are the two sentences with their translations:</p>
+<table class="normal">
+<thead>
+<tr>
+<th>English<th>Logical Notation
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>All squares are large<td>Ax [Square(x) -&gt; Large(x)]
+</tr>
+<tr>
+<td>Some squares are large<td>Ex [Square(x) &amp; Large(x)]
+</tr>
+</body>
+</table>
+
+<p>If you look at the logical translations in the right column, you'll notice two important differences.
+<ol>
+<li>The quantifier <log>A</log> appears in the first, but the quantifier <log>E</log> appears in the second.
+<li>The connective <log>-&gt;</log> appears in the first, but the connective <log>&amp;</log> appears in the second.
+</ol>
+Sometimes people confuse the <em>all</em> and <em>some</em> cases and produce hybrids, such as the following:
+<ul>
+<li><log>Ax [Square(x) &amp; Large(x)]</log> <b>WRONG</b>
+<li><log>Ex [Square(x) -&gt; Large(x)]</log> <b>WRONG</b>
+</ul>
+The first sentence says that everything is a large square. It is an incorrect translation of "All squares are large." The second sentence does not correspond to any natural English sentence. It is an incorrect translation of "Some squares are large."</p>
+
+<h4>Practice</h4>
+
+<p>Use predicates <log>Dog, Book, Lizard, HasFleas, Long, Reptile</log>.</p>
+
+<ol>
+<li>All dogs have fleas.
+<div translate="true" expected="Ax [Dog(x) -> HasFleas(x)]">
+    Translation: <input t_id="1" size="70"/> <br />
+    <button t_op="translate" t_source="1" t_out="2">Check</button>
+    <span t_id="2"></span>
+    <br />
+    <button t_op="reveal" t_out="3">Show Answer</button>
+    <log t_id="3"></log>
+</div>
+
+<li>Some books are long.
+<div translate="true" expected="Ex [Book(x) & Long(x)]">
+    Translation: <input t_id="1" size="70"/> <br />
+    <button t_op="translate" t_source="1" t_out="2">Check</button>
+    <span t_id="2"></span>
+    <br />
+    <button t_op="reveal" t_out="3">Show Answer</button>
+    <log t_id="3"></log>
+</div>
+
+<li>All lizards are reptiles.
+<div translate="true" expected="Ax [Lizard(x) -> Reptile(x)]">
+    Translation: <input t_id="1" size="70"/> <br />
+    <button t_op="translate" t_source="1" t_out="2">Check</button>
+    <span t_id="2"></span>
+    <br />
+    <button t_op="reveal" t_out="3">Show Answer</button>
+    <log t_id="3"></log>
+</div>
+</ol>
+
+<h3>No Squares Are Large</h3>
+
+<p>If you can write <em>some squares are large</em> in logical notation, then it's not much harder to write <em>no squares are large</em>. The latter is simply the negation of the former. As you know, <em>some squares are large</em> translates as follows:
+<ul>
+<li><log>Ex [Square(x) &amp; Large(x)]</log>
+</ul>
+Thus, <em>no squares are large</em> translates as follows:
+<ul>
+<li><log>~Ex [Square(x) &amp; Large(x)]</log>
+</ul>
+This is simply the negation of the previous sentence. In general, <em>no Fs are G</em> translates as follows:
+<ul>
+<li><log>~Ex [F(x) &amp; G(x)]</log>
+</ul>
+To give another example, <em>no emeralds are blue</em> translates as follows:
+<ul>
+<li><log>~Ex [Emerald(x) &amp; Blue(x)]</log>
+</ul>
+And <em>No fish are mammals</em> translates as follows:
+<ul>
+<li><log>~Ex [Fish(x) &amp; Mammal(x)]</log>
+</ul></p>
+
+<p>Let's summarize the patterns we've learned so far:</p>
+
+<table class="normal">
+<thead>
+<tr>
+<td>Sentence<td>Translation
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>All F's are G<td>Ax (F(x) -&gt; G(x))
+</tr>
+<tr>
+<td>Some F's are G<td>Ex (F(x) &amp; G(x))
+</tr>
+<tr>
+<td>No F's are G<td>~Ex (F(x) &amp; G(x))
+</tr>
+</tbody>
+</table>
+
+<h4>Practice</h4>
+
+<p>Use predicates <log>Mouse, Crow, Lizard, LikesCheese, Smart, Mammal</log>.</p>
+
+<ol>
+<li>All mice like cheese.
+<div translate="true" expected="Ax [Mouse(x) -> LikesCheese(x)]">
+    Translation: <input t_id="1" size="70"/> <br />
+    <button t_op="translate" t_source="1" t_out="2">Check</button>
+    <span t_id="2"></span>
+    <br />
+    <button t_op="reveal" t_out="3">Show Answer</button>
+    <log t_id="3"></log>
+</div>
+
+<li>Some crows are smart.
+<div translate="true" expected="Ex [Crow(x) & Smart(x)]">
+    Translation: <input t_id="1" size="70"/> <br />
+    <button t_op="translate" t_source="1" t_out="2">Check</button>
+    <span t_id="2"></span>
+    <br />
+    <button t_op="reveal" t_out="3">Show Answer</button>
+    <log t_id="3"></log>
+</div>
+
+<li>No lizards are mammals.
+<div translate="true" expected="~Ex [Lizard(x) & Mammal(x)]">
+    Translation: <input t_id="1" size="70"/> <br />
+    <button t_op="translate" t_source="1" t_out="2">Check</button>
+    <span t_id="2"></span>
+    <br />
+    <button t_op="reveal" t_out="3">Show Answer</button>
+    <log t_id="3"></log>
+</div>
+</ol>
+
+<h3>Something, Everything, Nothing</h3>
+
+<p>These three words &mdash; <em>something</em>, <em>everything</em> and <em>nothing</em> &mdash; all involve quantifiers in their translation. First, let's see some examples. The sentence <em>Everything is large</em> is translated as follows:
+<ul>
+<li><log>Ax Large(x)</log>
+</ul>
+The sentence <em>Something is large</em> is translated:
+<ul>
+<li><log>Ex Large(x)</log>
+</ul>
+And the sentence <em>Nothing is large</em> is translated:
+<ul>
+<li><log>~Ex Large(x)</log>
+</ul>
+The reason I give these words special attention is that they superficially resemble names, and some people are tempted to mistranslate them for that reason. Let's start with <em>something</em>. In English, <em>something</em> acts like a name, in the sense that it can occur in the same positions as a name. Consider these two sentences, for example:
+<ul>
+<li>Jason is large.
+<li>Something is large.
+</ul>
+The sentences have a completely parallel construction. In the second sentence, the word <em>something</em> is occupying a position that the name <em>Jason</em> occupies in the first sentence. In short, English tends to treat <em>something</em> as if it were a name.</p>
+
+<p>Logically speaking, however, the word <em>something</em> is <b>not</b> a name. If it were a name, then there would be some specific object that it is a name of. But there is no such specific object. If there are two objects in a world, for example, which of the two objects does <em>something</em> name? The point is even clearer with <em>everything</em> and <em>nothing</em>. What object does <em>nothing</em> name?</p>
+
+<p>The fact that <em>something</em> is not a name also becomes clear when we translate the above sentences. Although these two English sentences are very similar in form, their logical translations are very different:</p>
+<ul>
+<li><log>Large(jason)</log>
+<li><log>Ex Large(x)</log>
+</ul>
+If <em>something</em> were really a name, then <em>Something is large</em> would be translated as follows:
+<ul>
+<li><log>Large(something)</log> <b>WRONG</b>
+</ul>
+But this is completely incorrect, because a name has to refer to one definite object, whereas <em>something</em> would have to refer to all objects, or to an indefinite object. Likewise, do not be tempted to translate <em>Something is large</em> as follows:
+<ul>
+<li><log>Large(Ex)</log> <b>WRONG</b>
+</ul>
+This incorrect translation makes the same mistake as the previous one: it treats <em>something</em> as a name. It compounds the mistake by trying to use <log>Ex</log> as a name. Both incorrect translations come about because someone was following the word pattern of English too closely and trying to impose that pattern on logical notation. Just as when you speak a foreign language, some things just have to be expressed differently in logical notation than they are in English.</p>
+
+<p>In the same spirit, the sentence <em>Everything is large</em> is translated as follows:
+<ul>
+<li><log>Ax Large(x)</log>
+</ul>
+It is <b>not</b> translated in either of the following ways:
+<ul>
+<li><log>Large(everything)</log> <b>WRONG</b>
+<li><log>Large(Ax)</log> <b>WRONG</b>
+</ul>
+Likewise, the sentence <em>Nothing is large</em> is translated as follows:
+<ul>
+<li><log>~Ex Large(x)</log>
+</ul>
+It is <b>not</b> translated in either of the following ways:
+<ul>
+<li><log>Large(nothing)</log> <b>WRONG</b>
+<li><log>Large(~Ex)</log> <b>WRONG</b>
+</ul>
+Here is a summary of the words <em>something</em>, <em>everything</em> and <em>nothing</em>:</p>
+
+<table class="normal">
+<thead>
+<tr>
+<td>Sentence<td>Translation
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Something is F<td>Ex F(x)
+</tr>
+<tr>
+<td>Everything is F<td>Ax F(x)
+</tr>
+<tr>
+<td>Nothing is F<td>~Ex F(x)
+</tr>
+</tbody>
+</table>
+
+<p>You may notice a parallel between this table and the previous one.</p>
+
+<h4>Practice</h4>
+
+<p>Use predicates <log>SmellsBad, MakesSense</log>.</p>
+
+<ol>
+<li>Something smells bad.
+<div translate="true" expected="Ex SmellsBad(x)">
+    Translation: <input t_id="1" size="70"/> <br />
+    <button t_op="translate" t_source="1" t_out="2">Check</button>
+    <span t_id="2"></span>
+    <br />
+    <button t_op="reveal" t_out="3">Show Answer</button>
+    <log t_id="3"></log>
+</div>
+
+<li>Nothing makes sense.
+<div translate="true" expected="~Ex MakesSense(x)">
+    Translation: <input t_id="1" size="70"/> <br />
+    <button t_op="translate" t_source="1" t_out="2">Check</button>
+    <span t_id="2"></span>
+    <br />
+    <button t_op="reveal" t_out="3">Show Answer</button>
+    <log t_id="3"></log>
+</div>
+
+<li>Everything makes sense.
+<div translate="true" expected="Ax MakesSense(x)">
+    Translation: <input t_id="1" size="70"/> <br />
+    <button t_op="translate" t_source="1" t_out="2">Check</button>
+    <span t_id="2"></span>
+    <br />
+    <button t_op="reveal" t_out="3">Show Answer</button>
+    <log t_id="3"></log>
+</div>
+</ol>
+
+<h3>An Aside on <em>Nothing</em> (optional)</h3>
+
+<p>The word <em>nothing</em> has an interesting philosophical history. In the early twentieth century, one of the most famous philosophers of the era, Martin Heidegger, wrote his most famous book, <em>Being and Time</em>. In that book he discusses, among other things, the concept of nothingness. If one reads Heidegger literally, he thought that the word <em>nothing</em> actually refers to a thing: namely, The Nothing. And once it was established that The Nothing is a thing, Heidegger went on to describe the properties of The Nothing. In particular, he felt the need to tackle the question: what does The Nothing do? And he had an answer: The Nothing <em>noths</em>. Thus, at any given moment, what The Nothing is doing is this: it is noth-ing.</p>
+
+<p>Heidegger's more logically minded colleagues thought this idea was rather silly, and accused Heidegger of simply being confused about the logical properties of the word <em>nothing</em>. In essence, they thought Heidegger had fallen into the trap of seeing <em>nothing</em> as a name, in just the way I described in the last section. If we see <em>nothing</em> as a name, then we have a lot of difficult questions to answer: What is this Nothing? What are its properties? And what does it do all day? On the other hand, if you simply recognize that <em>nothing</em> is not a name, but has a different logical function, then none of these questions arise.</p>
+
+<p>Now it may be that Heidegger's colleagues took him too literally. (I'm not a Heidegger scholar, so I don't know for sure.) But whatever the case may be, "The Nothing Noths" became a symbol for how <em>not</em> to do philosophy, and also for the need to know some logic if you want to analyze ordinary language. The story has been passed down from teacher to student for generations, right up to the present day.</p>
+
+<h3>Pronouns</h3>
+
+<p>Pronouns &mdash; words like <em>he</em>, <em>she</em>, <em>it</em>, <em>they</em>, etc. &mdash; can be used in two different ways. First, a pronoun is sometimes just a shorthand for a word or phrase that occurred previously. An example is the sentence:</p>
+
+<ul>
+<li>Aaron is tall, and <u>he</u> is also smart.
+</ul>
+
+<p>The pronoun <em>he</em> is just short for <em>Aaron</em>. This sort of pronoun doesn't have any counterpart in logical notation; when translating, we just have to use the name <em>Aaron</em> twice:</p>
+
+<ul>
+<li><log>IsTall(aaron) &amp; IsSmart(aaron)</log>
+</ul>
+
+<p>The second use of pronouns is more complicated. In this case, the pronoun is actually a disguised quantifier, and needs to be treated as such in translation. Consider the following:</p>
+
+<ul>
+<li>If someone is tall, he is also smart.
+</ul>
+
+<p>Here <em>someone</em> and <em>he</em> are pronouns of the second type. They are translated using quantifiers and variables. The above sentence goes into logical notation as follows:</p>
+
+<ul>
+<li><log>Ax [Tall(x) -&gt; Smart(x)]</log>
+</ul>
+
+<p>You can think of the first <log>x</log> as representing <em>someone</em> and the second as representing <em>he</em>. Here's another, trickier case:</p>
+
+<ul>
+<li>Everyone who owns a cat feeds it.
+</ul>
+
+<p>Here we have two pronouns, <em>Everyone</em> and <em>it</em>. Both will be translated as variables as before, but they will be translated as <em>different</em> variables, since one refers to a cat and the other to the cat's owner. The correct translation is as follows:</p>
+
+<ul>
+<li><log>Ax Ay [(IsACat(y) &amp; Owns(x, y)) -&gt; Feeds(x, y)]</log>
+</ul>
+
+<p>Here the pronoun <em>it</em> superficially seems to be of the first type: if &quot;refers back&quot; to the phrase <em>a cat</em>. But it is really of the second type.</p>
+
+<h4>Practice</h4>
+
+<p>Use predicates <log>Lazy, Stupid, Glass, Fragile, Diamond, Square, Green, Above</log>.</p>
+
+<ol>
+<li>Either Amy is lazy, or she is stupid.
+<div translate="true" expected="Lazy(amy) | Stupid(amy)">
+    Translation: <input t_id="1" size="70"/> <br />
+    <button t_op="translate" t_source="1" t_out="2">Check</button>
+    <span t_id="2"></span>
+    <br />
+    <button t_op="reveal" t_out="3">Show Answer</button>
+    <log t_id="3"></log>
+</div>
+
+<li>If something is glass, it is fragile.
+<div translate="true" expected="Ax [Glass(x) -> Fragile(x)]">
+    Translation: <input t_id="1" size="70"/> <br />
+    <button t_op="translate" t_source="1" t_out="2">Check</button>
+    <span t_id="2"></span>
+    <br />
+    <button t_op="reveal" t_out="3">Show Answer</button>
+    <log t_id="3"></log>
+</div>
+
+<li>If something is a diamond, it is green.
+<div translate="true" expected="Ax [Diamond(x) -> Green(x)]">
+    Translation: <input t_id="1" size="70"/> <br />
+    <button t_op="translate" t_source="1" t_out="2">Check</button>
+    <span t_id="2"></span>
+    <br />
+    <button t_op="reveal" t_out="3">Show Answer</button>
+    <log t_id="3"></log>
+</div>
+
+<li><b>Bonus:</b> Every square has a diamond above it.
+<div translate="true" expected="Ax [Square(x) -> Ey (Diamond(y) & Above(y, x))]">
+    Translation: <input t_id="1" size="70"/> <br />
+    <button t_op="translate" t_source="1" t_out="2">Check</button>
+    <span t_id="2"></span>
+    <br />
+    <button t_op="reveal" t_out="3">Show Answer</button>
+    <log t_id="3"></log>
+</div>
+</ol>
+
+
+<h3>Complex Sentences</h3>
+
+<p>We have now covered all the basics of translation with quantifiers.
+But things can get more complicated in a couple of different ways. First, some of the above sentences can be joined together with connectives. For example, we have the sentence:</p>
+
+<ul>
+<li>All squares are large, but some diamonds are small.
+</ul>
+
+<p>This sentence has <em>All squares are large</em> and <em>Some diamonds are small</em> joined together with <em>but</em>. To translate the whole sentence, just translate its parts one at a time. Here, it's good to recall the step-by-step method of translation that you learned in <a href="lecture3.html">lesson 3</a>. Applying that method here, we get the following:
+<ol>
+<li>All squares are large, but some diamonds are small.
+<li>(All squares are large) <log>&amp;</log> (some diamonds are small)
+<li><log>Ax (Square(x) -&gt; Large(x)) &amp;</log> (some diamonds are small)
+<li><log>Ax (Square(x) -&gt; Large(x)) &amp; Ex (Small(x) &amp; Diamond(x))</log>
+</ol>
+At each stage, we're just doing a partial translation. On line 2, we convert our big sentence into the conjunction of two smaller sentences, but we put off translating those smaller sentences until lines 3 and 4. That way, we break the problem down into simpler problems. And so, bit by bit, we create the correct translation.</p>
+
+<p>In other cases, the sentence we want to translate takes the form <em>All Fs are G</em>, <em>Some Fs are G</em>, etc., but the phrases that fill in for <em>F</em> and <em>G</em> are complicated.For example, take the sentence:
+<ul>
+<li>All large squares are blue.
+</ul>
+This is an <em>All Fs are G</em> sentence, with <em>F</em> filled in by <em>large square</em>. Here, as before, we tackle the sentence one step at a time.
+<ol>
+<li>All large squares are blue.
+<li><log>Ax [x</log> is a large square <log>-&gt; Blue(x)]</log>
+<li><log>Ax [(Large(x) &amp Square(x)) -&gt; Blue(x)]</log>
+</ol>
+On line 2, we translated <em>All large squares are blue</em> in the usual way, except that we left <em>large square</em> untranslated. By doing this, we reduced the translation problem to a simpler one: translating <log>x</log> <em>is a large square</em>. The correct way to translate this sentence is: <log>Large(x) &amp; Square(x)</log>. So on line 3, we went ahead and translated it that way, which completed the whole sentence.</p>
+
+<p>Here's another example:
+<ul>
+<li>Some blue squares are small.</li>
+</ul>
+Again, we translate this sentence step by step:
+<ol>
+<li>Some blue squares are small.
+<li><log>Ex [x </log>is a blue square<log> &amp; Small(x)]</log>
+<li><log>Ex [Blue(x) &amp; Square(x) &amp; Small(x)]</log>
+</ol>
+Here we use the fact that <log>x</log> <em>is a blue square</em> is translated <log>Blue(x) &amp; Square(x)</log>.</p>
+
+<p>Finally, some sentences are even trickier to translate, because while they take the form <em>All Fs are G</em>, <em>Some Fs are G</em> or <em>No Fs are G</em>, the phrases <em>F</em> and/or <em>G</em> have quantifiers of their own. Here's an example:
+<ul>
+<li>Everyone who owns a dog is an early riser.</li>
+</ul>
+
+
+<p>Let's tackle this sentence one step at a time. Clearly, this is an &quot;All F's are G's&quot; sentence, so we can write:</p>
+
+<ul>
+<li><log>Ax [x</log> owns a dog <log>-&gt; x</log> is an early riser<log>]</log>
+</ul>
+
+<p>At this point, the problem reduces to translating &quot;<log>x</log> owns a dog</log>&quot; and &quot;<log>x</log> is an early riser.&quot; For the latter, we just invent a predicate, <log>IsAnEarlyRiser</log>. This gives us:</p>
+
+<ul>
+<li><log>Ax [x</log> owns a dog <log>-&gt; IsAnEarlyRiser(x)]</log>
+</ul>
+
+<p>We could handle &quot;<log>x</log> owns a dog&quot; the same way, but there is a better way of handling it. The sentence &quot;<log>x</log> owns a dog&quot; means that there is some dog that <log>x</log> owns. Thus, it is expressed as follows:</p>
+
+<ul>
+<li><log>Ey (IsADog(y) &amp; Owns(x, y))</log>
+</ul>
+
+<p>Plugging this into the previous sentence yields the following:</p>
+
+<ul>
+<li><log>Ax [Ey (IsADog(y) &amp; Owns(x, y)) -&gt; IsAnEarlyRiser(x)]</log>
+</ul>
+
+<h4>Practice</h4>
+
+<p>NOTE: There will be some patterns that don't exactly match the examples above, but please try to see if you can figure them out anyway. It's OK if you can't get all the answers, but try to get as many as you can.</p>
+
+<p>Use predicates <log>Square, Diamond, Large, Small, Blue, Green, LeftOf, RightOf</log>.</p>
+
+<ol>
+<li>All diamonds are large.
+<div translate="true" expected="Ax [Diamond(x) -> Large(x)]">
+    Translation: <input t_id="1" size="70"/> <br />
+    <button t_op="translate" t_source="1" t_out="2">Check</button>
+    <span t_id="2"></span>
+    <br />
+    <button t_op="reveal" t_out="3">Show Answer</button>
+    <log t_id="3"></log>
+</div>
+
+<li>Some squares are small.
+<div translate="true" expected="Ex [Square(x) & Small(x)]">
+    Translation: <input t_id="1" size="70"/> <br />
+    <button t_op="translate" t_source="1" t_out="2">Check</button>
+    <span t_id="2"></span>
+    <br />
+    <button t_op="reveal" t_out="3">Show Answer</button>
+    <log t_id="3"></log>
+</div>
+
+<li>All small squares are blue.
+<div translate="true" expected="Ax [(Small(x) & Square(x)) -> Blue(x)]">
+    Translation: <input t_id="1" size="70"/> <br />
+    <button t_op="translate" t_source="1" t_out="2">Check</button>
+    <span t_id="2"></span>
+    <br />
+    <button t_op="reveal" t_out="3">Show Answer</button>
+    <log t_id="3"></log>
+</div>
+
+<li>Some large diamonds are not blue.
+<div translate="true" expected="Ex [Large(x) & Diamond(x) & ~Blue(x)]">
+    Translation: <input t_id="1" size="70"/> <br />
+    <button t_op="translate" t_source="1" t_out="2">Check</button>
+    <span t_id="2"></span>
+    <br />
+    <button t_op="reveal" t_out="3">Show Answer</button>
+    <log t_id="3"></log>
+</div>
+
+<li>Some squares are large, and some diamonds are also large.
+<div translate="true" expected="Ex [Large(x) & Square(x)] & Ey [Large(y) & Diamond(y)]">
+    Translation: <input t_id="1" size="70"/> <br />
+    <button t_op="translate" t_source="1" t_out="2">Check</button>
+    <span t_id="2"></span>
+    <br />
+    <button t_op="reveal" t_out="3">Show Answer</button>
+    <log t_id="3"></log>
+</div>
+
+<li>All squares and diamonds are small. (Tricky!)
+<div translate="true" expected="Ax [(Square(x) | Diamond(x)) -> Small(x)]">
+    Translation: <input t_id="1" size="70"/> <br />
+    <button t_op="translate" t_source="1" t_out="2">Check</button>
+    <span t_id="2"></span>
+    <br />
+    <button t_op="reveal" t_out="3">Show Answer</button>
+    <log t_id="3"></log>
+</div>
+
+<li>All diamonds are small and green.
+<div translate="true" expected="Ax [Diamond(x) -> (Small(x) & Green(x))]">
+    Translation: <input t_id="1" size="70"/> <br />
+    <button t_op="translate" t_source="1" t_out="2">Check</button>
+    <span t_id="2"></span>
+    <br />
+    <button t_op="reveal" t_out="3">Show Answer</button>
+    <log t_id="3"></log>
+</div>
+
+<li>All diamonds are left of all squares.
+<div translate="true" expected="Ax [Diamond(x) -> Ay (Square(y) -> LeftOf(x,y))]">
+    Translation: <input t_id="1" size="70"/> <br />
+    <button t_op="translate" t_source="1" t_out="2">Check</button>
+    <span t_id="2"></span>
+    <br />
+    <button t_op="reveal" t_out="3">Show Answer</button>
+    <log t_id="3"></log>
+</div>
+
+<li>Every square is right of some diamond.
+<div translate="true" expected="Ax [Square(x) -> Ey (Diamond(y) & RightOf(x,y))]">
+    Translation: <input t_id="1" size="70"/> <br />
+    <button t_op="translate" t_source="1" t_out="2">Check</button>
+    <span t_id="2"></span>
+    <br />
+    <button t_op="reveal" t_out="3">Show Answer</button>
+    <log t_id="3"></log>
+</div>
+
+<li>Not all squares are large.
+<div translate="true" expected="Ex [Square(x) & ~Large(x)]">
+    Translation: <input t_id="1" size="70"/> <br />
+    <button t_op="translate" t_source="1" t_out="2">Check</button>
+    <span t_id="2"></span>
+    <br />
+    <button t_op="reveal" t_out="3">Show Answer</button>
+    <log t_id="3"></log>
+</div>
+
+<li>No square is left of any diamond.
+<div translate="true" expected="~Ex Ey [Square(x) & Diamond(y) & LeftOf(x, y)]">
+    Translation: <input t_id="1" size="70"/> <br />
+    <button t_op="translate" t_source="1" t_out="2">Check</button>
+    <span t_id="2"></span>
+    <br />
+    <button t_op="reveal" t_out="3">Show Answer</button>
+    <log t_id="3"></log>
+</div>
+
+<li>No diamond is left of anything.
+<div translate="true" expected="~Ex Ey [Diamond(x) & LeftOf(x, y)]">
+    Translation: <input t_id="1" size="70"/> <br />
+    <button t_op="translate" t_source="1" t_out="2">Check</button>
+    <span t_id="2"></span>
+    <br />
+    <button t_op="reveal" t_out="3">Show Answer</button>
+    <log t_id="3"></log>
+</div>
+
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+</body>
+</html>

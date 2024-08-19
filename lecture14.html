@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>PHI 401 Logic - Week 14</title>
+    <meta charset="UTF-8" />
+<link rel="stylesheet" type="text/css" href="logic-1724095155.css" />
+
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-database.js"></script>
+
+<script language="JavaScript" src="logic-1724095155.js"></script>
+    <script language="JavaScript" src="lecture_toolbar-1724095155.js"></script>
+
+    <script language="JavaScript" src="textBehavior-1724095155.js"></script>
+    <script language="JavaScript" src="lectures-1724095155.js"></script>
+
+
+
+</head>
+
+<body>
+
+
+
+<article class="link">
+    <header>
+        <h2>Week 14: Quantifiers and Proofs</h2>
+    </header>
+
+
+
+<h3>Logical Implication vs. Tautological Implication</h3>
+
+<p>Let's recall the definition of logical implication, which we covered a few weeks back. One sentence logically implies another if there is no possible way for the first sentence to be true without the second sentence being true as well. The first sentence is then called the premise, and in general, we can have more than one premise. We say that several premises imply a further sentence, called the conclusion, if there is no way for the conclusion to be false when the premises are true.</p>
+
+<p>We also defined a special kind of logical implication, called <em>tautological implication</em>. Tautological implication is what truth tables test. Specifically, to see if a premise tautologically implies a conclusion, you create a truth table for the premise and conclusion. If there is a truth table row that assigns <em>true</em> to the premise and assigns <em>false</em> to the conclusion, then the premise does <em>not</em> tautologically imply the conclusion. If no such row exists, then the premise does tautologically imply the conclusion.</p>
+
+<p>Tautological implication is implication in virtue of the way the given sentences are built up via the five Boolean connectives: <log>~</log>, <log>&amp;</log>, <log>|</log>, <log>-&gt;</log>, <log>&lt;-&gt;</log>. Unfortunately, when you add quantifiers to the mix, the notion of tautological implication becomes less useful than we would like. To see why, let's consider a simple argument involving quantifiers. The premise is <log>Ax [Large(x) &amp; Square(x)]</log> and the conclusion is <log>Ax Large(x)</log>:
+
+<div class="argument">
+    <div>
+        <div><span>Ax [Large(x) &amp; Square(x)]</span></div>
+        <div>Ax Large(x)</div>
+    </div>
+</div>
+
+<p>The premise says that everything is a large square, and the conclusion says that everything is large. There is no way for the premise to be true without the conclusion being true also: if everything is a large square, it surely follows that everything s large. So, the argument is valid: the premise logically implies the conclusion.</p>
+
+<p>However, the premise does not <em>tautologically</em> imply the conclusion. The basic reason is that unlike the Boolean connectives, the quantifiers <log>A</log> and <log>E</log> do not have truth tables. Therefore, you cannot make a truth table for the above argument, at least not in a very useful way.</p>
+
+<p>To see why the quantifiers don't have truth values, let's recall what a truth table is. A truth table is a description of how the truth value of a whole sentence depends on the truth values of its parts. One of the simplest truth tables is for negation, which as you recall looks like this:</p>
+
+<div parsetree="~A" parse_options="hasTruthTable:true"></div>
+
+<p>Now suppose we tried to create a similar truth table for the sentence <log>Ax Large(x)</log>. We would have to show how the truth value of <log>Ax Large(x)</log> depends on the truth value of <log>Large(x)</log>. In particular, our truth table would have to specify two things: (a) the truth value of <log>Ax Large(x)</log> when <log>Large(x)</log> is true, and (b) the truth value of <log>Ax Large(x)</log> when <log>Large(x)</log> is false.</p>
+
+<p>When <log>Large(x)</log> is false, then <log>Ax Large(x)</log> has to be false too. But what about when <log>Large(x)</log> is true? The trouble is that even when <log>Large(x)</log> is true, the sentence <log>Ax Large(x)</log> could be either true or false. <log>Large(x)</log> says that <em>one particular x</em> is large. <log>Ax Large(x)</log> says that <em>every x</em> is large. Even if one particular object is large, it doesn't follow that every object is large, because some other object still might be small.</p>
+
+<p>Something similar holds for the quantifier <log>E</log>. If <log>Large(x)</log> is true, then <log>Ex Large(x)</log> is certainly true. But if <log>Large(x)</log> is false, then <log>Ex Large(x)</log> could be either true or false.</p>
+
+<p>For this reason, even though our argument is logically valid, we can't use truth tables to show that it is logically valid. The only way is to do a proof. (We'll see how to do a proof a bit later in this lesson.)</p>
+
+<p>As I said earlier, our argument is valid, but not tautologically valid. To further illustrate the distinction, consider the following argument, which is slightly different:</p>
+
+<div class="argument">
+    <div>
+        <div><span>Ax Large(x) &amp; Ay Square(y)</span></div>
+        <div>Ax Large(x)</div>
+    </div>
+</div>
+
+<p>This argument <em>is</em> tautologically valid. We can even prove it with a truth table, as follows.</p>
+
+<div parsetree="Ax Large(x) & Ay Square(y).Ax Large(x)" parse_options="hasTruthTable:true,ttPosition:'bottom'"></div>
+
+<p>Go ahead and do the truth table; it's not hard. You'll notice that truth values do not appear on the lowermost sentences, <log>Large(x)</log> and <log>Square(y)</log>. This is for the reason described earlier: their truth values don't predict the truth values of the sentences right above them, <log>Ax Large(x)</log> and <log>Ay Square(y)</log>. For this reason, we skip the sentences at the bottom and assign truth values to <log>Ax Large(x)</log> and <log>Ay Square(y)</log> directly. Despite this limitation, our truth table is not trivial. It shows the relation between the long sentence <log>Ax Large(x) &amp; Ay Square(y)</log> and its two components, <log>Ax Large(x)</log> and <log>Ay Square(y)</log>. And, our truth table provides enough information to show that the argument is valid, since there is no row that makes the premises true and makes the conclusion false. Thus, the truth table shows that the argument is not just valid, but tautologically valid.</p>
+
+<p>By contrast, let's go back to the previous argument. If we insist on making a truth table for that argument, this is what we get:</p>
+
+<div parsetree="Ax [Large(x) & Square(x)].Ax Large(x)" parse_options="hasTruthTable:true,ttPosition:'bottom'"></div>
+
+<p>When you expand the sentences and start doing the truth table, you'll find that truth values are only assigned to the sentences at the very top of the tree. That's because those sentences' truth values can't be predicted from the truth values of the sentences below them, for the reason discussed earlier. Therefore, although this argument does technically have a truth table, the truth table is pretty trivial. And, the second row of the truth table shows that the argument is not tautologically valid. Again, although the argument is not <em>tautologically</em> valid, it is still <em>logically</em> valid. It is simply valid in a way that the truth table method can't capture.</p>
+
+
+
+
+<h3>Logical Validity and Quantifiers</h3>
+
+<p>Now that we know that there are logically valid arguments that are not tautologically valid, let's look at a few such arguments. First, notice that any argument of the following form is logically valid:</p>
+
+<div class="argument">
+    <div>
+        <div><span>Ax F(x)</span></div>
+        <div>F(a)</div>
+    </div>
+</div>
+
+<p>For example, the following argument is logically valid:</p>
+
+<div class="argument">
+    <div>
+        <div><span>Ax Square(x)</span></div>
+        <div>Square(a)</div>
+    </div>
+</div>
+
+<p>Here we've just replaced the letter F with the predicate <log>Square</log>. Here's another logically valid argument of the same form:</p>
+
+<div class="argument">
+    <div>
+        <div><span>Ax [Square(x) &amp; Large(x)]</span></div>
+        <div>Square(a) &amp; Large(a)</div>
+    </div>
+</div>
+
+<p>Here, the role of <log>F(x)</log> is being played by the sentence <log>Square(x) &amp; Large(x)</log>. The reason these arguments are valid is that the first premise says that all objects have a certain property, and the conclusion says that a <em>particular</em> individual has that property.</p>
+
+<p>Another logically valid argument takes the following form:</p>
+
+<div class="argument">
+    <div>
+        <div><span>F(a)</span></div>
+        <div>Ex F(x)</div>
+    </div>
+</div>
+
+<p>This is logically valid, because as long as <log>F</log> is true of the specific object <log>a</log>, it is safe to conclude that <em>some</em> object has the property <log>F</log>. As with the previous argument, the above argument is actually a whole family of logically valid arguments. For example, the following argument is logically valid:</p>
+
+<div class="argument">
+    <div>
+        <div><span>IsThirsty(sarah)</span></div>
+        <div>Ex IsThirsty(x)</div>
+    </div>
+</div>
+
+<p>And so is this argument:</p>
+
+<div class="argument">
+    <div>
+        <div><span>IsThirsty(sarah) &amp; IsTired(sarah)</span></div>
+        <div>Ex [IsThirsty(x) &amp; IsTired(x)]</div>
+    </div>
+</div>
+
+<p>In each case, our premise says that a particular individual has a certain property. Our conclusion says something less specific: it says that <em>some individual or other</em> has this property. You need to be careful when making arguments of this form, because there are very similar looking arguments that are not logically valid. For example, the following is <b>not</b> logically valid:</p>
+
+<div class="argument">
+    <div>
+        <div><span>IsThirsty(sarah) &amp; IsTired(michael)</span></div>
+        <div>Ex [IsThirsty(x) &amp; IsTired(x)]</div>
+    </div>
+</div>
+
+<p>The premise says that one person (Sarah) is thirsty, while another person (Michael) is tired. However, it does not follow from this that any <em>one</em> person is <em>both</em> thirsty and tired. So the conclusion does not follow logically from the premise, and the argument is not logically valid.</p>
+
+<p>Our third family of logically valid arguments involves the negation sign. Both of the sentences below are logically equivalent: each logically implies the other.</p>
+
+<ul>
+<li><log>~Ax F(x)</log>
+<li><log>Ex ~F(x)</log>
+</ul>
+
+<p>In the more advanced study of logic, this fact is very useful. Similarly, the following two sentences are logically equivalent:</p>
+
+<ul>
+<li><log>~Ex F(x)</log>
+<li><log>Ax ~F(x)</log>
+</ul>
+
+<p>To remember these equivalences, think of the negation sign being &quot;pushed through&quot; the quantifier from left to right or from right to left. When we push a negation sign through a quantifier, it changes the type of quantifier, from <log>A</log> to <log>E</log> or from <log>E</log> to <log>A</log>.</p>
+
+<p>Putting these implications together, we can create the following chain of reasoning:</p>
+
+<ol>
+<li><log>Ax F(x)</log>
+<li><log>~~Ax F(x)</log>
+<li><log>~Ex~F(x)</log>
+</ol>
+
+<p>On the second line, we just add a double negation, <log>~~</log>, to the first line. This is possible because any sentence is tautologically equivalent to its double negation. On line 3, we take the second negation sign &mdash; the one immediately before the <log>A</log> on line 2 &mdash; and push it through that <log>A</log>, thereby changing it to an <log>E</log>.</p>
+
+<p>This chain of reasoning shows that line 3 follows logically from line 1. Also, each step is reversible, because it represents a logical equivalence, not just a logical implication. Thus, not only does line 1 logically imply line 3, but line 3 logically implies line 1 as well. Therefore, lines 1 and 3 are logically equivalent. That is, the following two sentences are logically equivalent to each other:
+<ul>
+<li><log>Ax F(x)</log>
+<li><log>~Ex ~F(x)</log>
+</ul>
+This shows that we can define <log>A</log> in terms of <log>E</log>. Completely parallel reasoning shows that the following two sentences are also logically equivalent:
+<ul>
+<li><log>Ex F(x)</log>
+<li><log>~Ax ~F(x)</log>
+</ul>
+Thus, we could define <log>E</log> in terms of <log>A</log> if we want.</p>
+
+<h3>Alternating Quantifiers (optional)</h3>
+
+<p>Here's one final logical implication:</p>
+
+<div class="argument">
+    <div>
+        <div><span>Ey Ax F(x, y)</span></div>
+        <div>Ax Ey F(x, y)</div>
+    </div>
+</div>
+
+<p>What makes this implication interesting is that the reverse argument is <b>not valid</b>. By the reverse argument I mean:</p>
+
+<div class="argument">
+    <div>
+        <div><span>Ax Ey F(x, y)</span></div>
+        <div>Ey Ax F(x, y)</div>
+    </div>
+</div>
+
+<p>To see why this is not valid, let's make <log>F</log> concrete. Suppose that <log>F(x, y)</log> means that <log>x</log> and <log>y</log> are numbers, and that <log>y</log> is greater than <log>x</log>. Then the premise above says that for every number <log>x</log>, there is a greater number <log>y</log>. And this is true: for every number, there is a greater number. On the other hand, the conclusion says that there is a single number <log>y</log> which is greater than all numbers <log>x</log>. And this is false: there is no such thing as the greatest number. So the premise of the argument is true, but the conclusion is false. The argument itself is not valid.</p>
+
+<p>The failure of the second argument to be valid is the source of a lot of the complexity of quantifiers. If both arguments were valid, then there would be something like a truth table test for validity. But they aren't, and there isn't. It is actually known that no simple test for validity exists. Essentially the only way to show that an argument is valid is to try to find a proof. The reasons for this are rather involved, though, and would be covered in a more advanced logic course.</p>
+
+<h3>Quantifiers and Proofs</h3>
+
+<p>We've now seen several logically valid arguments that are not tautologically valid. Since they're not tautologically valid, we can't use truth tables to show that they are valid. So, how <em>can</em> we show that they are valid? Before I answer, recall that in the middle part of this course, we found that there are two ways to show that an argument is tautologically valid. First, we can use a truth table. Or second, we can find a proof. When it comes to logical validity, truth tables are no longer available, but we can still use proofs.</p>
+
+<p>This holds because of a truly remarkable fact about logical validity: every logically valid argument has a proof. That is, if an argument is logically valid, even if it is not tautologically valid, then there is a proof, whose premises are the premises of the argument, and whose conclusion is the argument's conclusion.</p>
+
+<p>This fact about validity is by no means obvious. It took logicians many years to prove it. But now that we know it, we can put it to good effect.</p>
+
+<p>The only catch is that in order to be able to prove all logically valid arguments, we need to add some new inference rules. By now, you've seen the pattern. Every important symbol has both an Elim rule and an Intro rule. This holds true for quantifiers as well. There is an <log>A</log> Elim rule, an <log>A</log> Intro rule, an <log>E</log> Elim rule, and an <log>E</log> Intro rule.</p>
+
+
+<h3>Easy Rules</h3>
+
+
+<p>Let's start with the good news. Of the four rules to be covered this week, two are pretty straightforward, and only one of the four involves subproofs. The idea behind the two "easy" rules is relatively simple. In fact, the two "easy" rules correspond directly to two of the valid arguments that we discussed earlier.
+
+<h3>The <log>A</log> Elim Rule</h3>
+
+<p>Our first rule is <b><log>A</log> Elim</b>. This rule is also called <b>universal instantiation</b>. The basic form is as follows:</p>
+
+<div class="argument">
+    <div>
+        <div><span>Ax F(x)</span></div>
+        <div>F(a)</div>
+    </div>
+</div>
+
+<p>Here, <log>Ax F(x)</log> is any sentence whose main connective is <log>A</log>. That is, it is any sentence where the quantifier <log>A</log> appears at the top of the parse tree. Examples are <log>Ax Small(x)</log> and <log>Ax [Large(x) -&gt; Square(x)]</log>. Both of these sentences can be the premise of the <log>A</log> Elim rule, because both have <log>A</log> as the main connective. On the other hand, the following sentence cannot be a premise of <log>A</log> Elim: <log>Ax Square(x) &amp; Ay Small(y)</log>. Even though the sentence <em>begins</em> with <log>A</log>, its <em>main connective</em> is <log>&amp;</log>, not <log>A</log>.</p>
+
+<p>So how does the <log>A</log> Elim rule work? This rule says that when you have a sentence <log>Ax F(x)</log>, you can take the <log>F(x)</log> part, replace the variable <log>x</log> with a name of your choosing <log>a</log>, and infer the resulting sentence <log>F(a)</log>. For example: if you have a sentence <log>Ax IsHungry(x)</log>, you can use <log>A</log> Elim to infer the sentences <log>IsHungry(michael)</log>, <log>IsHungry(sarah)</log>, <log>IsHungry(brian)</log>, etc.</p>
+
+<p>Similarly, if you have the sentence <log>Ax [Square(x) -&gt; Large(x)]</log>, you can infer any of the sentences <log>Square(a) -&gt; Large(a)</log>, <log>Square(b) -&gt; Large(b)</log>, <log>Square(c) -&gt; Large(c)</log>, etc. The only requirement is that you must replace all the <log>x</log>'s with the same name. You cannot, for example, infer <log>Square(a) -&gt; Large(b)</log>.</p>
+
+<p>Also, the rule works with any variable, not just <log>x</log>. That is, from <log>Ay F(y)</log>, you are allowed to infer <log>F(a)</log>, <log>F(b)</log>, etc. In this case, you replace every <log>y</log> with the name you chose. Please note, though, that you need to use a <em>name</em>, not a variable. You can't infer <log>F(x)</log>, or <log>F(y)</log>, etc. This is because you're making an inference from a <em>general</em> statement, which involves a quantifier, to a <em>particular</em> statement, which always involves a name.</p>
+
+<p>The idea behind <log>A</log> Elim is fairly simple. The sentence <log>Ax F(x)</log> says that <em>all objects</em> have the property <log>F</log>. If all objects have the property <log>F</log>, then <em>in particular</em>, the object named by <log>a</log> has the property <log>F</log>, as does the object named by <log>b</log>, the object named by <log>michael</log>, etc. And so, our original sentence <log>Ax F(x)</log> should logically imply <log>F(a)</log>, or <log>F(b)</log>, or <log>F(michael)</log>, etc.</p>
+
+
+
+<h3><log>A</log> Elim in a Proof</h3>
+
+<p>Here's an example of the <log>A</log> Elim rule in action:</p>
+
+<div proof="json">
+{"premises":[{"s":"Ax [Round(x) -> Large(x)]","l":1},{"s":"Round(a)","l":2}],"body":[{"s":"Round(a) -> Large(a)","l":3,"r":"A Elim","c":[1]},{"s":"Large(a)","l":4,"r":"-> Elim","c":[2,3]}],"hasDialog":false}
+</div>
+
+<p>The crucial step is on line 3. This line was derived from line 1, using the <log>A</log> Elim rule. The variable <log>x</log> was replaced by the name <log>a</log>.</p>
+
+<p>Note how the <log>A</log> Elim rule is used in conjunction with the other rules. Our first premise says that all round objects are large, and our second premise says that <log>a</log> is round. It intuitively follows that <log>a</log> is large. To show that it <em>formally</em> follows, we use the <log>A</log> Elim rule. Specifically: premise 1 says that <log>Round(x) -&gt; Large(x)</log> is true of everything. If it's true of everything, then it's true in particular of <log>a</log>. Thus, <log>Round(a) -&gt; Large(a)</log> ought to follow. From that sentence, together with <log>Round(a)</log>, we get <log>Large(a)</log>.</p>
+
+
+
+<h3>A Restriction on <log>A</log> Elim</h3>
+
+<p>There is one small restriction on <log>A</log> Elim, which rarely arises in practice but which I'll describe for the sake of completeness. Consider the following sentence:
+<ul>
+<li><log>Ax [F(x) -&gt; Ex G(x)]</log>
+</ul>
+<p>Notice that the variable <log>x</log> is used with two different quantifiers. It would be unusual to find such a sentence, but suppose you did anyway. And suppose you wanted to apply the <log>A</log> Elim rule to this sentence. If you followed the above instructions literally, you would replace <em>all</em> the occurrences of <log>x</log> with a name. The result would be something like this:
+<ul>
+<li><log>F(a) -&gt; Ea G(a)</log>
+</ul>
+<b><em>This is wrong, however.</em></b> The correct way to apply <log>A</log> Elim is as follows:
+<ul>
+<li><log>F(a) -&gt; Ex G(x)</log>
+</ul>
+The <log>x</log>'s associated with the second quantifier <log>Ex</log> are not replaced.</p>
+
+<p>To see what's going on, let's parse the original sentence:</p>
+
+<div parsetree="Ax [F(x) -> Ex G(x)]"></div>
+
+<p>Go ahead and expand the sentence fully. Some of the <log>x</log>'s in the tree are associated with the quantifier <log>A</log>, which appears near the top: they can be traced directly to that <log>A</log>. However, the <log>x</log>'s at the bottom of the tree are not associated with the quantifier <log>A</log>. They are associated instead with the quantifier <log>E</log>, which appears near the bottom of the tree.</p>
+
+<p>The only <log>x</log>'s that get replaced by <log>a</log> are those that are associated with the <log>A</log> at the top of the tree; the others don't get replaced. You can see this by looking at a parse tree for the sentence after replacement:</p>
+
+<div parsetree="F(a) -> Ex G(x)"></div>
+
+<p>Fortunately, this sort of case is rare in practice. We usually don't use the same variable with different quantifiers, even though it is legal to do so. Our original sentence is equivalent to the following: <log>Ax [F(x) -&gt; Ey G(y)]</log>. In this sentence, the second quantifier uses a different variable, <log>y</log>. In this case, you really can just go ahead and replace each <log>x</log> with <log>a</log>. The result is <log>F(a) -&gt; Ey G(y)</log>.</p>
+
+
+
+<h3>The <log>E</log> Intro Rule</h3>
+
+<p>Our next rule is called <b><log>E</log> Intro</b>. This rule is also known as <b>existential generalization</b>. It is the opposite of <log>A</log> Elim in two ways. First, it involves the quantifier <log>E</log> instead of <log>A</log>. And second, instead of removing a quantifier, it adds one. The general form is as follows:</p>
+
+<div class="argument">
+    <div>
+        <div><span>F(a)</span></div>
+        <div>Ex F(x)</div>
+    </div>
+</div>
+
+<p>Here <log>a</log> is any name, <log>x</log> is any variable, and <log>F(a)</log> is any sentence. The conclusion, <log>Ex F(x)</log>, is formed by replacing the <log>a</log>'s with <log>x</log>'s and adding a quantifier <log>Ex</log>. Here are some examples:</p>
+
+<div class="argument">
+    <div>
+        <div>Square(joe)</div>
+        <div><span>Ex Square(x)</span></div>
+    </div>
+</div>
+
+<p />
+
+<div class="argument">
+    <div>
+        <div>Large(b) &amp; Round(b)</div>
+        <div><span>Ey [Large(y) &amp; Round(y)]</span></div>
+    </div>
+</div>
+
+<p />
+
+<div class="argument">
+    <div>
+        <div>Square(mary) -&gt; Blue(mary)</div>
+        <div><span>Ez [Square(z) -&gt; Blue(z)]</span></div>
+    </div>
+</div>
+
+<p>Notice that in the conclusion, it is required that <log>E</log> be the main connective. This may require adding of parentheses around <log>F(x)</log>, as we have done in two of the above examples.</p>
+
+<p>The rationale behind the rule is this. Suppose that <log>F(a)</log> holds. Then <log>F</log> is true of some object, namely <log>a</log>. It follows that <log>F</log> is true of <em>some</em> object; thus, <log>Ex F(x)</log> follows.</p>
+
+<p>Here's a &quot;live&quot; example of the rule:</p>
+
+<div proof="json">
+{"premises":[{"s":"Ax F(x)","l":1}],"body":[{"s":"F(a)","l":2,"r":"A Elim","c":[1]},{"s":"Ex F(x)","l":3,"r":"E Intro","c":[2]}],"hasDialog":false}
+</div>
+
+<p>The rule is applied on line 3. Notice how we have used <log>E</log> Intro in conjunction with <log>A</log> Elim. The proof shows that the statement <em>Everything is</em> <log>F</log> logically implies <em>Something is</em> <log>F</log>.</p>
+
+<p>This little proof also illustrates a proof technique. Namely: we get rid of the quantifier; do something with the quantifier-free sentence; and then tack a quantifier back on. This is, in fact, one of our fundamental techniques when constructing proofs with quantifiers. A slightly more elaborate example is as follows:</p>
+
+<div proof="json">
+{"premises":[{"s":"Ax Ay [F(x) & F(y)]","l":1}],"body":[{"s":"Ay [F(a) & F(y)]","l":2,"r":"A Elim","c":[1]},{"s":"F(a) & F(b)","l":3,"r":"A Elim","c":[2]},{"s":"F(b) & F(a)","l":4,"r":"Taut Con","c":[3]},{"s":"Ey [F(y) & F(a)]","l":5,"r":"E Intro","c":[4]},{"s":"Ex Ey [F(y) & F(x)]","l":6,"r":"E Intro","c":[5]}],"hasDialog":false}
+</div>
+
+<p>It's worth going over this proof line-by-line. In the first two lines, we apply <log>A</log> Elim to get rid of the quantifiers. We get rid of the <log>Ax</log> first, then the <log>Ay</log>. (Note that we have to do it in that order: getting rid of <log>Ay</log> first would be impossible.) This leaves us with the sentence <log>F(a) &amp; F(b)</log>, which has no quantifiers. Since it has no quantifiers, we can reason with it using only the non-quantifier rules. In particular, we can use the Taut Con rule, which is a shortcut for all the Boolean rules. We do this on line 4, getting <log>F(b) &amp; F(a)</log> from <log>F(a) &amp; F(b)</log>. (If we wanted, we could have avoided Taut Con and used the other rules instead.) Finally, we apply the <log>E</log> Intro rule twice, adding the quantifiers <log>Ey</log> and <log>Ex</log> in that order. Notice that we have to add the quantifiers in the <em>reverse</em> order to the first two steps of the proof, and also reverse to the order that they appear in the conclusion.</p>
+
+<h3>The <log>A</log> Intro Rule</h3>
+
+<p>Now let's look at the tricky rules. The first is <b><log>A</log> Intro</b>, which is sort of the reverse of <log>A</log> Elim. (This rule is also known as <b>universal generalization</b>.) Of the rules covered this week, <log>A</log> Intro is the one rule that involves subproofs. The general form is as follows:</p>
+
+<div class="argument">
+    <div>
+        <div>
+            <div class="subproof">
+                <div>a</div>
+                <div>F(a)</div>
+            </div>
+        </div>
+        <div>Ax F(x)</div>
+    </div>
+</div>
+
+<p>There's a lot of information in that little inference, so let's go over it in detail. To apply the <log>A</log> Intro rule, we first need a subproof. In particular, we need a subproof with a conclusion <log>F(a)</log>. From this subproof, we infer the conclusion <log>Ax F(x)</log>. This conclusion, <log>Ax F(x)</log>, is formed from <log>F(a)</log> by first replacing the name <log>a</log> with the variable <log>x</log>, and then tacking on a quantifier <log>Ax</log>.</p>
+
+<p>The subproof is unusual, in that it has a name <log>a</log> instead of a sentence for a hypothesis. This is the one and only place in our system where we use a name instead of a sentence as a hypothesis. We'll explain the reason for this shortly.</p>
+
+<p>Here are some examples of what you can infer using the <log>A</log> Intro rule:</p>
+
+<div class="argument">
+    <div>
+        <div>
+            <div class="subproof">
+                <div>a</div>
+                <div>IsHungry(a)</div>
+            </div>
+        </div>
+        <div>Ax IsHungry(x)</div>
+    </div>
+</div>
+
+<p>Here we have a subproof with hypothesis <log>a</log> and conclusion <log>IsHungry(a)</log>, and from this subproof, we infer the sentence <log>Ax IsHungry(x)</log>.</p>
+
+<div class="argument">
+    <div>
+        <div>
+            <div class="subproof">
+                <div>b</div>
+                <div>Square(b)</div>
+            </div>
+        </div>
+        <div>Ay Square(y)</div>
+    </div>
+</div>
+
+<p>This is similar to the previous example, but it shows that we can use any name, not just <log>a</log> (here we used <log>b</log> instead), and we can use any variable, not just <log>x</log> (here we used <log>y</log>).</p>
+
+<div class="argument">
+    <div>
+        <div>
+            <div class="subproof">
+                <div>a</div>
+                <div>Square(a) -&gt; Large(a)</div>
+            </div>
+        </div>
+        <div>Ax [Square(x) -&gt; Large(x)]</div>
+    </div>
+</div>
+
+<p>This is just like the other examples, except that the subproof's conclusion is a complex sentence in its own right. But here the same rule applies: replace the name with a variable and add a quantifier, using parentheses in this case to preserve grouping.</p>
+
+<p>Now let's see how to use the rule in a proof:</p>
+
+<div proof="json">
+{"premises":[{"s":"","l":1}],"body":[{"p":{"premises":[{"s":"a","l":2}],"body":[{"s":"F(a) -> F(a)","l":3,"r":"Taut Con","c":[]}]},"l":4},{"s":"Ax [F(x) -> F(x)]","l":5,"r":"A Intro","c":[4]}],"hasDialog":false}
+</div>
+
+<p>Line 3 isn't important; it's just there for the sake of example. (But it's also a good illustration of the Taut Con rule.) The real action occurs on line 4, where we apply the <log>A</log> Intro rule. Here are the relevant features:</p>
+
+<ul>
+<li>The sentence being justified &mdash; in this case, the sentence on line 4 &mdash; is an <log>A</log>-sentence: a sentence whose main connective is <log>A</log>.
+<li>The rule used is <log>A</log> Intro.
+<li>A single subproof is cited.
+<li>The <b>conclusion</b> of this subproof is just like the sentence on line 4, except that the quantifier has been removed and the <log>x</log>'s have been replaced by a name <log>a</log>.
+<li>The <b>hypothesis</b> of the subproof is the name <log>a</log>. This is the one and only case in which a name can be used as a step in a proof.
+</ul>
+
+<h3>The Rationale of <log>A</log> Intro</h3>
+
+<p>Let's go back to the general form of the rule:</p>
+
+<div class="argument">
+    <div>
+        <div>
+            <div class="subproof">
+                <div>a</div>
+                <div>F(a)</div>
+            </div>
+        </div>
+        <div>Ax F(x)</div>
+    </div>
+</div>
+
+<p>In the subproof, we're interpreting the name <log>a</log> in a very special way. We're not interpreting <log>a</log> as the name of a particular object, as we normally would. Instead, we're interpreting <log>a</log> as the name of an <em>arbitrary</em>, or <em>generic</em>, object. We're interpreting <log>a</log> as the name of a completely unspecified object. Basically, we're saying that <log>a</log> could be anything.</p>
+
+<p>If <log>a</log> can name anything, then proving that <log>a</log> has property <log>F</log> is tantamount to showing that <em>all</em> objects have property <log>F</log>. That's why we are allowed to derive the conclusion <log>Ax F(x)</log>.</p>
+
+<p>The hypothesis <log>a</log> should basically be understood as shorthand for: "Let <log>a</log> be an arbitrary object." This assumption &mdash; that <log>a</log> is an arbitrary object &mdash; is the assumption from which the rest of the subproof proceeds. The subproof's conclusion, <log>F(a)</log>, is then proved <em>on the basis of</em> this assumption. Thus, by the end of the subproof, we have shown that <log>F(a)</log> can be derived on the assumption that <log>a</log> is arbitrary. This is what justifies our deriving the further conclusion <log>Ax F(x)</log>.
+
+<h3>The "New Name" Restriction</h3>
+
+<p>This idea &mdash; that the name in an <log>A</log> Intro inference refers to an arbitrary object &mdash; requires us to impose a certain formal restriction on the use of the name <log>a</log>. Specifically, in order to use a name <log>a</log> in this manner, as the name of an arbitrary object, we require that the name be <b>new to the proof</b> when it first appears as the subproof's hypothesis. In other words, when <log>a</log> appears as the hypothesis of the subproof, this must be <log>a</log>'s <em>first appearance</em> in the proof. If this restriction is not obeyed, then the inference is invalid and is marked as such by the proof editor.</p>
+
+<p>The reason for this restriction is that an arbitrary object is an object that we haven't made any assumptions about. If we have used the name <log>a</log> previously, then that means we <em>have</em> made assumptions about it. </p>
+
+
+
+<p>For example, look at the following proof.</p>
+
+<div proof="json">
+{"premises":[{"s":"Square(a)","l":1}],"body":[{"p":{"premises":[{"s":"a","l":2}],"body":[{"s":"Square(a)","l":3,"r":"Reit","c":[1]}]},"l":4},{"s":"Ax Square(x)","l":5,"r":"A Intro","c":[4]}],"hasDialog":false}
+</div>
+
+<p>The <log>a</log> on line 2 says "let <log>a</log> be an arbitrary object." Unfortunately, this is inconsistent with line 1, where it is specified that <log>a</log> is a square. Since maybe not all objects are squares, we can't declare that <log>a</log> is a square and then go on to declare that <log>a</log> is arbitrary. More formally, the "new name" restriction is violated. The proof editor detects this violation when we invoke <log>A</log> Intro on line 4, and marks that line as incorrect.</p>
+
+
+
+<p>On the other hand, the following proof obeys the new name restriction and is correct:</p>
+
+<div proof="json">
+{"premises":[{"s":"Ax [Square(x) -> Small(x)]","l":1},{"s":"Ax Square(x)","l":2}],"body":[{"p":{"premises":[{"s":"a","l":3}],"body":[{"s":"Square(a)","l":4,"r":"A Elim","c":[2]},{"s":"Square(a) -> Small(a)","l":5,"r":"A Elim","c":[1]},{"s":"Small(a)","l":6,"r":"-> Elim","c":[5,4]}]},"l":7},{"s":"Ax Small(x)","l":8,"r":"A Intro","c":[7]}],"hasDialog":false}
+</div>
+
+<p>When <log>a</log> is introduced on line 3 as an arbitrary name, this is its first appearance in the proof, as required.</p>
+
+<p>Notice that in this proof, while we didn't use <log>a</log> prior to step 3, the name <log>a</log> does appear several times in the following subproof. This is perfectly acceptable, and in fact it is how we usually use arbitrary names. Once a name for an arbitrary object is introduced, we go on to prove various things about this arbitrary object, as we do in the subproof. In so doing, we are allowed to use assumptions that we made outside the subproof, in this case the premises on lines 1 and 2. We can use them because although they are assumptions, they are not assumptions that mention <log>a</log> specifically, and so they don't keep <log>a</log> from naming an arbitrary object.</p>
+
+
+
+<h3>The <log>E</log> Elim Rule</h3>
+
+<p>Finally, we have our last rule. The rule is called <b><log>E</log> Elim</b>, and another name for it is <b>existential instantiation</b>. The rule takes a rather simple form:</p>
+
+<div class="argument">
+    <div>
+        <div>Ex F(x)</div>
+        <div>F(a)</div>
+    </div>
+</div>
+
+<p>Notice that this is the <em>opposite</em> to the <log>E</log> Intro rule, in which <log>Ex F(x)</log> is inferred from <log>F(a)</log>.</p>
+
+<p>The <log>E</log> Elim rule is tricky because, as with <log>A</log> Intro, there is a restriction on the name <log>a</log>. In fact, there are two restrictions. Before getting to the details, though, let's go over the basic idea behind <log>E</log> Elim. The premise of the rule is a sentence <log>Ex F(x)</log>. This sentence says that some object has the property <log>F</log>. If some object has the property <log>F</log>, then we are entitled to <em>invent a name</em> for such an object. This is what we do when we use <log>E</log> Elim. We invent a name <log>a</log>, and we have it name any object that has the property <log>F</log>. Since <log>a</log> names an object with property <log>F</log>, we are entitled to draw the conclusion <log>F(a)</log>.
+
+<p>When we use the name <log>a</log> this way, however, it does impose some restrictions on how that name can be used. Specifically:
+
+<ol>
+<li>Similarly to the <log>A</log> Intro rule, the name introduced by <log>E</log> Elim must be <b>new to the proof</b>, i.e., not previously used.
+<li>In addition, a name introduced in this way can only be used in the proof or subproof in which it was introduced. If it was introduced in a subproof, it can only be used inside that subproof. If it was introduced in the main body of a proof, then it can't appear in the proof's goal.
+</ol>
+
+<p>The reason for the first restriction is that if you used <log>a</log> previously, then you may have made some assumption about <log>a</log> that is incompatible with it being an object with property <log>F</log>. For example, suppose you use the <log>E</log> Elim rule as follows:</p>
+
+<div class="argument">
+    <div>
+        <div>Ex Square(x)</div>
+        <div>Square(a)</div>
+    </div>
+</div>
+
+<p>So far, so good: you have simply created a name <log>a</log> for some (unspecified) square. However, suppose that earlier in the proof, there appears the sentence <log>Diamond(a)</log>. Thus, the name <log>a</log> has been previously used as the name of a diamond, and so it cannot <em>also</em> be used as the name of a square. You'll need to use a different name, one that hasn't been used before, such as <log>b</log>.</p>
+
+<p>The rationale for the second restriction is more subtle. Suppose you prove <log>Ex Square(x)</log> in a subproof. Then within that subproof, you can infer <log>Square(a)</log>. The name <log>a</log> is now, by definition, the name of a square, and every time you use it, you are thereby assuming the existence of a square. Inside the subproof, this is unproblematic, since you have already <em>proven</em> the existence of a square. However, outside the subproof, the assumption that a square exists may no longer be valid. Since you can't make that assumption outside the subproof, you can't use the name <log>a</log> outside the subproof either.</p>
+
+<p>Let's look at a few examples. First, let's look at the correct use of the rule.
+
+<div proof="json">
+{"goal":"Ex Small(x)","premises":[{"s":"Ax [Square(x) -> Small(x)]","l":1},{"s":"Ex Square(x)","l":2}],"body":[{"s":"Square(a)","l":3,"r":"E Elim","c":[2]},{"s":"Square(a) -> Small(a)","l":4,"r":"A Elim","c":[1]},{"s":"Small(a)","l":5,"r":"-> Elim","c":[4,3]},{"s":"Ex Small(x)","l":6,"r":"E Intro","c":[5]}],"hasDialog":false}
+</div>
+
+<p>There's a lot going on in this proof, but the line to focus on is line 3. It is a correct application of the <log>E</log> Elim rule. In particular, both restrictions on the name <log>a</log> are satisfied. The name <log>a</log> was not used prior to line 3, and so it is new at that point. And the name also does not appear in the goal, so the second restriction is also satisfied. Of the remaining steps in the proof, line 5 uses a non-quantifier rule, and the rest use the &quot;easy&quot; rules, which don't have any restrictions on the names they use.</p>
+
+<p>If our goal had involved the name <log>a</log>, then it would have been flagged as incorrect, as the following proof illustrates:</p>
+
+<div proof="json">
+{"premises":[{"s":"Ax [Square(x) -> Small(x)]","l":1},{"s":"Ex Square(x)","l":2}],"body":[{"s":"Square(a)","l":3,"r":"E Elim","c":[2]},{"s":"Square(a) -> Small(a)","l":4,"r":"A Elim","c":[1]},{"s":"Small(a)","l":5,"r":"-> Elim","c":[4,3]}],"hasDialog":false,"goal":"Small(a)"}
+</div>
+
+<p>Since the name <log>a</log> was introduced by the <log>E</log> Elim rule (on line 3), it isn't allowed to be in the goal. For this reason, the goal is marked incorrect, even though each step of the proof is correct.</p>
+
+<p>Here's another violation of the naming restrictions:</p>
+
+<div proof="json">
+{"premises":[{"s":"Ax Ey LeftOf(x, y)","l":1}],"body":[{"p":{"premises":[{"s":"a","l":2}],"body":[{"s":"Ey LeftOf(a, y)","l":3,"r":"A Elim","c":[1]},{"s":"LeftOf(a, b)","l":4,"r":"E Elim","c":[3]}]},"l":5},{"s":"Ax LeftOf(x, b)","l":6,"r":"A Intro","c":[5]}],"hasDialog":false}
+</div>
+
+<p>The action takes place on lines 4 and 5. On line 4, <log>E</log> Elim is applied, using the name <log>b</log>. This is a correct use of the rule, since <log>b</log> was never used before. So line 4 is marked correct. Next, on line 5, we are applying <log>A</log> Intro. Now notice here that none of the constraints that specifically apply to <log>A</log> Intro are being violated. The name <log>a</log> was new when it was introduced on line 2, and the inference of <log>Ax LeftOf(x, b)</log> from <log>LeftOf(a, b)</log> follows the pattern correctly. But the name <log>b</log>, which was introduced via <log>E</log> Elim, is being used outside the subproof in which it was introduced, and this violates the second constraint on <log>E</log> Elim. For that reason, line 5 is marked incorrect.</p>
+
+<p>Our next proof violates the first restriction on <log>E</log> Elim, that the introduced name be new to the proof.</p>
+
+<div proof="json">
+{"premises":[{"s":"Ex Square(x)","l":1},{"s":"Diamond(a)","l":2}],"body":[{"s":"Square(a)","l":3,"r":"E Elim","c":[1]}],"hasDialog":false}
+</div>
+
+<p>On line 3, the sentence <log>Square(a)</log> is being derived from <log>Ex Square(x)</log>. This would be acceptable, except that the name <log>a</log> is used on line 2. Therefore, <log>a</log> is not new to the proof when it is introduced on line 3.</p>
+
+
+
+<h3>Summary</h3>
+
+<p>To sum up, here are the rules we have covered.</p>
+
+<ol>
+<li><b><log>A</log> Elim</b>
+<div class="argument">
+    <div>
+        <div>Ax F(x)</div>
+        <div>F(a)</div>
+    </div>
+</div>
+
+<li><b><log>A</log> Intro</b>
+<div class="argument">
+    <div>
+        <div>
+            <div class="subproof">
+                <div>a</div>
+                <div>F(a)</div>
+            </div>
+        </div>
+        <div>Ax F(x)</div>
+    </div>
+</div>
+
+<p><b>Restriction</b>: The name <log>a</log> must be new to the proof when it is first used as the hypothesis of the subproof.</p>
+
+<li><b><log>E</log> Elim</b>
+<div class="argument">
+    <div>
+        <div>Ex F(x)</div>
+        <div>F(a)</div>
+    </div>
+</div>
+<p><b>Restrictions</b>: (1) The name <log>a</log> must be new to the proof when the rule is applied. (2) The name <log>a</log> cannot be used outside the subproof in which it is introduced. (3) The name <log>a</log> cannot appear in the goal of the proof.</p>
+
+<li><b><log>E</log> Intro</b>
+
+<div class="argument">
+    <div>
+        <div>F(a)</div>
+        <div>Ex F(x)</div>
+    </div>
+</div>
+
+</ol>
+
+
+
+</article>
+
+</body>
+</html>

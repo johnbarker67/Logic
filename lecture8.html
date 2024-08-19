@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>PHI 401 Logic - Week 8</title>
+    <meta charset="UTF-8" />
+<link rel="stylesheet" type="text/css" href="logic-1724095155.css" />
+
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-database.js"></script>
+
+<script language="JavaScript" src="logic-1724095155.js"></script>
+    <script language="JavaScript" src="lecture_toolbar-1724095155.js"></script>
+
+    <script language="JavaScript" src="textBehavior-1724095155.js"></script>
+    <script language="JavaScript" src="lectures-1724095155.js"></script>
+
+
+
+</head>
+
+<body>
+
+
+
+<article class="link">
+    <header>
+        <h2>Week 8: Subproofs</h2>
+    </header>
+
+<p>This week, we're going to introduce a new proof mechanism, called <b>subproofs</b>. A subproof is basically a proof inside a proof. How they can be used, and why we need them, will be this week's topic.</p>
+
+<h3>Conditional Proof</h3>
+
+<p>When you make a proof, your proof always has premises. The proof then demonstrates what follows from the premises. That is, it shows what the premises imply. For example, consider the following proof:</p>
+
+
+
+<div proof="json">
+{"premises":[{"s":"IsHungry(michael) & IsThirsty(sarah)","l":1}],"body":[{"s":"IsHungry(michael)","l":2,"r":"& Elim","c":[1]}],"hasToolbar":false,"hasDialog":false,"enabledRules":[],"goal":"IsHungry(michael)"}
+</div>
+
+<p>This very simple proof has one premise, <em>Michael is hungry and Sarah is thirsty</em>. And it has a conclusion, <em>Michael is hungry</em>. The fact that we have a correct proof that connects this premise with this conclusion shows that the premise <em>implies</em> the conclusion. That is, it shows that the statement <em>Michael is hungry and Sarah is thirsty</em> logically implies <em>Michael is hungry</em>.</p>
+
+<p>Now as we saw before, if we know a statement <log>A</log> implies a statement <log>B</log>, we also know that the corresponding conditional, <log>A -&gt; B</log>, is a tautology. For example, based on the above proof, we know that the following sentence is a tautology:</p>
+
+<ul>
+<li> <log>[IsHungry(michael) &amp; IsThirsty(sarah)] -&gt; IsHungry(michael)</log>
+</ul>
+
+<p>So, we have discovered a way to show that a conditional is a tautology. We write a proof, whose premise is the conditional's antecedent, and whose conclusion is the conditional's consequent.</p>
+
+<p>Now suppose we want to prove a conditional <log>A -&gt; B</log>, but we want to prove it within a proof that we've already started. We do this as follows. We start a new proof, but we start it <em>inside our existing proof</em>. This new proof will have as its premise the sentence <log>A</log>, which is the antecedent of the conditional we want to prove. The conclusion of the proof is <log>B</log>, the consequent of our conditional. And once we've successfully finished this proof-within-a-proof, we draw the conclusion <log>A -&gt; B</log>. Here is an example:</p>
+
+<div proof="json">
+{"premises":[{"s":"","l":1}],"body":[{"p":{"premises":[{"s":"IsHungry(michael) & IsThirsty(sarah)","l":2}],"body":[{"s":"IsHungry(michael)","l":3,"r":"& Elim","c":[2]}]},"l":4},{"s":"(IsHungry(michael) & IsThirsty(sarah)) -> IsHungry(michael)","l":5,"r":"-> Intro","c":[4]}],"goal":"(IsHungry(michael) & IsThirsty(sarah)) -> IsHungry(michael)","hasDialog":false}
+</div>
+
+<p>This proof has two features that you haven't seen before. The first is the indented part on lines 2-3. This is the proof-within-a-proof that I mentioned earlier. It is technically called a <b>subproof</b>. If you look at the subproof carefully, you'll see that it is identical to the first proof in this lesson. The only difference is that it occurs inside a larger proof.</p>
+
+<p>The other new feature is the inference on line 4. Line 4 does not belong to the subproof. It is part of the main proof. But it <em>cites</em> the subproof. The sentence on line 4 is a conditional. Its antecedent, <log>IsHungry(michael) &amp; IsThirsty(sarah)</log>, is identical to the subproof's premise. And its antecedent, <log>IsHungry(michael)</log>, is identical to the subproof's conclusion.</p>
+
+<p>Finally, look at the rule in line 4's justification. This is a rule you haven't seen before, called <b>Conditional Introduction</b>, or <log>-&gt;</log> <b>Intro</b> for short. <log>-&gt;</log> Intro is a rule for proving conditionals. It works by citing a subproof. The subproof's premise is always the same as the conditional's antecedent, and the subproof's conclusion is always the same as the conditional's consequent.</p>
+
+<p>Here's another example. It's actually the same as the previous example, but with the basic sentences changed to letters so that you can see the proof's structure a little more easily.</p>
+
+<div proof="json">
+{"premises":[{"s":"","l":1}],"body":[{"p":{"premises":[{"s":"A & B","l":2}],"body":[{"s":"A","l":3,"r":"& Elim","c":[2]}]},"l":4},{"s":"(A & B) -> A","l":5,"r":"-> Intro","c":[4]}],"goal":"(A & B) -> A","hasDialog":false}
+</div>
+
+<p>Our subproof has a single premise, <log>A &amp; B</log>. In fact, a subproof always has a single premise: it can't have two or three or zero premises. Our subproof also has a conclusion, <log>A</log>. And on line 4, we have the conditional <log>(A &amp; B) -&gt; A</log>. The antecedent of that conditional, <log>A &amp; B</log>, also happens to be the premise of our subproof. And the consequent of our conditional, <log>A</log>, also happens to be the conclusion of our subproof. And the conditional itself was derived from the subproof using the <log>-&gt;</log> Intro rule. This is how the <log>-&gt;</log> Intro rule works:</p>
+
+<p class="definition"><b><log>-&gt;</log> Intro.</b> Suppose you have a subproof with a premise <log>P</log> and a conclusion <log>C</log>. Then, in the main proof, you are allowed to infer the conditional <log>P -&gt; C</log>. You justify this inference with the rule <log>-&gt;</log> Intro, and instead of citing a line, you cite the whole subproof.</p>
+
+<p>Here's a more schematic representation of the <log>-&gt;</log> Intro rule:</p>
+
+<div class="argument">
+    <div>
+        <div>
+            <div class="subproof">
+                <div>A</div>
+                <div>B</div>
+            </div>
+        </div>
+        <div>A -&gt; B</div>
+    </div>
+</div>
+
+<p>The business above the line represents a subproof with hypothesis <log>A</log> and conclusion <log>B</log>. The above rule says that when you have such a subproof, you are allowed to infer <log>A -&gt; B</log>.</p>
+
+<p>The <log>-&gt;</log> Intro rule is more than just a rule: it represents a method of proof. Specifically, it represents a method for proving conditionals. To prove a conditional <log>A -&gt; B</log>, you take the following steps:</p>
+
+<ol>
+<li>Assume the sentence <log>A</log>.
+<li>Based on this assumption, prove the sentence <log>B</log>.
+<li>Based on steps 1-2, draw the conclusion <log>A -&gt; B</log>.
+</ol>
+
+<p>This is called the method of <b>conditional proof</b>. The steps above translate directly into steps you can make in the proof editor:</p>
+
+<ol>
+<li>Start a new subproof with <log>A</log> as a premise.
+<li>Within the subproof, prove <log>B</log>.
+<li>Once you have proved <log>B</log>, end the subproof. Then, enter the sentence <log>A -&gt; B</log>. As justification, choose the rule <log>-&gt;</log> Intro, and cite the subproof you just proved.</li>
+</ol>
+
+<h3>Subproofs Defined</h3>
+
+<p>As stated previously, a subproof is a proof inside a proof. Here are some important features and definitions.</p>
+
+<ul>
+<li>A subproof has exactly one premise. The premise is called the <b>hypothesis</b> of the subproof.
+<li>The last line of a subproof is called its <b>conclusion</b>.
+<li>A subproof is indented from the rest of the proof.
+<li>In every other way, a subproof is just like a regular proof.
+</ul>
+
+<h3>More Examples</h3>
+
+<p>Here's another example of the <log>-&gt;</log> Intro rule:</p>
+
+<div proof="json">
+{"premises":[{"s":"","l":1}],"body":[{"p":{"premises":[{"s":"~~A","l":2}],"body":[{"s":"A","l":3,"r":"~ Elim","c":[2]}]},"l":4},{"s":"~~A -> A","l":5,"r":"-> Intro","c":[4]}],"hasDialog":false}
+</div>
+
+<p>There are a couple of things to notice about this proof. First, notice that like the previous proofs, it has no premises. (That is, the main proof has no premises. The subproof does have a premise.) When your proof has no premises, that means that the conclusion of the proof is a tautology. Thus, we have shown that the sentence <log>~~A -&gt; A</log> is a tautology.</p>
+
+<p>Second, notice that the sentence we proved, <log>~~A -&gt; A</log>, is very similar to the inference rule <log>~</log> Elim, which as you recall is as follows:</p>
+
+<div class="argument">
+    <div>
+        <div><span>~~A</span></div>
+        <div>A</div>
+    </div>
+</div>
+
+<p>The two are similar, but different. Each one relates the sentence <log>~~A</log> to the sentence <log>A</log>. But they do this in different ways. The conclusion of the proof is a <em>sentence</em>, specifically a conditional whose <em>antecedent</em> is <log>~~A</log> and whose <em>consequent</em> is <log>A</log>. By contrast, <log>~</log> Elim is an <em>inference rule</em>, whose <em>premise</em> is <log>~~A</log> and whose <em>conclusion</em> is <log>A</log>.</p>
+
+<p>Our examples haven't had any premises (i.e., the main proof in each case didn't have any premises), but if there are any premises, they can be cited from within the subproof. In fact, within a subproof, you can cite an earlier line, regardless of whether it belongs to the subproof or not. Here's a simple proof that illustrates this point. Suppose you know that Amy is at work, and you want to prove that <em>if</em> Brian is at home, <em>then</em> Amy is at work and Brian is at home. Our premise is: <em>Amy is at work</em>, which we symbolize with the letter <log>A</log>. And our conclusion is: <em>If Brian is at home, then Amy is at work and Brian is at home</em>. This sentence is translated into logical notation as <log>B -&gt; (A &amp; B)</log>. So formally, we need a proof with premise <log>A</log> and conclusion <log>B -&gt; (A &amp; B)</log>. The following is such a proof.</p>
+
+<div proof="json">
+{"premises":[{"s":"A","l":1}],"body":[{"p":{"premises":[{"s":"B","l":2}],"body":[{"s":"A & B","l":3,"r":"& Intro","c":[2,1]}]},"l":4},{"s":"B -> (A & B)","l":5,"r":"-> Intro","c":[4]}],"hasDialog":false}
+</div>
+
+<p>Now let's see how this proof actually works. On line 2, we start a subproof with hypothesis <log>B</log>. On line 3, which falls within this subproof, we're citing two previous lines: line 2, which also falls within the subproof; and line 1, which doesn't. Each citation is perfectly valid. On line 4, we're out of the subproof and back in the main proof.</p>
+
+<p>On line 4, we have applied the <log>-&gt;</log> Intro rule. As always, the sentence on line 4 (i.e., the sentence that we're using the <log>-&gt;</log> Intro rule to justify) is a conditional; its antecedent is the same as the subproof's hypothesis, and its consequent is the same as the subproof's conclusion. Thus, the sentence is <log>B -&gt; (A &amp; B)</log>. This sentence is also our goal, so we're done.</p>
+
+<p>The point of the example is to show how a step <em>inside</em> a subproof can cite a step <em>outside</em> the subproof, as we did on line 3. We actually cite two sentences there: we cite <log>A</log>, which is outside the subproof, and <log>B</log>, which is inside the subproof.</p>
+
+<p>Here's a slightly more complicated example. First, consider this informal argument:</p>
+<ol>
+<li>If Amy is at work, then Claire is sleeping.
+<li>If Brian is at home, then Amy is at work.
+<li>It is <em>not</em> the case that David is <em>not</em> awake.
+<li>Therefore, if Brian is at home, then Claire is sleeping and David is awake.
+</ol>
+<p>Is this argument valid? Can you tell just by looking at it? Well, it turns out it <em>is</em> valid. To show this, the first step is to translate the premises and conclusion into logical notation. This we do as follows:</p>
+<ol>
+<li><log>A -&gt; C</log>
+<li><log>B -&gt; A</log>
+<li><log>~~D</log>
+<li>Therefore, <log>B -&gt; (C & D)</log>
+</ol>
+<p>Then we have to construct a proof. I've already constructed one for you:</p>
+
+<div proof="json">
+{"premises":[{"s":"A -> C","l":1},{"s":"B -> A","l":2},{"s":"~~D","l":3}],"body":[{"s":"D","l":4,"r":"~ Elim","c":[3]},{"p":{"premises":[{"s":"B","l":5}],"body":[{"s":"A","l":6,"r":"-> Elim","c":[2,5]},{"s":"C","l":7,"r":"-> Elim","c":[6,1]},{"s":"C & D","l":8,"r":"& Intro","c":[7,4]}]},"l":9},{"s":"B -> (C & D)","l":10,"r":"-> Intro","c":[9]}],"hasDialog":false}
+</div>
+
+<p>You would do well to go over this proof line by line. (Remember, when you click on the justification part of a line, the cited sentences show up highlighted. This can help you see what is being cited.) Even though the proof is a little longer than the ones we've seen before, each step uses a rule you already know.</p>
+
+<p>When you go over the proof, pay special attention to the subproof, especially lines 6-8. Notice how each line cites two previous steps. Some of the steps belong to the subproof itself, and others belong to the main proof. But they all occur before the step that cites them, so they are all available for citation.</p>
+
+<h3>The Citation Restriction</h3>
+
+<p>In general, a step can cite any earlier step. The one exception is that after a subproof ends, <b>its sentences are no longer available for citation</b>. For example, suppose we wanted to prove this argument:</p>
+<ol>
+<li>Amy is at work.
+<li>If Amy is at work and Brian is at home, then Claire is sleeping.
+<li>Therefore, Claire is sleeping.
+</ol>
+<p>Look at this argument, and see if you can tell why it's not valid. To get the conclusion that Claire is sleeping, you would need the additional premise, <em>Brian is at home</em>. Without that extra premise, the conclusion doesn't follow. So the argument isn't valid; and so if we think we have a proof for it, that means we must have made a mistake somewhere. So what are we to make of the following "proof"?</p>
+
+<div proof="json">
+{"premises":[{"s":"A","l":1},{"s":"(A & B) -> C","l":2}],"body":[{"p":{"premises":[{"s":"B","l":3}],"body":[{"s":"A & B","l":4,"r":"& Intro","c":[1,3]}]},"l":5},{"s":"C","l":6,"r":"-> Elim","c":[2,4]}],"hasDialog":false}
+</div>
+
+<p>If this proof were correct it would prove our invalid argument. The proof is short, with just two steps that need justifying. One of these two steps, line 4, has been correctly justified. The proof breaks down on line 5. But you might wonder why the proof has to break down there. Why can't we cite lines 2 and 4, with the sentences <log>(A &amp; B) -&gt; C</log> and <log>A &amp; B</log>, respectively? The conclusion <log>C</log> <em>does</em> follow from these two sentences via <log>-&gt;</log> Elim. So why can't we just cite these two sentences on line 5, and complete the proof?</p>
+
+<p>The reason is that citing line 4 from line 5 would violate the restriction on citation. On line 5, the subproof has ended. That means the sentences in the subproof are no longer available for citation. In particular, the sentence <log>A &amp; B</log> on line 4 cannot be cited from line 5.</p>
+
+<p>The reason for this restriction is that in a subproof, the hypothesis serves as a temporary extra assumption. Within the subproof, we are free to assume the hypothesis, and we are free to draw conclusions from it. Thus, these further conclusions <em>depend</em> on the hypothesis. They are true if the hypothesis is true, but they might not be true otherwise. Now the end of a subproof signals that we are no longer assuming the subproof's hypothesis. Since the hypothesis is no longer assumed to be true, the sentences that were proved on the basis of the hypothesis are also no longer assumed to be true. And since they are no longer assumed to be true, we can't cite them.</p>
+
+<p>For example, in the proof above, we assume on line 3 that Brian is at home. On line 4, we are still in the subproof, so we are still assuming that Brian is at home; this assumption justifies us in asserting that Amy is at work and Brian is at home, since we already know that Amy is at work. Or to put it another way, on line 4, we are entitled to assert that Amy is at work and Brian is at home &mdash; but this assertion depends on the prior assumption that Brian is at home. On line 5, the subproof has ended, and with it ends the assumption that Brian is at home. Since we no longer assume that Brian is at home, we also cannot assume that Amy is at work and Brian is at home, since this latter claim depends on the assumption that Brian is at home. And for this reason, we can no longer cite the statement <em>Amy is at work and Brian is at home</em> as justification for any further claim.</p>
+
+<p>Fortunately, the software is going to help you out here. It won't <em>let</em> you make an illegal citation. I overrode this restriction in the above proof, but you would not be able to create that proof yourself. To demonstrate this, here's the above proof again, with the normal restriction in place:
+
+<div proof="json">
+{"premises":[{"s":"A","l":1},{"s":"(A & B) -> C","l":2}],"body":[{"p":{"premises":[{"s":"B","l":3}],"body":[{"s":"A & B","l":4,"r":"& Intro","c":[1,3]}]},"l":5},{"s":"C","l":6,"r":"-> Elim","c":[2]}],"hasDialog":false}
+</div>
+
+<p>Line 5 no longer illegally cites line 4. Now go ahead and try to cite line 4 from line 5. You'll find that when you click on line 4, the proof editor highlights the entire subproof. That's because the whole subproof is the only thing you can legally cite at this point. When you click on line 4, the proof editor assume you were really clicking on the whole subproof, and cites that instead.
+
+<h3>Subproofs Within Subproofs</h3>
+
+<p>A subproof can have its own subproofs. These are called <b>nested subproofs</b>. Here's a simple example:</p>
+
+<div proof="json">
+{"premises":[{"s":"","l":1}],"body":[{"p":{"premises":[{"s":"A","l":2}],"body":[{"p":{"premises":[{"s":"B","l":3}],"body":[{"s":"A & B","l":4,"r":"& Intro","c":[3,2]}]},"l":5},{"s":"B -> (A & B)","l":6,"r":"-> Intro","c":[5]}]},"l":7},{"s":"A -> (B -> (A & B))","l":8,"r":"-> Intro","c":[7]}],"hasDialog":false}
+</div>
+
+<p>Assuming our usual readings of <log>A</log> and <log>B</log>, what we have here is a proof of the following statement: If Amy is at work, then if Brian is at home, then Amy is at work and Brian is at home. We prove this statement as follows. On line 2, we assume for the sake of argument that Amy is at work. (More formally, we start a new subproof with hypothesis <log>A</log>.) On line 3, we make the further assumption that Brian is at home. We do this by starting a new subproof with hypothesis <log>B</log>. But we are already in a subproof, so our new subproof is a <em>nested</em> subproof: It is a subproof inside another subproof.</p>
+
+<p>In the inner subproof, both hypotheses (Amy is at work and Brian is at home) are available: We can cite either as a justification. And in fact, we cite both statements on line 4, to justify the statement that Amy is at work and Brian is at home.</p>
+
+<p>On line 5, the inner subproof has ended. We are now back in the outer subproof. That means that the hypothesis of the inner subproof &mdash; Brian is at home &mdash; is no longer available. We cannot cite it or draw inferences from it. However, since we are still in the outer subproof, <em>its</em> hypothesis &mdash; Amy is at work &mdash; <em>is</em> available. Also, although we cannot cite the individual sentences of the inner subproof, we can cite the subproof as a whole. We do this on line 5, using the <log>-&gt;</log> Intro rule as we have before. This gives us the conclusion that if Brian is at home, then Amy is at work and Brian is at home.</p>
+
+<p>Finally, on line 6, the outer subproof ends. We can no longer cite its hypothesis (Amy is at work), nor any individual sentence in it. This includes sentences inside the inner subproof: We can't cite them either. We also can't cite the inner subproof itself. But we <em>can</em> cite the whole outer subproof. We do so, using the <log>-&gt;</log> Intro rule again, and complete the proof.</p>
+
+<p>In general, you can nest subproofs as deeply as you want. You can have a subproof inside a subproof inside a subproof inside .... You shouldn't get too carried away, though, because too many nested subproof make a proof rather complicated and hard to read.</p>
+
+<p>The main reason to have nested subproofs is that we often need to make two or more assumptions at the same time. In the above proof, we had to make two different assumptions at the same time: that Amy is at work and that Brian is at home. In more complicated proofs, we often have to drop one assumption (ending its corresponding subproof) and then turn around and make a new assumption (creating a new subproof), all the while maintaining a third assumption (which belongs to the outer subproof). Nested subproofs just give us a way to keep track of what we are assuming at any given point in the proof. </p>
+
+<h3>Creating Subproofs in the Proof Editor</h3>
+
+<p>Take a look at the <a href="proofeditor.html" target="_blank">proof editor</a>. You should notice something new: there is now a menu along the top. You can use this menu to create, edit and delete proofs. There's also a &quot;Detele Line&quot; item, which doesn't add any new functionality but is there for convenience.</p>
+
+<p>First, let's try creating a subproof. When a line is active (i.e., when it has yellow highlighting and a blinking cursor), you can click <b>New Subproof</b> to add a new subproof in that location. If the line is empty, it will just be replaced by the new subproof; if the line is not empty, a new subproof will be added right after it.</p>
+
+<p>Within a subproof, you can create, edit and delete lines just as before, except that you can't create more than one premise. When you're done making your subproof, you need a way of getting back to the main proof. That's where the next two menu items come in. Clicking <b>Exit Subproof</b> creates a blank line right after the current subproof. This is useful, because typing Enter/Return creates a new line <em>within</em> the current subproof.</p>
+
+<p>The next item is called <b>Exit Before</b>, and it creates a new line <em>before</em> the current subproof instead of after. Sometimes this is the only way to insert a new line before the subproof.</p>
+
+<p>Next, as described before, is the <b>Delete Line</b> item. As already stated, this doesn't add any new functionality, because you could already delete lines with the Backspace key (or Delete on a Mac).</p>
+
+<p>Finally, there is <b>Delete Subproof</b>. This does just what it says. Because deleting a whole subproof is a dangerous operation, you are only allowed to do it when the subproof is empty, meaning: the premise is empty, and there is just one step, which is also empty.</p>
+
+<p>Clicking any of these items has no effect when there is no empty line. This includes when you're entering a justification: in justification-editing mode, the operations described in this section are unavailable.</p>
+
+<h3>Keyboard Shortcuts</h3>
+
+<p>To make proof editing less cumbersome, there are keyboard shortcuts for all of the above operations except for deleting a subproof.</p>
+
+<ul>
+<li><b>ctl-K</b> creates a new subproof. That is, you can create a new subproof by holding down the control key and typing K. (On a Mac, use <b>command-K</b>.)
+<li>On the last line of a subproof, typing Enter/Return adds a new line to the subproof, as described before. But if you hold down the shift key while typing Enter, the result will be the same as clicking <b>Exit Subproof</b>.
+<li>The shift-Enter trick also works when you're editing a justification. Specifically: whether you're editing a justification, or just editing a line, typing Enter creates a new line in the <em>current</em> proof, while typing shift-Enter creates a new line in the enclosing (sub-)proof.
+<li>When editing a subproof's premise, typing the Enter/Return key creates a new line before the subproof. Thus, it works similarly to <b>Exit Before</b>.
+<li>If you got a new line before the subproof by typing Enter, but didn't mean to, you can delete that line by typing Backspace (or Delete on a Mac). This is a good general way of deleting an stray empty line before a subproof.
+</ul>
+
+<h3>The <em>Reit</em> Rule</h3>
+
+<p>The next rule is not subproof-based, but it usually used together with the subproof rules. It is the <b>Reiteration</b> rule, which we shorten to <b>Reit</b>. The rule takes the following form:<p>
+
+<div class="argument">
+    <div>
+        <div><span>A</span></div>
+        <div>A</div>
+    </div>
+</div>
+
+<p>That is, the rule allows us to repeat a sentence. Here's an example of Reit in a proof:</p>
+
+<div proof="json">
+{"premises":[{"s":"A","l":1},{"s":"B","l":2}],"body":[{"s":"A","l":3,"r":"Reit","c":[1]}],"hasDialog":false}
+</div>
+
+<p>Line 3 was just copied from line 1, and then justified with Reit. The Reit rule works with any kind of sentence; for example, we could have:</p>
+
+<div proof="json">
+{"premises":[{"s":"A & (B | C)","l":1},{"s":"D","l":2}],"body":[{"s":"A & (B | C)","l":3,"r":"Reit","c":[1]}],"hasDialog":false}
+</div>
+
+<p>Reit may seem like a thoroughly pointless rule. If you already have a sentence, what's the point of repeating it? Reit becomes more useful when subproofs are involved. Usually, Reit is used to move a sentence from the main proof into a subproof, or from an outer subproof into an inner subproof. Take the following proof, for example:</p>
+
+<div proof="json">
+{"premises":[{"s":"A","l":1}],"body":[{"p":{"premises":[{"s":"B","l":2}],"body":[{"s":"A","l":3,"r":"Reit","c":[1]}]},"l":4},{"s":"B -> A","l":5,"r":"-> Intro","c":[4]}],"hasDialog":false}
+</div>
+
+<p>Here, we're proving the conclusion <em>If Brian is at home, then Amy is at work</em> from the premise <em>Amy is at work</em>. We do this by creating a subproof with hypothesis <em>Brian is at home</em> and conclusion <em>Amy is at work</em>. To get that conclusion (on line 3), we use the Reit rule to copy it from line 1.</p>
+
+<h3>Indirect Proof, or Proof by Contradiction</h3>
+
+<p>Now we move on to another subproof-based rule, or rather a small family of rules. These rules express a method of proof called <b>proof by contradiction</b>, so let's start by explaining that method.</p>
+
+<p>In a proof by contradiction, you start out by assuming the <em>opposite</em> of what you want to prove. If you want to prove that <log>s</log> is a small square, for example, then you start out by assuming that <log>s</log> is <em>not</em> a small square. Then, reasoning from that assumption in a normal way, you show that the assumption leads to a known falsehood or self-contradiction. From this, you conclude that your assumption was false all along. For example, if you can show that the assumption that <log>s</log> is not a small square leads to a false conclusion or contradiction, you can then conclude that this assumption was wrong, and that <log>s</log> <em>is</em> a small square.</p>
+
+<p>This style of reasoning is extremely common in mathematics, though it can occur anywhere. For example, here's a somewhat informal proof that there is no greatest number:</p>
+
+<ol>
+<li>Suppose there <em>were</em> a greatest number; call it <em>n</em>.
+<li>The number <em>n</em> + 1 is greater than <em>n</em>.
+<li>However, this contradicts our assumption that <em>n</em> is the greatest number.
+<li>Therefore, there is no greatest number after all.
+</ol>
+
+<p>Step 1 is where we assume the opposite of what we set out to prove. Here, we're trying to prove that there is no greatest number, so on line 1, we assume there <em>is</em> such a number. On lines 2 and 3, however, we show that this assumption leads to a self-contradiction. We therefore conclude, on line 4, that our assumption is wrong, and that there is not, in fact, a greatest number.</p>
+
+<p>This method, which is extremely powerful, has many different names. It is sometimes called <b>indirect proof</b>, because the proof is, well, indirect. Instead of going directly to the conclusion, you take a detour through the conclusion's opposite. It is also called <b>proof by contradiction</b>, because it works by showing that an assumption leads to a contradiction (and is therefore false). Another name you'll see frequently is <b>reductio ad absurdum</b>. This is a Latin phrase that means &quot;reduction to an absurdity,&quot; which is exactly what the above proof does: it reduces the assumption on line 1 to a contradictory, or absurd, conclusion.</p>
+
+<h3>The Contradiction Rule</h3>
+
+<p>The method of proof by contradiction involves showing that an assumption leads to a contradiction. For this reason, we need a mechanism for identifying contradictions in a proof. Our mechanism is the <b>contradiction symbol</b>. Typically, the contradiction symbol is written &perp;, which should look like an upside-down T. Since you don't have this symbol on your keyboard, we're using a different symbol: an exclamation point, or <log>!</log>.
+
+<p>The contradiction symbol marks a contradiction; but what is a contradiction? We define a contradiction to be a pair of sentences, one of which is the negation of the other. That is, a contradiction is a sentence <log>A</log>, together with its negation <log>~A</log>. We then have the following rule, called the <b>contradiction rule</b>:
+
+<div class="argument">
+    <div>
+        <div><span>A</span><span>~A<span></div>
+        <div>!</div>
+    </div>
+</div>
+
+<p>Here's an example in a proof:</p>
+
+<div proof="json">
+{"premises":[{"s":"A","l":1},{"s":"~A","l":2}],"body":[{"s":"!","l":3,"r":"Contradiction","c":[1,2]}],"hasDialog":false}
+</div>
+
+
+
+<p>All by itself, there isn't anything useful that can be done with the contradiction rule. It just allows us to make note of the fact that there is a contradiction. However, this changes when we combine the contradiction rule with the <log>~</log> Intro rule.</p>
+
+<h3>The <log>~</log> Intro Rule.</h3>
+
+<p>The <b>Negation Introduction</b> rule, or <b><log>~</log> Intro</b> for short, works as follows. First, you create a new subproof with a hypothesis <log>A</log>. Then within the subproof, you prove a contradiction. Formally, this means you derive <log>!</log>. You then end the subproof, and derive the conclusion <log>~A</log>, citing the subproof. Here is the rule in symbols:</p>
+
+<div class="argument">
+    <div>
+        <div>
+            <div class="subproof">
+                <div>A</div>
+                <div>!</div>
+            </div>
+        </div>
+        <div>~A</div>
+    </div>
+</div>
+
+<p>This means that if we have a subproof with hypothesis <log>A</log> and conclusion <log>!</log>, we can infer <log>~A</log>.</p>
+
+<p>As an example, suppose we want to prove this argument:</p>
+<ol>
+<li>Amy is at work.
+<li>If Amy is at work, then Brian is at home.
+<li>Therefore, it is <em>not</em> the case that if Amy is at work, then Brian is not at home.
+</ol>
+<p>It might not be immediately evident to you that this argument is valid. In fact, it might not be immediately evident to you what the conclusion says. But it is valid, and we can prove it using indirect proof. The conclusion, translated into logical notation, is <log>~(A -&gt; ~B)</log>. In indirect proof, we assume the opposite of what we're trying to prove, and show that it leads to a contradiction. So in this case, we need to assume the opposite of <log>~(A -&gt; ~B)</log>. That is, we need to assume <log>A -&gt; ~B</log>, and show that it leads to a contradiction.</p>
+
+<p>The way we do this formally is to start a subproof with <log>A -&gt; ~B</log> as hypothesis, and the prove the contradiction <log>!</log> as the subproof's conclusion. This leads to the following proof:</p>
+
+<div proof="json">
+{"premises":[{"s":"A","l":1},{"s":"A -> B","l":2}],"body":[{"p":{"premises":[{"s":"A -> ~B","l":3}],"body":[{"s":"B","l":4,"r":"-> Elim","c":[1,2]},{"s":"~B","l":5,"r":"-> Elim","c":[3,1]},{"s":"!","l":6,"r":"Contradiction","c":[5,4]}]},"l":7},{"s":"~(A -> ~B)","l":8,"r":"~ Intro","c":[7]}],"hasDialog":false}
+</div>
+
+<p>Here, our premises have been translated into logical notation as lines 1 and 2, and our conclusion, <log>~(A -&gt; ~B)</log>, is in fact the conclusion of the proof. Just as we described, we proceed by starting a subproof with hypothesis <log>A -&gt; B</log>, which is the opposite of our intended conclusion. That subproof has conclusion <log>!</log>, which again is the symbol for a contradiction. So the subproof, taken as a whole, says that the assumption <log>A -&gt; B</log> leads to a contradiction. We finally cite this subproof, and invoke the rule <log>~</log> Intro, giving us the desired conclusion.</p>
+
+<p>The body of the subproof, on lines 4-6, show how the Contradiction rule is used. To derive a contradiction, we need to have both a sentence, and the negation of that sentence. In this case, the sentence is <log>B</log>. We quickly derive both <log>B</log> and <log>~B</log>, using the available premises. This lets us apply the Contradiction rule on line 6.</p>
+
+<p>Looking at lines 4-6 less formally, what we have here are two lines that say, respectively, that Brian is at home and that Brian is not at home. Obviously Brian can't be both at home and not at home. Thus, at this point in the proof, we've contradicted ourselves. The contradiction symbol <log>!</log> just marks the fact that we've contradicted ourselves. Of course, in this case we were <em>trying</em> to contradict ourselves. The explicit contradiction on lines 4 and 5 simply reveals the <em>implicit</em> contradiction between the assumption <log>A -&gt; ~B</log> and our premises, <log>A</log> and <log>A -&gt; B</log>. That assumption contradicts the premises (as the subproof shows), and so the assumption must be false (as we conclude on line 7).</p>
+
+<p>Here's a slightly different example:</p>
+
+<div proof="json">
+{"premises":[{"s":"A","l":1},{"s":"B","l":2}],"body":[{"p":{"premises":[{"s":"B -> ~A","l":3}],"body":[{"s":"~A","l":4,"r":"-> Elim","c":[3,2]},{"s":"!","l":5,"r":"Contradiction","c":[1,4]}]},"l":6},{"s":"~(B -> ~A)","l":7,"r":"~ Intro","c":[6]}],"hasDialog":false}
+</div>
+
+<p>This proof is quite similar to the last one. The goal is the same: it is the sentence <log>~(B -&gt; ~A)</log>. And the proof strategy is the same: we assume the opposite sentence, <log>B -&gt; ~A</log>, and use that sentence to derive a contradiction. But we derive a contradiction in a slightly different way. In the previous proof, we derived two contradictory sentences, <log>B</log> and <log>~B</log>, in the subproof. We then applied the Contradiction rule to complete the subproof. In this proof, we again use the Contradiction rule to complete the subproof. But this time, the two contradictory sentences do not both appear in the subproof. One of these sentences, <log>~A</log>, does appear in the subproof. But the other, <log>A</log>, does not. It appears earlier, as a premise. The Contradiction rule has still been correctly applied, however. All it requires is two sentences, one the negation of the other, and both citable at the given point in the proof. Incidentally, if you wanted to, you could get both <log>A</log> and <log>~A</log> together in the subproof. You would just use Reit to bring the <log>A</log> into the subproof.</p>
+
+<p>Here's one more use of the Contradiction rule:</p>
+
+<div proof="json">
+{"premises":[{"s":"A | B","l":1},{"s":"~(A | B)","l":2}],"body":[{"s":"!","l":3,"r":"Contradiction","c":[1,2]}],"hasDialog":false}
+</div>
+
+<p>Notice here that the contradictory sentences are <log>A | B</log> and <log>~(A | B)</log>. The second sentence, <log>~(A | B)</log>, is the negation of the first, <log>A | B</log>, so the rule is being used correctly. The lesson: in using the Contradiction rule, you don't have to use atomic sentences. You just need one sentence that is the negation of the other sentence.</p>
+
+<h3><log>~</log> Elim, Revisited</h3>
+
+<p>We've seen how to prove a negated sentence <log>~A</log> by deriving a contradiction from the opposite sentence, <log>A</log>. For example, you can prove that Amy is not at work by assuming (as a subproof hypothesis) that Amy <em>is</em> at work, and deriving a contradiction from that assumption. But sometimes we want to do something a little different. Suppose you want to prove that Amy <em>is</em> at work. Can you do this by deriving a contradiction from the opposite assumption, that she is not at work? In other words, can we prove a sentence <log>A</log> by deriving a contradiction from its negation <log>~A</log>? Again, this would be the opposite of what we did before: previously, we proved <log>~A</log> by deriving a contradiction from <log>A</log>.</p>
+
+<p>It turns out that you can indeed to this, and the following proof illustrates how.</p>
+
+<div proof="json">
+{"premises":[{"s":"~A -> B","l":1},{"s":"~A -> ~B","l":2}],"body":[{"p":{"premises":[{"s":"~A","l":3}],"body":[{"s":"B","l":4,"r":"-> Elim","c":[3,1]},{"s":"~B","l":5,"r":"-> Elim","c":[3,2]},{"s":"!","l":6,"r":"Contradiction","c":[5,4]}]},"l":7},{"s":"~~A","l":8,"r":"~ Intro","c":[7]},{"s":"A","l":9,"r":"~ Elim","c":[8]}],"hasDialog":false}
+</div>
+
+<p>In this proof, we start by assuming <log>~A</log>, as the hypothesis of a subproof. Within the subproof, we derive a contradiction. We then end the subproof and invoke the <log>~</log> Intro rule. Now remember how the <log>~</log> Intro rule works. If we have a subproof ending in the contradiction symbol <log>!</log>, then we can take the subproof's hypothesis, add a negation sign at the front, and infer the resulting negated sentence. In this case, the hypothesis is <log>~A</log>. If we follow the general rule, then what we have to do is add a negation sign to the front of that sentence. The result of doing so is the sentence <log>~~A</log>. We can then infer that sentence, as we do on line 7.</p>
+
+<p>Once we have <log>~~A</log>, we can drop the negation signs, using the <log>~</log> Elim rule. This gives us <log>A</log>. The end result is that we derived a contradiction from <log>~A</log>, and then used the rules of logic to get the conclusion <log>A</log>.</p>
+
+<p>(Incidentally, it is worth going over the above proof, with the usual interpretations of the letters <log>A</log> and <log>B</log>. The two premises say, respectively, that if Amy is not at work, then Brian is at home, and if Amy is not at work, then Brian <em>is</em> at home. Now if Amy were not at work, then we could conclude from the premises that Brian is at home and that Brian is not at home. We make these conclusions on lines 4 and 5. Thus, the assumption that Amy is not at work leads to a contradiction. From this, we conclude that Amy is, in fact, at work. This last bit of reasoning takes place on lines 7 and 8.)</p>
+
+<p>Here is a schematic version of the preceding proof, stripped down to the essentials.</p>
+
+<div proof="json">
+{"premises":[{"s":"","l":1}],"body":[{"p":{"premises":[{"s":"~A","l":2}],"body":[{"s":"","l":3,"c":[]},{"s":"!","l":4,"c":[],"check":false}]},"l":5},{"s":"~~A","l":6,"r":"~ Intro","c":[5]},{"s":"A","l":7,"r":"~ Elim","c":[6]}],"hasDialog":false}
+</div>
+
+<p>This isn't a complete proof; it just reflects the important steps of the previous proof. This schematic proof shows you how to prove a sentence <log>A</log> by deriving a contradiction from <log>~A</log>. First, you derive <log>~~A</log>, using the <log>~</log> Intro rule. Second, you convert <log>~~A</log> to <log>A</log> with the <log>~</log> Elim rule.</p>
+
+<p>Since dealing with the sentence <log>~~A</log> is a bit of a hassle, our system of logic allows you to take a shortcut, which works as follows.</p>
+
+<div proof="json">
+{"premises":[{"s":"~A -> B","l":1},{"s":"~A -> ~B","l":2}],"body":[{"p":{"premises":[{"s":"~A","l":3}],"body":[{"s":"B","l":4,"r":"-> Elim","c":[1,3]},{"s":"~B","l":5,"r":"-> Elim","c":[2,3]},{"s":"!","l":6,"r":"Contradiction","c":[4,5]}]},"l":7},{"s":"A","l":8,"r":"~ Elim","c":[7]}],"hasDialog":false}
+</div>
+
+<p>This is just our proof from before, but you'll notice that we don't derive <log>~~A</log> anywhere. Instead, we derive <log>A</log> directly from the subproof. And instead of invoking the <log>~</log> Intro rule, we invoke <log>~</log> Elim.</p>
+
+<p>Thus, there are really <em>two</em> different rules that go by the name <log>~</log> Elim. The first is the one you learned before:</p>
+
+<div class="argument">
+    <div>
+        <div><span>~~A</span></div>
+        <div>A</div>
+    </div>
+</div>
+
+<p>The second is just like <log>~</log> Intro, but with the roles of <log>A</log> and <log>~A</log> reversed:</p>
+
+<div class="argument">
+    <div>
+        <div>
+            <div class="subproof">
+                <div>~A</div>
+                <div>!</div>
+            </div>
+        </div>
+        <div>A</div>
+    </div>
+</div>
+
+<p>To summarize, you can do proof by contradiction in either of two ways. You can assume a sentence <log>A</log>, derive a contradiction, and conclude <log>~A</log>. Or you can assume <log>~A</log>, derive a contradiction, and conclude <log>A</log>. Either way, you are deriving a contradiction from a sentence, and concluding that the <em>opposite</em> sentence is true.</p>
+
+
+
+<h3>More About Contradictions</h3>
+
+<p>Half of this lesson has been about contradictions. It turns out that contradictions have some interesting, and counterintuitive, properties.</p>
+
+<p>We have a contradiction when we have both a sentence, and that sentence's negation. For example, it would be a contradiction to say that Amy is at work and Amy is not at work; or in symbols, <log>A</log> and <log>~A</log>. Obviously, Amy can't be <em>both</em> at work and not at work. If you find yourself stating a contradiction, that means you've made a mistake somewhere. And if you can derive a contradiction from a premise (e.g., in a subproof), that means the premise is false.</p>
+
+<p>But what would happen if we had a contradiction, and we just kept reasoning anyway &mdash; what would we be able to prove from our contradiction? The answer turns out to be quite surprising. We can prove <em>anything</em> from a contradiction.</p>
+
+<p>This can be shown quite simply with the following proof. Suppose we start with the assumption that Amy is at work and Amy is not at work. That is, we start with the two premises <log>A</log> and <log>~A</log>. We can then prove the (unrelated) sentence <em>Brian is at home</em>:</p>
+
+<div proof="json">
+{"premises":[{"s":"A","l":1},{"s":"~A","l":2}],"body":[{"p":{"premises":[{"s":"~B","l":3}],"body":[{"s":"!","l":4,"r":"Contradiction","c":[2,1]}]},"l":5},{"s":"B","l":6,"r":"~ Elim","c":[5]}],"hasToolbar":false,"hasDialog":false,"enabledRules":["~ Elim","& Elim","| Elim","-> Elim","<-> Elim","A Elim","E Elim","= Elim","~ Intro","& Intro","| Intro","-> Intro","<-> Intro","A Intro","E Intro","= Intro","Reit","Contradiction","Taut Con"]}
+</div>
+
+<p>There's nothing special about the sentence <em>Brian is at home</em>. If we substitute any sentence for <log>B</log>, or (what amounts to the same thing) if we reinterpret <log>B</log> to mean something other than <em>Brian is at home</em>, then the proof still goes through. Any sentence at all can be proven from the pair <log>A</log> and <log>~A</log>.</p>
+
+<p>The proof may look weird, so let's analyze what's going on. What we're doing is a proof by contradiction, where we prove <log>B</log> by showing that its opposite, <log>~B</log>, leads to a contradiction. We can always show that <log>~B</log> "leads to" a contradiction, because we <em>already have</em> a contradiction, in the form of <log>A</log> and <log>~A</log>. Note that we could just as easily have shown that <log>B</log> leads to a contradiction, and concluded <log>~B</log>. It may be slightly easier to see what's going on in the following, slightly longer proof:</p>
+
+<div proof="json">
+{"premises":[{"s":"A","l":1},{"s":"~A","l":2}],"body":[{"p":{"premises":[{"s":"~B","l":3}],"body":[{"s":"A","l":4,"r":"Reit","c":[1]},{"s":"~A","l":5,"r":"Reit","c":[2]},{"s":"!","l":6,"r":"Contradiction","c":[4,5]}]},"l":7},{"s":"B","l":8,"r":"~ Elim","c":[7]}],"hasToolbar":false,"hasDialog":false,"enabledRules":["~ Elim","& Elim","| Elim","-> Elim","<-> Elim","A Elim","E Elim","= Elim","~ Intro","& Intro","| Intro","-> Intro","<-> Intro","A Intro","E Intro","= Intro","Reit","Contradiction","Taut Con"]}
+</div>
+
+<p>Notice how we're using the Reit rule to copy the contradictory sentences <log>A</log> and <log>~A</log> into the subproof. This gives us a subproof where a contradiction has been derived from the premise <log>~B</log>, which is enough to show that <log>~B</log> is false, and hence that <log>B</log> is true.</p>
+
+<p>Some people object to this proof, on the grounds that while a contradiction appears <en>in</en> the subproof, this contradiction has not really been derived <em>from</em> the hypothesis <log>~B</log>. It has simply been copied from earlier in the proof. Since the hypothesis <log>~B</log> is not really responsible for the contradiction, some feel that it is wrong to conclude that <log>~B</log> <em>leads to</em> a contradiction. However, the Contradiction and <log>~</log> Elim rules don't care about this. They don't care whether the hypothesis was actually used in deriving the contradiction. They only care that a contradiction actually occurs in the subproof.</p>
+
+<p>Recall that there are two ways to show that an argument is valid: proofs, and truth tables. We just used a proof to show that <log>B</log> is a logical consequence of <log>A</log> and <log>~A</log>. We can also use a truth table, as follows.</p>
+
+<div parsetree="A.~A.B" parse_options="hasTruthTable:true"></div>
+
+<p>Please complete the truth table. It won't take long. Once you do, see if you can find a row in which the premises, <log>A</log> and <log>~A</log>, are both true, but the conclusion, <log>B</log>, is false. You can't. The reason you can't is that there <em>are</em> no rows in which both premises are true. And the reason for this is that the two premises form a contradiction, and <em>that's what a contradiction is</em>: it's a set of sentences, such that there's no way to make them all true at once. Since there's no way to make both <log>A</log> and <log>~A</log> true at once, there's also no way to make <log>A</log> and <log>~A</log> true while <log>B</log> is false.</p>
+
+<p>Thus, we have discovered an important truth of logic: <b>Any sentence whatsoever follows from a contradiction.</b> We have demonstrated this fact in two ways, once using truth tables and once using proofs. Nonetheless, many people find this principle to be unintuitive, and in fact, whole books have been written on the subject.</p>
+
+
+<h3>Summary</h3>
+
+<p>Here is a summary of the rules you've learned in this lesson.</p>
+
+<ol>
+<li><log>-&gt;</log> Intro:
+<div class="argument">
+    <div>
+        <div>
+            <div class="subproof">
+                <div>A</div>
+                <div>B</div>
+            </div>
+        </div>
+        <div>A -&gt; B</div>
+    </div>
+</div>
+
+<li><log>~</log> Intro:
+<div class="argument">
+    <div>
+        <div>
+            <div class="subproof">
+                <div>A</div>
+                <div>!</div>
+            </div>
+        </div>
+        <div>~A</div>
+    </div>
+</div>
+
+<li><log>~</log> Elim:
+<div class="argument">
+    <div>
+        <div>
+            <div class="subproof">
+                <div>~A</div>
+                <div>!</div>
+            </div>
+        </div>
+        <div>A</div>
+    </div>
+    <div>
+        <div><span>~~A</span></div>
+        <div>A</div>
+    </div>
+</div>
+
+<li>Reit:
+<div class="argument">
+    <div>
+        <div><span>A</span></div>
+        <div>A</div>
+    </div>
+</div>
+
+<li>Contradiction:
+<div class="argument">
+    <div>
+        <div><span>A</span><span>~A</span></div>
+        <div>!</div>
+    </div>
+</div>
+
+</ol>
+
+
+
+
+</article>
+
+</body>
+</html>

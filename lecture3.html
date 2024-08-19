@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>PHI 401 Logic - Week 3</title>
+    <meta charset="UTF-8" />
+<link rel="stylesheet" type="text/css" href="logic-1724095155.css" />
+
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-database.js"></script>
+
+<script language="JavaScript" src="logic-1724095155.js"></script>
+    <script language="JavaScript" src="textBehavior-1724095155.js"></script>
+
+    <script language="JavaScript" src="lecture_toolbar-1724095155.js"></script>
+
+</head>
+
+<body>
+
+<article class="link">
+    <header>
+        <h2>Week 3: Translation</h2>
+    </header>
+
+<p>This week, we will learn about translating between the language of symbolic logic and natural language. There won't be a lot of theory in this lecture: it will be rather hands-on and practical.</p>
+
+<h3>From English Into Logic</h3>
+
+<p>Up until now, we've been working entirely within the language of symbolic logic. You've had the chance to write down sentences in symbolic notation, and then use the World app to see if those sentences are true in the provided world. The limitation is that this only works for sentences that describe our little world: sentences that talk about squares, diamonds and octagons and their relation to each other on the board. But there's a lot more to life than squares, diamonds and octagons, and symbolic logic can be used to describe any type of subject matter you want. This week, we're going to explore this aspect of logic by showing you how to translate English sentences into logical notation.</p>
+
+<p>So suppose I give you a sentence like &quot;Michael is happy.&quot; How would you go about translating that sentence into logical notation? The first thing you have to do is decide what names and predicates to use. In particular, you will need a name that refers to Michael, and a predicate that means <em>happy</em>. In traditional logic texts, names and predicates are usually limited to one letter each, so we would have to choose, say, <log>m</log> for Michael and <log>H</log> for happy. But there was never a very strong rationale for this requirement, and in this course you can choose names and predicates that are easier to remember. Let's go ahead and choose a name and a predicate:</p>
+<ul>
+<li><log>michael</log> will be our name for Michael; and
+<li><log>IsHappy</log> will be our predicate meaning <em>happy</em>.
+</ul>
+<p>With that out of the way, we can now write down our sentence, &quot;Michael is happy,&quot; in symbolic notation:
+<ul>
+<li><log>IsHappy(michael)</log>
+</ul>
+<p>We can go on to say other things in this notation, such as: Michael is <em>not</em> happy:
+<ul>
+<li><log>~IsHappy(michael)</log>
+</ul>
+<p>Now suppose we create a new name <log>sarah</log> and a new predicate <log>IsSad</log>. Then we can say lots of new things in logical notation. Of course, we can say that Sarah is sad:</p>
+<ul>
+<li><log>IsSad(sarah)</log>
+</ul>
+But we can also say that Michael is sad, or that Sarah is happy, or that Michael is sad <em>and</em> Sarah is happy:
+<ul>
+<li><log>IsSad(michael)</log>
+<li><log>IsHappy(sarah)</log>
+<li><log>IsSad(michael) &amp; IsHappy(sarah)</log>
+</ul>
+<p>We can say that if Michael is sad, then Sarah is happy:</p>
+<ul>
+<li><log>IsSad(michael) -&gt; IsHappy(sarah)</log>
+</ul>
+<p>We can say that if Michael is happy, then Sarah is either happy or sad:</p>
+<ul>
+<li><log>IsHappy(michael) -&gt; (IsHappy(sarah) | IsSad(sarah))</log>
+</ul>
+<p>And so on. Hopefully you get the general idea.</p>
+
+<h3>More Software Goodness</h3>
+
+<p>Before getting further into translation, let's look at a new software tool, the <em>translation checker</em>. Let's start with an example. Consider the English sentence &quot;Michael is happy and Sarah is sad.&quot; By now you should know how to translate that sentence into logical notation. Go ahead and enter what you think is the correct translation into the text box below, and click the <em>check</em> button:</p>
+
+<div translate="true" expected="IsHappy(michael)&IsSad(sarah)">
+    <input t_id="1" size="50"/>
+    <button t_op="translate" t_source="1" t_out="2">Check!</button>
+    <span t_id="2"></span>
+</div>
+
+<p>There are three responses you can get: &quot;Correct,&quot; &quot;Incorrect,&quot; and &quot;Ill-formed.&quot; An ill-formed sentence is one that doesn't follow the rules of the language, and if you get that as a response, it simply means you made a mistake entering your sentence, such as a stray symbol. In any case, please feel free to enter different sentences above to see what you get.</p>
+
+<p>Before going further, it's worth explaining how the translation checker works. In short, it doesn't work by magic, so don't expect it to. Each translation checker box comes pre-programmed with a sentence in logical notation, which is known to be a correct translation of the corresponding English sentence. The checker parses the sentence you entered, and determines whether it is logically equivalent to the expected translation. If it is, your answer is considered correct; otherwise it isn't.<p>
+
+<p>Because of how the translation checker works, it has some limitations. First of all, you <em>have</em> to use the expected names and predicates. For example, suppose that instead of entering <log>IsHappy(michael)</log>, you entered <log>Happy(michael)</log>. That sentence wouldn't be accepted, because the translation checker is expecting you to use the predicate <log>IsHappy</log>, not <log>Happy</log>. Likewise, the translation checker won't accept <log>IsHappy(mike)</log> if the expected name is <log>michael</log>. Misspellings can cause your sentences to be marked incorrect for the same reason. Thus, when using the translation checker, you may also need a spell checker.</p>
+
+<p>On the other hand, the translation checker actually analyzes the sentences you enter; it doesn't just compare them letter-by-letter to the expected response. This gives you some flexibility. For example, as you surely know by now, the correct answer to the translation exercise I gave you earlier is <log>IsHappy(michael) &amp;</log> <log>IsHappy(sarah)</log>. However, that sentence is logically equivalent to the sentence <log>IsHappy(sarah) &amp;</log> <log>IsHappy(michael)</log>, and so the latter would be accepted as well.</p>
+
+<p>Incidentally, the notion of logical equivalence is an important concept in its own right, which we will be studying in a few weeks. For now, though, you don't need to know any particular facts about logical equivalence. Just think of logically equivalent sentences as those that &quot;say the same thing.&quot;</p>
+
+<h3>Translation Practice</h3>
+
+<p>Let's move on to some slightly more complicated translation problems. The best way to learn is by doing, so please try to solve the problems below before looking at the correct answer. In formulating your sentences, you can use the following names and predicates:</p>
+<ul>
+<li>Names: <log>michael</log>, <log>sarah</log>, <log>amy</log>, <log>brett</log>, <log>craig</log>
+<li>Predicates: <log>IsHappy</log>, <log>IsSad</log>, <log>IsHungry</log>, <log>LikesCookies</log>, <log>HasCats</log>
+</ul>
+
+<ol>
+<li>Amy likes cookies, and so does Brett.
+<div translate="true" expected="LikesCookies(amy) & LikesCookies(brett)">
+    Translation: <input t_id="1" size="70"/> <br />
+    <button t_op="translate" t_source="1" t_out="2">Check</button>
+    <span t_id="2"></span>
+    <br />
+    <button t_op="reveal" t_out="3">Show Answer</button>
+    <log t_id="3"></log>
+</div>
+
+<li>Sarah and Craig don't both have cats.
+<div translate="true" expected="~(HasCats(sarah) & HasCats(craig))">
+    Translation: <input t_id="1" size="70"/> <br />
+    <button t_op="translate" t_source="1" t_out="2">Check</button>
+    <span t_id="2"></span>
+    <br />
+    <button t_op="reveal" t_out="3">Show Answer</button>
+    <log t_id="3"></log>
+</div>
+
+<li> If Sarah and Craig both have cats, then Michael is happy.
+<div translate="true" expected="(HasCats(sarah) & HasCats(craig)) -> IsHappy(michael)">
+    Translation: <input t_id="1" size="70"/> <br />
+    <button t_op="translate" t_source="1" t_out="2">Check</button>
+    <span t_id="2"></span>
+    <br />
+    <button t_op="reveal" t_out="3">Show Answer</button>
+    <log t_id="3"></log>
+</div>
+
+<li>Sarah doesn't like cookies, but Brett does.
+<div translate="true" expected="~LikesCookies(sarah) & LikesCookies(brett)">
+    Translation: <input t_id="1" size="70"/> <br />
+    <button t_op="translate" t_source="1" t_out="2">Check</button>
+    <span t_id="2"></span>
+    <br />
+    <button t_op="reveal" t_out="3">Show Answer</button>
+    <log t_id="3"></log>
+</div>
+
+<li>Either Brett is hungry, or Michael is.
+<div translate="true" expected="IsHungry(brett) | IsHungry(michael)">
+    Translation: <input t_id="1" size="70"/> <br />
+    <button t_op="translate" t_source="1" t_out="2">Check</button>
+    <span t_id="2"></span>
+    <br />
+    <button t_op="reveal" t_out="3">Show Answer</button>
+    <log t_id="3"></log>
+</div>
+
+<li>Neither Amy nor Sarah has cats.
+<div translate="true" expected="~HasCats(amy) & ~HasCats(sarah)">
+    Translation: <input t_id="1" size="70"/> <br />
+    <button t_op="translate" t_source="1" t_out="2">Check</button>
+    <span t_id="2"></span>
+    <br />
+    <button t_op="reveal" t_out="3">Show Answer</button>
+    <log t_id="3"></log>
+</div>
+
+<li>Sarah is happy if and only if Craig is.
+<div translate="true" expected="IsHappy(sarah) <-> IsHappy(craig)">
+    Translation: <input t_id="1" size="70"/> <br />
+    <button t_op="translate" t_source="1" t_out="2">Check</button>
+    <span t_id="2"></span>
+    <br />
+    <button t_op="reveal" t_out="3">Show Answer</button>
+    <log t_id="3"></log>
+</div>
+
+<li>Amy likes cookies, but neither Brett nor Craig does.
+<div translate="true" expected="LikesCookies(amy) & ~LikesCookies(brett) & ~LikesCookies(craig)">
+    Translation: <input t_id="1" size="70"/> <br />
+    <button t_op="translate" t_source="1" t_out="2">Check</button>
+    <span t_id="2"></span>
+    <br />
+    <button t_op="reveal" t_out="3">Show Answer</button>
+    <log t_id="3"></log>
+</div>
+
+<li>If Michael is hungry, then either Sarah has cookies or Michael is not happy.
+<div translate="true" expected="IsHungry(michael) -> [HasCookies(sarah) | ~IsHappy(michael)]">
+    Translation: <input t_id="1" size="70"/> <br />
+    <button t_op="translate" t_source="1" t_out="2">Check</button>
+    <span t_id="2"></span>
+    <br />
+    <button t_op="reveal" t_out="3">Show Answer</button>
+    <log t_id="3"></log>
+</div>
+
+</ol>
+
+<h3>Tips and Techniques</h3>
+
+<p>By far the best approach to translating a sentence is to (1) think about what the sentence <em>means</em>, and then (2) think about how to express that meaning in logical notation. This requires you to actually think in logical notation to some extent. The same thing goes, by the way, for learning a natural language: you need to learn to think in the new language.</p>
+
+<p>Unfortunately, this is not the approach that all beginning logic students take, just as not all language learners really learn to think in the target language. And this can lead to some serious mistakes. In the case of learning a foreign language, the problem is that the learner will impose the grammar and idioms of her native language on the foreign language, producing a result that is incorrect in the foreign language. (In one real life example of my acquaintance, a native speaker of Spanish said: &quot;I sometimes get emails that don't like me.&quot; He meant to say &quot;I sometimes get emails that I don't like&quot;; but in the Spanish construction for &quot;I like,&quot; the roles of subject and object are reversed relative to English, and he failed to make the necessary correction. Of course, native speakers of English make equally bad mistakes when they learn Spanish.)</p>
+
+<p>The same thing can happen when translating into logical notation: a sentence will sometimes take a different form in logical notation than it does in English. To give a simple example, suppose we want to translate &quot;Both Amy and Brett like cookies.&quot; If you are too focused on how this sentence is constructed in English, you might try to render it as follows in logical notation: <log>LikesCookies(amy &amp; brett)</log>. But this would be <b>WRONG</b>. In logical notation, the connective &amp; can only join two sentences: it can never join two names. So <log>amy &amp; brett</log> is just ill-formed. By contrast, English allows two names to be joined with <em>and</em>, so &quot;Amy and Brett&quot; is just fine. </p>
+
+<h3>Breaking Things Down</h3>
+
+<style>
+
+blockquote log {
+color:red;
+}
+
+</style>
+
+<p>One good technique for translation is to break down a sentence bit by bit. Here's an example of what I mean. Suppose we start with a rather long and complicated English sentence, such as the following:</p>
+<blockquote>
+    If Michael and Sarah both have cats, then either Michael is happy, or Michael is sad and Sarah and Amy are both happy.
+</blockquote>
+<p>As a first step, we notice that the sentence is an if-then sentence, and so it is going to have to take the form <log>A -&gt; B</log>. With this in mind, we write down the following:</p>
+<blockquote>
+    (Michael and Sarah both have cats) <log>-&gt;</log> (either Michael is happy, or Michael is sad and Sarah and Amy are both happy)
+</blockquote>
+<p>(I'm showing the translated parts in red.) We can now work on the parts before and after the arrow separately, which greatly simplifies the task. Let's start with the part before the arrow, which is called the <em>antecedent</em>.</p>
+<blockquote>
+    (Michael has cats <log>&amp;</log> Sarah has cats) <log>-&gt;</log> (either Michael is happy, or Michael is sad and Sarah and Amy are both happy)
+</blockquote>
+<p>Here we've broken the antecedent down one step further. We've decided that the antecedent will take the form <log>A &amp; B</log>, and we just have to decide what <log>A</log> and <log>B</log> will be. Fortunately, that's not too difficult.</p>
+<blockquote>
+    <log>(HasCats(michael) &amp; HasCats(sarah)) -&gt;</log> (either Michael is happy, or Michael is sad and Sarah and Amy are both happy)
+</blockquote>
+<p>We have now fully translated the antecedent, and we can get to work on the part after the arrow, which is called the <em>consequent</em>. Notice now that the consequent is an either-or statement: it says that <em>either</em> Michael is happy, <em>or</em> Michael is sad and Sarah and Amy are happy. We know that either-or statements take the form <log>A | B</log>, so we can proceed as follows:</p>
+<blockquote>
+    <log>(HasCats(michael) &amp; HasCats(sarah)) -&gt;</log> ((Michael is happy) <log>|</log> (Michael is sad and Sarah and Amy are both happy))
+</blockquote>
+<p>And of course we know how to say &quot;Michael is happy&quot; in logical notation, so we can substitute that in as follows:
+<blockquote>
+    <log>(HasCats(michael) &amp; HasCats(sarah)) -&gt; (IsHappy(michael) |</log> (Michael is sad and Sarah and Amy are both happy))
+</blockquote>
+<p>Now we just have to translate &quot;Michael is sad and Sarah and Amy are both happy,&quot; which is a much simpler task than what we started with. Again, we can break that sentence down into simpler ones:</p>
+<blockquote>
+    <log>(HasCats(michael) &amp; HasCats(sarah))</log> <log>-&gt; (IsHappy(michael) |</log> <log>(IsSad(michael) &amp;</log> (Sarah and Amy are both happy)))
+</blockquote>
+<p>Finally, we just have to translate &quot;Sarah and Amy are both happy,&quot; and we're done:</p>
+<blockquote>
+    <log>(HasCats(michael) &amp; HasCats(sarah))</log> <log>-&gt; (IsHappy(michael) |</log> <log>(IsSad(michael) &amp; (IsHappy(sarah) &amp; IsHappy(amy))))</log>
+</blockquote>
+<p>You might notice that the above sentence has more parentheses than are strictly needed. We can remove one pair if we like, which gives us the following sentence:</p>
+<blockquote>
+    <log>(HasCats(michael) &amp; HasCats(sarah))</log> <log>-&gt; (IsHappy(michael) |</log> <log>(IsSad(michael) &amp; IsHappy(sarah) &amp; IsHappy(amy)))</log>
+</blockquote>
+
+
+<h3>Conditionals</h3>
+
+<p>One area where you have to be particularly careful is with &quot;if&quot; statements, which are called <em>conditionals</em>. </p>
+
+<p>A conditional takes the form <log>A -&gt; B</log>. The sentence <log>A</log> &mdash; the part before the arrow &mdash; is called the <em>antecedent</em>. The sentence <log>B</log> &mdash; the part after the arrow &mdash; is called the <em>consequent</em>. Please note that the word is consequen<u>t</u>, with a t, not consequen<u>ce</u> with a c. </p>
+
+<p>When you translate conditionals, you need to identify the antecedent and consequent of the English sentence, so that you know where to put their translations in the finished product. Sometimes this is easy. Let's say our sentence to translate is &quot;If Brett has cats, then he is happy.&quot; Pretty clearly, this is translated as follows:</p>
+<ul>
+<li><log>HasCats(brett) -&gt; IsHappy(brett)</log>
+</ul>
+<p>But now consider the sentence &quot;Brett is happy if he has cats.&quot; How should that be translated? Well, that sentence has the same meaning as the sentence &quot;If Brett has cats, then he is happy,&quot; so both should be translated the same way. Thus, the sentence &quot;Brett is happy if he has cats&quot; is translated: <log>HasCats(brett) -&gt; IsHappy(brett)</log>.</p>
+
+<p>What's tricky here is that in the sentence &quot;Brett is happy if he has cats,&quot; the antecedent actually comes second, and the consequent comes first, which is the reverse of the usual order. Namely, &quot;Brett is happy&quot; is the consequent, even though it comes first, and as the consequent, it will have to come <em>after</em> the arrow in our translation. Likewise, &quot;he has cats&quot; is the antecedent, even though it comes second, and so it will have to come <em>before</em> the arrow in our translation. A simple rule of thumb is as follows: <b>What follows 'if' is always the antecedent, regardless of where it occurs in the sentence.</b></p>
+
+<p>Next, consider the sentence &quot;Brett is happy only if he has cats.&quot; How do we translate that? While it may not be obvious, this sentence has the same meaning as &quot;If Brett is happy, then he has cats.&quot; (If you're having trouble seeing this, consider that &quot;Brett is happy only if he has cats&quot; is equivalent to: &quot;If Brett doesn't have cats, then he's not happy.&quot; The latter sentence, in turn, is logically equivalent to &quot;If Brett is happy, then he has cats.&quot;) Thus, the sentence is translated <log>IsHappy(brett) -&gt; HasCats(brett)</log>.</p>
+
+<p>Next, consider &quot;Only if Brett has cats is he happy.&quot; That sentence has the same meaning as &quot;Brett is happy only if he has cats,&quot; so both sentences have to translated the same way. Thus, the sentence is translated <log>IsHappy(brett) -&gt; HasCats(brett)</log>. Here, we have another simple rule of thumb: <b>What follows 'only if' is always the consequent, regardless of where it appears in the sentence.</b> The following chart summarizes the situation:</p>
+<table class="normal">
+<thead>
+<tr>
+<td>The Sentence...<td>Is Translated...
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>If <log>A</log> then <log>B</log> <td> <log>A -&gt; B</log>
+</tr>
+<tr>
+<td><log>A</log> if <log>B</log> <td> <log>B -&gt; A</log>
+</tr>
+<tr>
+<td><log>A</log> only if <log>B</log> <td> <log>A -&gt; B</log>
+</tr>
+<tr>
+<td>Only if <log>A</log>, <log>B</log> <td> <log>B -&gt; A</log>
+</tr>
+</tbody>
+</table>
+
+<p>The above table is equivalent to the following pair of rules:</p>
+<ul>
+<li>The word 'if' is always followed by the <em>antecedent</em> of a conditional.
+<li>The phrase 'only if' is always followed by the <em>consequent</em> of a conditional.
+</ul>
+
+<h3>Unless</h3>
+
+<p>Translating sentences that contain 'unless' is a bit tricky. What you have to remember is that 'unless' means 'if not.' That is, '<log>A</log> unless <log>B</log>' means '<log>A</log> if not <log>B</log>'. Using the above chart, we see that this is translated <log>~B -&gt; A</log>. So, 'Sarah is happy unless Michael is sad' has the same meaning as 'If Michael is not sad, then Sarah is happy,' and therefore translates as follows: <log>~IsSad(michael) -&gt; IsHappy(sarah)</log>.</p> 
+
+<p>Now what if we see a sentence like this: 'Unless Michael is sad, Sarah is happy'? Again, we use the rule that unless = if not. Our sentence then means 'If Michael is not sad, then Sarah is happy.' The translation is therefore: <log>~IsSad(michael) -&gt; IsHappy(sarah)</log>.</p>
+
+<p>As we'll see in a couple of weeks, the sentence <log>~A -&gt; B</log> is logically equivalent to <log>A | B</log>. The sentence <log>A | B</log> in turn is equivalent to <log>B | A</log>. So '<log>A</log> unless <log>B</log>' can also be translated as <log>A | B</log>. We've just discovered that 'unless' means 'or'!</p>
+
+<p>Here's our chart again, expanded to inclue 'unless.' Where two translations are given, either can be used.</p>
+
+<table class="normal">
+<thead>
+<tr>
+<td>The Sentence...<td>Is Translated...
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>If <log>A</log> then <log>B</log> <td> <log>A -&gt; B</log>
+</tr>
+<tr>
+<td><log>A</log> if <log>B</log> <td> <log>B -&gt; A</log>
+</tr>
+<tr>
+<td><log>A</log> only if <log>B</log> <td> <log>A -&gt; B</log>
+</tr>
+<tr>
+<td>Only if <log>A</log>, <log>B</log> <td> <log>B -&gt; A</log>
+</tr>
+<tr>
+<td><log>A</log> unless <log>B</log> <td> <log>~B -&gt; A</log>, <log>A | B</log>
+</tr>
+<tr>
+<td>Unless <log>A</log>, <log>B</log> <td> <log>~A -&gt; B</log>, <log>A | B</log>
+</tr>
+
+</tbody>
+</table>
+
+<h3>More Practice</h3>
+
+<p>Now it's time to test your understanding. Note that the following exercises <b>do not count toward your grade.</b></p>
+
+<ol>
+<li>Amy likes cookies if Brett does.
+<div translate="true" expected="LikesCookies(brett) -> LikesCookies(amy)">
+    Translation: <input t_id="1" size="70"/> <br />
+    <button t_op="translate" t_source="1" t_out="2">Check</button>
+    <span t_id="2"></span>
+    <br />
+    <button t_op="reveal" t_out="3">Show Answer</button>
+    <log t_id="3"></log>
+</div>
+
+<li>Only if Sarah has cats is Michael happy.
+<div translate="true" expected="IsHappy(michael) -> HasCats(sarah)">
+    Translation: <input t_id="1" size="70"/> <br />
+    <button t_op="translate" t_source="1" t_out="2">Check</button>
+    <span t_id="2"></span>
+    <br />
+    <button t_op="reveal" t_out="3">Show Answer</button>
+    <log t_id="3"></log>
+</div>
+
+<li> Craig is not happy unless Amy is happy.
+<div translate="true" expected="IsHappy(amy) | ~IsHappy(craig)">
+    Translation: <input t_id="1" size="70"/> <br />
+    <button t_op="translate" t_source="1" t_out="2">Check</button>
+    <span t_id="2"></span>
+    <br />
+    <button t_op="reveal" t_out="3">Show Answer</button>
+    <log t_id="3"></log>
+</div>
+
+<li>If Sarah doesn't like cookies, then she is hungry.
+<div translate="true" expected="~LikesCookies(sarah) -> IsHungry(sarah)">
+    Translation: <input t_id="1" size="70"/> <br />
+    <button t_op="translate" t_source="1" t_out="2">Check</button>
+    <span t_id="2"></span>
+    <br />
+    <button t_op="reveal" t_out="3">Show Answer</button>
+    <log t_id="3"></log>
+</div>
+
+<li>Michael is happy only if Amy has cats.
+<div translate="true" expected="IsHappy(michael) -> HasCats(amy)">
+    Translation: <input t_id="1" size="70"/> <br />
+    <button t_op="translate" t_source="1" t_out="2">Check</button>
+    <span t_id="2"></span>
+    <br />
+    <button t_op="reveal" t_out="3">Show Answer</button>
+    <log t_id="3"></log>
+</div>
+
+<li>Unless Craig likes cookies, Sarah is hungry.
+<div translate="true" expected="LikesCookies(craig) | IsHungry(sarah)">
+    Translation: <input t_id="1" size="70"/> <br />
+    <button t_op="translate" t_source="1" t_out="2">Check</button>
+    <span t_id="2"></span>
+    <br />
+    <button t_op="reveal" t_out="3">Show Answer</button>
+    <log t_id="3"></log>
+</div>
+
+</ol>
+
+
+
+</article>
+
+</body>
+</html>

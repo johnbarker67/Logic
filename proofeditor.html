@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+
+<link rel="stylesheet" type="text/css" href="logic-1724095155.css" />
+
+	<script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-auth.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-database.js"></script>
+
+<script language="JavaScript" src="logic-1724095155.js"></script>
+	<script language="JavaScript" src="lecture_toolbar-1724095155.js"></script>
+
+
+<script language="javascript">
+
+function load()
+{
+	var settings = {hasToolbar:true};
+	new ProofController(settings, document.getElementById('contents'));
+}
+
+</script>
+
+</head>
+
+<body onload="load()">
+
+<div class="gradebook-container">
+	<div id="contents">
+	</div>
+</div>
+
+
+</body>
+</htm>

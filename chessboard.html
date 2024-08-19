@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+
+<link rel="stylesheet" type="text/css" href="logic-1724095155.css" />
+
+<script language="JavaScript" src="logic-1724095155.js"></script>
+
+
+</head>
+<body>
+
+
+
+<button id="exportbtn">Export</button>
+<button id="importbtn">Import</button>
+
+<div class="gradebook-container" id="container"></div>
+
+<script language="JavaScript">
+
+(function(){
+
+// function setupToolbar()
+// {
+// 	var options = {
+// 		week: 1,
+// 		problem: 1,
+// 		numberOfProblems: 3,
+// 		statusString: 'Grade: 0 of 33',
+// 		statusColor: 'graded',
+// 		action: function() { },
+// 		actionString: 'Show Solution',
+// 		username: 'thejoker@uis.edu'
+// 	};
+// 	var controller = { };
+// 	var toolbar = new Toolbar(options, controller);
+// }
+
+var theChessboard;
+
+/*
+function assess()
+{
+	var sent = document.getElementById('sentence').value;
+	var expr;
+	try {
+		expr = (new Parser(sent)).parseStep();
+	}
+	catch (e) {
+		//alert(JSON.stringify(e));
+		document.getElementById('test-result').innerText = 'Syntax error';
+		return;
+	}
+	var pieces = theChessboard.pieces;
+	var model = new ChessboardModel(pieces);
+	//alert(JSON.stringify(model));
+	var val = expr.truthval(model, {});
+	if (val == 'T')
+		document.getElementById('test-result').innerText = 'True';
+	else if (val == 'F')
+		document.getElementById('test-result').innerText = 'False';
+	else
+		document.getElementById('test-result').innerText = 'Undefined';
+}
+*/
+
+var options = {"pieces":[{"x":4,"y":3,"shape":"diamond","size":"large","names":["b","c"]},{"x":6,"y":1,"shape":"square","size":"small","names":["d"]},{"x":3,"y":4,"shape":"diamond","size":"small","names":[]},{"x":4,"y":1,"shape":"square","size":"large","names":["a"]},{"x":2,"y":5,"shape":"diamond","size":"large","names":[]}],"sentences":["Ex Square(x)","LeftOf(a,d)","Small(a)","b=c","a=b"],"sentencesLocked":false,"piecesLocked":false,"messageHeader":"Instructions","messageText":"This is a really long message that will probably require more than one line of text on the screen.","tvFeedback":true};
+
+var options1 = {"messageHeader":"Problem #1 Instructions","messageText":"Enter sentences and configure the board so that all your sentences are true. You must use ALL of the following predicates: =, !=, Square, Diamond, Octagon, Large, Small, Above, Below, SameRow, SameColumn, SameShape, SameSize, LeftOf, RightOf, Between."};
+
+var options2 = {"pieces":[{"x":4,"y":3,"shape":"diamond","size":"large","names":["b","c"]},{"x":6,"y":1,"shape":"square","size":"small","names":["d"]},{"x":3,"y":4,"shape":"diamond","size":"small","names":[]},{"x":4,"y":1,"shape":"square","size":"large","names":["a"]},{"x":2,"y":5,"shape":"diamond","size":"large","names":[]}],"sentences":["Ex Square(x)","LeftOf(a,d)","Small(a)","b=c","a=b","a=b","a=b","a=b","a=b","a=b","a=b","a=b","a=b","a=b","a=b","a=b","a=b","a=b","a=b","a=b","a=b","a=b","a=b","a=b","a=b","a=b","a=b","a=b","a=b"],"sentencesLocked":false,"piecesLocked":false,"messageHeader":"Instructions","messageText":"This is a really long message that will probably require more than one line of text on the screen.","tvFeedback":true,ui_properties:{},hasShapeBin:true};
+
+var options3 = {"pieces":[{"x":4,"y":3,"shape":"diamond","size":"large","names":["b","c"]},{"x":6,"y":1,"shape":"square","size":"small","names":["d"]},{"x":3,"y":4,"shape":"diamond","size":"small","names":[]},{"x":4,"y":1,"shape":"square","size":"large","names":["a"]},{"x":2,"y":5,"shape":"diamond","size":"large","names":[]}],"sentences":["Ex Square(x)","LeftOf(a,d)","Small(a)","b=c","a=b","a=b","a=b","a=b","a=b","a=b","a=b","a=b","a=b","a=b","a=b","a=b","a=b","a=b","a=b","a=b","a=b","a=b","a=b","a=b","a=b","a=b","a=b","a=b","a=b"],"sentencesLocked":false,"piecesLocked":false,"tvFeedback":true,ui_properties:{},hasShapeBin:false};
+
+//setupToolbar();
+theChessboard = new Chessboard(options2, document.getElementById('container'));
+
+document.getElementById('exportbtn').onclick = function() {
+	var str = theChessboard.export();
+	alert(str);
+}
+
+document.getElementById('importbtn').onclick = function() {
+	var str = prompt("Import", "");
+	if (str != null && str.length > 0)
+		theChessboard.import(str);
+}
+
+}());
+
+</script>
+
+
+
+</body>
+</html>
