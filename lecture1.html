@@ -3,15 +3,15 @@
 <head>
     <title>PHI 401 Logic - Week 1</title>
     <meta charset="UTF-8" />
-<link rel="stylesheet" type="text/css" href="logic-1724095155.css" />
+<link rel="stylesheet" type="text/css" href="logic-1755709630.css" />
 
     <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
     <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-database.js"></script>
 
-<script language="JavaScript" src="logic-1724095155.js"></script>
-    <script language="JavaScript" src="lecture_toolbar-1724095155.js"></script>
+<script language="JavaScript" src="logic-1755709630.js"></script>
+    <script language="JavaScript" src="lecture_toolbar-1755709630.js"></script>
 
 
 
@@ -26,11 +26,11 @@
 
 <h3>Logic Basics</h3>
 
-<p>Logic is the study of deductive reasoning. Deductive reasoning, in turn, involves relations of <em>implication</em> beween statements. For example, if Benny is a cat and all cats are mammals, then it follows that Benny is a mammal. That is, the statements &quot;Benny is a cat&quot; and &quot;All cats are mammals&quot; jointly imply the statement &quot;Benny is a mammal.&quot;</p>
+<p>Logic is the study of deductive reasoning. In turn, Deductive reasoning involves relations of <em>implication</em> beween statements. For example, if Benny is a cat and all cats are mammals, then it follows that Benny is a mammal. That is, the statements &quot;Benny is a cat&quot; and &quot;All cats are mammals&quot; jointly imply the statement &quot;Benny is a mammal.&quot;</p>
 
-<p>In order to study logical implication scientifically, it turns out to be necessary to devise a formal language. And so we will spend most of our time studying, and working within, a certain formal language. &quot;Formal&quot; here simply means that there are exact rules governing the language, as opposed to natural language, where the rules are a bit looser.</p>
+<p>In order to study logical implication scientifically it turns out to be necessary to devise a formal language. And so we will spend most of our time studying a certain formal language. &quot;Formal&quot; here simply means that there are exact rules governing the language, as opposed to natural language where the rules are a bit looser.</p>
 
-<p>This week, we&apos;re going to start learning the language, and we&apos;re going to keep it very simple for now. The basic building blocks of the language are called <em>names</em> and <em>predicates</em>.
+<p>This week we&apos;re going to start learning the language, and we&apos;re going to keep it very simple for now. The basic building blocks of the language are called <em>names</em> and <em>predicates</em>.
 
 <p>In our language, a name is simply a sequence of letters, or of letters and numbers, that starts with a lowercase letter. Thus, the following are all names:
 <ul>
@@ -65,19 +65,19 @@ The following are <em>not</em> legal predicates:
 </ul>
 </p>
 
-<p>Where names pick out individuals, predicates express <em>properties</em> of individuals, or <em>relations</em> among individuals. For example, <log>IsACat</log> might express the property of being a cat.</em>
+<p>Where names pick out individuals, predicates express <em>properties</em> of individuals or <em>relations</em> among individuals. For example, <log>IsACat</log> might express the property of being a cat.</em>
 
 <p>It can't be stressed enough that names must start with lowercase letters and predicates must start with uppercase letters. This may seem like a picky requirement, but it gives us a surefire way to tell whether we&apos;re dealing with a name or a predicate. Also, when you start using the software, you&apos;ll find that it is very particular on this point.</p>
 
 <h3>Forming Sentences</h3>
 
-<p>Once you have names and predicates, you can put them together to form sentences. The following are some examples of sentences you can form.
+<p>Once you have names and predicates you can put them together to form sentences. The following are some examples of sentences you can form.
 <ul>
 <li><log>IsACat(benny)</log>
 <li><log>BelongsTo(benny, sally)</log>
 <li><log>IsBetween(a, b, c)</log>
 </ul>
-These sentences say, respectively, that Benny is a cat, that Benny belongs to Sally, and that <em>a</em> is between <em>b</em> and <em>c</em>. The general pattern is: a predicate, followed by one or more names that are separated by commas and enclosed in parentheses. Again, it&apos;s important to get the pattern right, otherwise you&apos;ll have an ill-formed string of characters, not a sentence. The following are all incorrect:
+These sentences say, respectively, that Benny is a cat, that Benny belongs to Sally, and that <em>a</em> is between <em>b</em> and <em>c</em>. The general pattern is: a predicate followed by one or more names that are separated by commas and enclosed in parentheses. Again, it&apos;s important to get the pattern right, otherwise you&apos;ll have an ill-formed string of characters, not a sentence. The following are all incorrect:
 <ul>
 <li><log>benny IsACat</log> (wrong: predicate must come first)
 <li><log>IsACat benny</log> (wrong: the name <log>benny</log> must be enclosed in parentheses)
@@ -113,11 +113,11 @@ The chessboard represents a world, and the sentence box contains sentences of ou
 
 <p>What if you enter a name and then decide to change it? No problem! Just double-click the shape again. Then edit the name in the resulting text box and press Enter. You can also remove a name in the same manner, returning your shape to its un-named state.
 
-<p>There are only two rules when assigning names. First, it has to be a valid, well-formed name. It must start with a lowercase letter and consist entirely of letters and numbers. Second, you cannot give the same name to two different shapes. The computer will enforce both rules.
+<p>There are only two rules when assigning names. First, it has to be a valid, well-formed name. It must start with a lowercase letter and consist entirely of letters and numbers. Second, you cannot give the same name to two different shapes. Your computer will enforce both rules.
 
-<p>The reason you can't give the same name to two shapes, by the way, is that doing so would lead to ambiguities. Suppose you gave the name <log>a</log> to a large square, for example, and then gave the same name <log>a</log> to a small diamond. Now suppose you type <log>Square(a)</log> in the sentence box. Should this sentence be considered true or false? The computer has no way of knowing. If <log>a</log> refers to the square, then <log>Square(a)</log> is true in your world. If <log>a</log> refers to the diamond, then <log>Square(a)</log> is false. The name <log>a</log>, in other words, is ambiguous. Ambiguities are not allowed in formal logic, so the computer simply won't allow you to assign a name to multiple objects.
+<p>The reason you can't give the same name to two shapes is that doing so would lead to ambiguities. Suppose you gave the name <log>a</log> to a large square, for example, and then gave the same name <log>a</log> to a small diamond. Now suppose you type <log>Square(a)</log> in the sentence box. Should this sentence be considered true or false? Your computer has no way of knowing. If <log>a</log> refers to the square, then <log>Square(a)</log> is true in your world. If <log>a</log> refers to the diamond, then <log>Square(a)</log> is false. The name <log>a</log>, in other words, is ambiguous. Ambiguities are not allowed in formal logic, so the computer simply won't allow you to assign a name to multiple objects.
 
-<p>On the other hand, you <em>can</em> assign two different names to the <em>same</em> object. Just double-click the object as usual. In the text box, enter however many names you want, separated by commas. (You can also separate them with spaces.) All the names you enter will be assigned to the object. You can, for example assign the names <log>a</log> and <log>b</log> to the same shape. If the shape is a square, then the sentences <log>Square(a)</log> and <log>Square(b)</log> will both be true.
+<p>On the other hand, you <em>can</em> assign two different names to the <em>same</em> object. Just double-click the object as usual. In the text box, enter however many names you want, separated by spaces or commas. All the names you enter will be assigned to the object. For example, you can assign the names <log>a</log> and <log>b</log> to the same shape. If the shape is a square, then the sentences <log>Square(a)</log> and <log>Square(b)</log> will both be true.
 
 <p>(Beginners are often confused by multiple names. When an object has two names, it's just like a person having a name and a nickname, like "Mark Twain" and "Samuel Clemens." Either name can be used to talk about the same individual.)
 

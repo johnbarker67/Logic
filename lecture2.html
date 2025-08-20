@@ -4,17 +4,17 @@
     <title>PHI 401 Logic - Week 2</title>
     <meta charset="UTF-8" />
 
-<link rel="stylesheet" type="text/css" href="logic-1724095155.css" />
+<link rel="stylesheet" type="text/css" href="logic-1755709630.css" />
 
     <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
     <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-database.js"></script>
 
-<script language="JavaScript" src="logic-1724095155.js"></script>
-    <script language="JavaScript" src="lecture_toolbar-1724095155.js"></script>
+<script language="JavaScript" src="logic-1755709630.js"></script>
+    <script language="JavaScript" src="lecture_toolbar-1755709630.js"></script>
 
-    <script language="JavaScript" src="textBehavior-1724095155.js"></script>
+    <script language="JavaScript" src="textBehavior-1755709630.js"></script>
 
 </head>
 
@@ -25,25 +25,25 @@
         <h2>Week 2: Boolean Connectives</h2>
     </header>
 
-<p>This week, we're going to learn some new features of the formal language. Specifically, we'll be learning how to put sentences together to form new sentences.</p>
+<p>This week we're going to learn some new features of the formal language. Specifically, we'll be learning how to put sentences together to form new sentences.</p>
 
 <p>We know how to say that something is a square: the sentence would be something like <log>Square(a)</log>. And we know how to say that something is large: that would be <log>Large(a)</log>. But what if we want to say that something is square <em>and</em> large? (In other words, what if we want to say something is a large square?) In that case, we write the following sentence: <log>Large(a) &amp; Square(a)</log>.</p>
 
-<p>The symbol <log>&amp;</log> is called a <em>connective</em>, because it <em>connects</em> two sentences together to make a new sentence. There are five connectives in all. As we go over the connectives, I encourage you to get some practice with them using the World app, which you can find <a href="world.html">here</a>.</p>
+<p>The symbol <log>&amp;</log> is called a <em>connective</em> because it <em>connects</em> two sentences together to make a new sentence. There are five connectives in all. As we go over the connectives, I encourage you to get some practice with them using the World app, which you can find <a href="world.html">here</a>.</p>
 
 <h3>The Connective <log>&amp;</log></h3>
 
-<p>We've just seen the connective <log>&amp;</log> in action: we used that connective to form the sentence <log>Large(a) &amp; Square(a)</log>, which says that <log>a</log> is a large square. In general, whenever you have two sentences <log>A</log> and <log>B</log>, you can form a new sentence <log>A &amp; B</log>. The resulting sentence is true just in case <log>A</log> and <log>B</log> are both true individually.</p>
+<p>We've just seen the connective <log>&amp;</log> in action: we used that connective to form the sentence <log>Large(a) &amp; Square(a)</log>, which says that <log>a</log> is a large square. In general, whenever you have two sentences <log>A</log> and <log>B</log> you can form a new sentence <log>A &amp; B</log>. The resulting sentence is true just in case <log>A</log> and <log>B</log> are both true individually.</p>
 
 <p>Different logic books use different notations for this connective. Sometimes it is written as a raised dot: so instead of <log>A &amp; B</log>, some books write <log>A &sdot; B</log>. Another popular notation is <log>&and;</log> &mdash; some books write <log>A &and; B</log> instead of <log>A &amp; B</log>. There are other notations as well, though anything besides these three is considered very old-fashioned. I chose <log>&amp;</log> because it is easily available on any keyboard, and because it&apos;s easy to remember.</p>
 
 <h3>The Connective <log>|</log></h3>
 
-<p>Our next connective is written <log>|</log>, and pronounced &quot;or.&quot; For example, to say that something is either a square or a diamond, you would write <log>Square(a) | Diamond(a)</log>.<p>
+<p>Our next connective is written <log>|</log> and pronounced &quot;or.&quot; For example, to say that something is either a square or a diamond you would write <log>Square(a) | Diamond(a)</log>.<p>
 
 <p>As with <log>&amp;</log>, there are different notations in circulation. By far the most common notation for or is <log>&or;</log>. If you have the right fonts installed on your computer, <log>&or;</log> should look like the letter v. Unfortunately, the symbol <log>&or;</log> isn't readily available on a computer keyboard, and the letter v, which it resembles, has another meaning. So I chose <log>|</log>, which is widely used to mean <em>or</em> in most programming languages.</p>
 
-<p>The symbol <log>|</log> stands for <em>inclusive or</em>. This means that the sentence <log>A | B</log> is true just in case <log>A</log> is true, or <log>B</log> is true, or both. So, for example, suppose we have a small square called <log>a</log>; then the sentence <log>Small(a) | Square(a)</log> would be true. That sentence would also be true if a stood for a small diamond or a large square, but <em>not</em> if it stood for a large diamond. (By contrast, the <em>exclusive</em> or of two statements <log>A</log> and <log>B</log> holds just in case <log>A</log> holds or <log>B</log> holds but <em>not</em> both. So for example, if we use <log>*</log> as an exclusive or connective, then <log>Square(a) * Square(b)</log> will come out false, because both constituent sentences are true.)</p>
+<p>The symbol <log>|</log> stands for <em>inclusive or</em>. This means that the sentence <log>A | B</log> is true just in case <log>A</log> is true or <log>B</log> is true or both. So, for example, suppose we have a small square called <log>a</log>; then the sentence <log>Small(a) | Square(a)</log> would be true. That sentence would also be true if <log>a</log> stood for a small diamond or a large square, but <em>not</em> if it stood for a large diamond. (By contrast, the <em>exclusive</em> or of two statements <log>A</log> and <log>B</log> holds just in case <log>A</log> holds or <log>B</log> holds but <em>not</em> both. So for example, if we use <log>*</log> as an exclusive or connective, then <log>Square(a) * Square(b)</log> will come out false, because both constituent sentences are true.)</p>
 
 <h3>The Connective <log>~</log></h3>
 
@@ -103,11 +103,11 @@
 
 <h3>Parentheses and Grouping</h3>
 
-<p>You can use connectives to make sentences that are more complex than those we've been talking about so far. For example, suppose we take the sentence <log>Large(a) &amp; Square(a)</log> and the sentence <log>Small(a) &amp; Diamond(a)</log>, and join these two sentences together with an <em>or</em> connective <log>|</log>. The result is the following sentence:</p>
+<p>You can use connectives to make sentences that are more complex than those we've been talking about so far. For example, suppose we take the sentence <log>Large(a) &amp; Square(a)</log> and the sentence <log>Small(a) &amp; Diamond(a)</log> and join them together with an <em>or</em> connective <log>|</log>. The result is the following sentence:</p>
 <ul>
 <li><log>(Large(a) &amp; Square(a)) | (Small(a) &amp; Diamond(a))</log>
 </ul>
-<p>This sentence says that a is either a large square or a small diamond. Or suppose we take the sentences <log>~Square(a)</log> and <log>Above(a,b)</log>, and join them together with the <em>if</em> connective <log>-&gt;</log>. The result is as follows:</p>
+<p>This sentence says that <log>a</log> is either a large square or a small diamond. Or suppose we take the sentences <log>~Square(a)</log> and <log>Above(a,b)</log> and join them together with the <em>if</em> connective <log>-&gt;</log>. The result is as follows:</p>
 <ul>
 <li><log>~Square(a) -&gt; Above(a,b)</log>
 </ul>
@@ -134,9 +134,9 @@
 <log>Square(a) &amp; Large(a) | Small(a)</log>
 </tr></tbody></table>
 
-<p>(You can enter the sentence by copying and pasting.) You should have gotten the message &quot;--&quot;. That's because the sentence is considered to be ill-formed. Without parentheses, there's no knowing how the sentence should be interpreted.</p>
+<p>(You can enter the sentence by copying and pasting.) You should have gotten the message &quot;--&quot;. That's because the sentence is considered to be ill-formed. Without parentheses there's no knowing how the sentence should be interpreted.</p>
 
-<p>The only cases where you can drop parentheses are as follows: when all the connectives are <log>&amp;</log>, or when all the connectives are <log>|</log>. Thus, the following is perfectly legal:<p>
+<p>The only cases where you can drop parentheses are as follows: when all the connectives are <log>&amp;</log> or when all the connectives are <log>|</log>. Thus, the following is perfectly legal:<p>
 
 <table class="plain"><tbody><tr><td>
 <log>Square(a) &amp; Large(a) &amp; Diamond(a)</log>
@@ -174,7 +174,7 @@
 </tbody>
 </table>
 
-<p>You can also write sentences like <log>A &amp; ~B</log>, which means <log>A &amp; (~B)</log>. The general rule is that the connective <log>~</log> &quot;binds more tightly&quot; than the other connectives, which means that it attaches to the smallest part of the sentence that it can. In the sentence <log>~A &amp; B</log>, for example, the smallest thing available for <log>~</log> to attach to is <log>A</log>, so that's what it attaches to and the sentence means <log>(~A) &amp; B</log>. To override this behavior, we use parentheses. To apply <log>~</log> to the entire sentence <log>A &amp; B</log>, we write <log>~(A &amp; B)</log>. Then the smallest thing for <log>~</log> to attach to is <log>(A &amp; B)</log>. In the study of formal languages, this fact about <log>~</log> is expressed by saying that it has &quot;higher precedence&quot; than the other connectives.</p>
+<p>You can also write sentences like <log>A &amp; ~B</log>, which means <log>A &amp; (~B)</log>. The general rule is that the connective <log>~</log> &quot;binds more tightly&quot; than the other connectives, which means that it attaches to the smallest part of the sentence that it can. In the sentence <log>~A &amp; B</log>, for example, the smallest thing available for <log>~</log> to attach to is <log>A</log>, so that's what it attaches to and the sentence means <log>(~A) &amp; B</log>. To override this behavior we use parentheses. To apply <log>~</log> to the entire sentence <log>A &amp; B</log>, we write <log>~(A &amp; B)</log>. Then the smallest thing for <log>~</log> to attach to is <log>(A &amp; B)</log>. In the study of formal languages, this fact about <log>~</log> is expressed by saying that it has &quot;higher precedence&quot; than the other connectives.</p>
 
 <p><a href="example.html?week=2&idx=2" target="_blank">Here is an example</a> that illustrates the difference between these cases. Notice that adjacent sentences have different truth values, <em>except</em> for the final pair, which are of the form <log>~A &lt;-&gt; B</log> and <log>~(A &lt;-&gt; B)</log>. That's because these two sentences are logically equivalent. Try as you might, you can't manipulate the pieces in such a way that the sentences have different truth values. They are nonetheless considered to be different sentences.</p>
 
@@ -197,7 +197,7 @@
 <td><log>~[([A &amp; B] | C) -> D]</log>
 <td><log>~(((A &amp; B) | C) -> D)</log>
 </td></tr></tbody></table>
-<p>The software doesn't make any distinction between round and square parentheses, and even allows a left <log>[</log> to be matched by a right <log>)</log> or vice versa.<p>
+
 
 <p>You should also be aware that the software is fairly laid back when it comes to spaces inside a sentence. The following are all allowed and are all considered the same:</p>
 <ul>

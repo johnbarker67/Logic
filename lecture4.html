@@ -3,18 +3,18 @@
 <head>
     <title>PHI 401 Logic - Week 3</title>
     <meta charset="UTF-8" />
-<link rel="stylesheet" type="text/css" href="logic-1724095155.css" />
+<link rel="stylesheet" type="text/css" href="logic-1755709630.css" />
 
     <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
     <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-database.js"></script>
 
-<script language="JavaScript" src="logic-1724095155.js"></script>
-    <script language="JavaScript" src="lecture_toolbar-1724095155.js"></script>
+<script language="JavaScript" src="logic-1755709630.js"></script>
+    <script language="JavaScript" src="lecture_toolbar-1755709630.js"></script>
 
-    <script language="JavaScript" src="textBehavior-1724095155.js"></script>
-    <script language="JavaScript" src="lectures-1724095155.js"></script>
+    <script language="JavaScript" src="textBehavior-1755709630.js"></script>
+    <script language="JavaScript" src="lectures-1755709630.js"></script>
 
 </head>
 
@@ -25,7 +25,7 @@
         <h2>Week 4: Parsing and Truth Tables</h2>
     </header>
 
-<p>At this point in the course, you have been introduced to the language of symbolic logic. You have learned to read and write sentences of the language, and evaluate them in a model. Over the next couple of weeks, we're going to study the language a bit more systematically. You're going to learn more about how sentences are put together, how they depend on their parts, and how their truth values are determined in a systematic way. This will prepare you for next week, when we start studying logical relations between sentences.</p>
+<p>At this point in the course, you have been introduced to the language of symbolic logic. You have learned to read and write sentences of the language and evaluate them in a world. Over the next couple of weeks, we're going to study the language a bit more systematically. You're going to learn more about how sentences are put together, how they depend on their parts, and how their truth values are determined. This will prepare you for next week, when we start studying logical relations between sentences.</p>
 
 <h3>Sentences and their Parts</h3>
 
@@ -81,7 +81,7 @@
 
 <div parsetree="A->B.~A->B.A->(B|C)" parse_options="cstate:['200','2X0','20X']"></div>
 
-<p>In each tree, the sentence on the lower left is the antecedent, and the sentence to its right is the consequent. So in the first tree, for example, <log>A</log> is the antecedent and <log>B</log> is the consequent. The whole conditional is <log>A -&gt; B</log>. In the rightmost sentence, the antecedent is <log>A</log> and the consequent is <log>B | C</log>.</p>
+<p>In each tree, the sentence on the lower left is the antecedent and the sentence to its right is the consequent. So in the first tree, for example, <log>A</log> is the antecedent and <log>B</log> is the consequent. The whole conditional is <log>A -&gt; B</log>. In the rightmost sentence, the antecedent is <log>A</log> and the consequent is <log>B | C</log>.</p>
 
 <p><b>Biconditionals.</b> A sentence whose main connective is <log>&lt;-&gt;</log> is called a <b>biconditional</b>. There is no special name for the parts of a biconditional.</p>
 
@@ -138,7 +138,7 @@
 
 <p>First, expand the sentence as usual by clicking the connective <log>&amp;</log>. Notice that there is a truth table to the right of the tree. Click any row of the table. You should now see truth values T and/or F placed to the side of the letters <log>A</log> and <log>B</log> in the tree.</p>
 
-<p>In the truth table, each row represents the truth values assigned to the whole sentence and its parts. The column under each letter represents the truth values assigned to that letter. When you click a row, you should notice that the truth values that now appear next to the letters are the same as those in the corresponding position of the row you selected. For example, click the second row. That row has 'T' under <log>A</log> and 'F' under <log>B</log>. In the tree, you should see the same truth values, 'T' and 'F', next to the letters <log>A</log> and <log>B</log>. Try clicking each row to see what you get.</p>
+<p>Each row in the truth table represents the truth values assigned to the whole sentence and its parts. The column under each letter represents the truth values assigned to that letter. When you click a row, you should notice that the truth values that now appear next to the letters are the same as those in the corresponding position of the row you selected. For example, click the second row. That row has 'T' under <log>A</log> and 'F' under <log>B</log>. In the tree, you should see the same truth values, 'T' and 'F', next to the letters <log>A</log> and <log>B</log>. Try clicking each row to see what you get.</p>
 
 <p>Now you've probably noticed that next to the sentence <log>A &amp; B</log> itself, there are two truth values: a little 'T' above a little 'F'. This means that you have to select one of the two truth values. Namely, you should select the value that you think the sentence <log>A &amp; B</log> has, <em>given</em> the truth values that have been assigned to the components <log>A</log> and <log>B</log>. Go ahead and try it. You will get different feedback depending on whether you picked the right value.<p>
 

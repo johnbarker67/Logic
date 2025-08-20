@@ -3,47 +3,19 @@
 <head>
     <title>PHI 401 Logic - Week 9</title>
     <meta charset="UTF-8" />
-<link rel="stylesheet" type="text/css" href="logic-1724095155.css" />
+<link rel="stylesheet" type="text/css" href="logic-1755709630.css" />
 
     <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
     <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-database.js"></script>
 
-<script language="JavaScript" src="logic-1724095155.js"></script>
-    <script language="JavaScript" src="lecture_toolbar-1724095155.js"></script>
+<script language="JavaScript" src="logic-1755709630.js"></script>
+    <script language="JavaScript" src="lecture_toolbar-1755709630.js"></script>
 
-    <script language="JavaScript" src="textBehavior-1724095155.js"></script>
-    <script language="JavaScript" src="lectures-1724095155.js"></script>
+    <script language="JavaScript" src="textBehavior-1755709630.js"></script>
+    <script language="JavaScript" src="lectures-1755709630.js"></script>
 
-<style>
-
-.ttable {
-font-family:"Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif;
-text-align:center;
-cursor:default;
-border-collapse:collapse;
-margin-top: 10px;
-}
-
-.ttable thead {
-border-bottom: 1px solid black;
-}
-
-.ttable td {
-padding-left:10px;
-padding-right:10px;
-}
-
-.sep-1 td:last-child {
-border-left: 1px solid black;
-}
-
-.sep-2 td:nth-last-child(2) {
-border-left: 1px solid black;
-}
-
-</style>
 
 </head>
 
@@ -290,7 +262,7 @@ And so can <log>~B</log>:
 </ol>
 (The only other possibility is that <log>S</log> is atomic, and we have already covered that case.) We need to show, in each case, that <log>S</log> is very good if its immediate component(s) are.</p>
 
-<blockquote>
+<p class="metaproof">
 <b>Case 1</b> <log>S</log> is a negated sentence <log>~A</log>. Remember, we are assuming that all of <log>S</log>'s immediate components are very good. <log>S</log> has just one immediate component, namely <log>A</log>, so we can assume that <log>A</log> is very good. In other words, we can assume the following: (1) If <log>A</log> is true in a row, then <log>A</log> is provable from the corresponding row description; and (2) if <log>A</log> is false in a row, then <log>~A</log> is provable from the row description. We need to prove the same thing about <log>S</log>. There are two sub-cases.
 
 <p><b>Case 1a</b> <log>A</log> is true in the row. Then <log>S</log>, which is simply <log>~A</log>, is false in the row, and we need to show that <log>~S</log> is provable from the row description. That is, we need to show that <log>~~A</log> is provable. We can assume that <log>A</log> is provable, because <log>A</log> is true and satisfies the Central Lemma. Thus, to show that <log>~~A</log> is provable, it is enough to produce a proof of <log>~~A</log> directly from <log>A</log>:
@@ -299,11 +271,11 @@ And so can <log>~B</log>:
 </div>
 
 <p><b>Case 1b</b> <log>A</log> is false. Then <log>~A</log> is provable, by assumption. But <log>~A</log> is none other than <log>S</log>, and so <log>S</log> is provable. Moreover, <log>S</log> is true (because <log>A</log> is false). So <log>S</log> is very good in this case as well.
-</blockquote>
+</p>
 
 <p>This takes care of the first case. The other two cases are taken care of in a similar manner.</p>
 
-<blockquote>
+<p class="metaproof">
 <b>Case 2</b> <log>S</log> is a conjunction <log>A &amp; B</log>. Then <log>S</log>'s immediate components are <log>A</log> and <log>B</log>, and we need to show that if they are very good, then so is <log>S</log>. Again, there are two sub-cases to consider.
 
 <p><b>Case 2a</b> <log>S</log> is true (in the row in question). Since <log>S</log> is simply <log>A &amp; B</log>, the only way for <log>S</log> to be true is for <log>A</log> and <log>B</log> to both be true. In that case, <log>A</log> and <log>B</log> are both provable (from the corresponding row description), by assumption. We need to show that <log>A &amp; B</log> is also provable. But <log>A &amp; B</log> is provable from <log>A</log> and <log>B</log>: All it takes is one application of <log>&amp;</log> Intro. Therefore, we can produce a proof of <log>A &amp; B</log> by combining the separate proofs of <log>A</log> and <log>B</log> and deriving <log>A &amp; B</log> via <log>&amp;</log> Intro.
@@ -312,11 +284,11 @@ And so can <log>~B</log>:
 <div proof="json">
 {"ro":3,"premises":[{"s":"~A","l":1,"ro":1}],"body":[{"p":{"premises":[{"s":"A & B","l":2,"ro":1}],"body":[{"s":"A","l":3,"r":"& Elim","c":[2],"ro":7},{"s":"!","l":4,"r":"Contradiction","c":[3,1],"ro":7}]},"l":5},{"s":"~(A & B)","l":6,"r":"~ Intro","c":[5],"ro":7}],"hasToolbar":false,"hasDialog":false,"enabledRules":[]}
 </div>
-</blockquote>
+</p>
 
 <p>OK, two down, one to go!</p>
 
-<blockquote>
+<p class="metaproof">
 <b>Case 3</b> <log>S</log> is a disjunction <log>A | B</log>. Again, there are two sub-cases.
 
 <p><b>Case 3a</b> <log>S</log> is true (in a given row). Then at least one of <log>A</log> and <log>B</log> must be true. Assume it is <log>A</log>; the proof is essentially the same if it is <log>B</log>. Since <log>A</log> is true, it is provable (from the given row description). We need to show that <log>S</log>, or <log>A | B</log>, is also provable. But <log>A | B</log> can be derived directly from <log>A</log> via <log>|</log> Intro.
@@ -325,7 +297,7 @@ And so can <log>~B</log>:
 <div proof="json">
 {"ro":3,"premises":[{"s":"~A","l":1,"ro":1},{"s":"~B","l":2,"ro":1}],"body":[{"p":{"premises":[{"s":"A | B","l":3,"ro":1}],"body":[{"p":{"premises":[{"s":"A","l":4,"ro":1}],"body":[{"s":"!","l":5,"r":"Contradiction","c":[4,1],"ro":7}]},"l":6},{"p":{"premises":[{"s":"B","l":7,"ro":1}],"body":[{"s":"!","l":8,"r":"Contradiction","c":[7,2],"ro":7}]},"l":9},{"s":"!","l":10,"r":"| Elim","c":[9,6,3],"ro":7}]},"l":11},{"s":"~(A | B)","l":12,"r":"~ Intro","c":[11],"ro":7}],"hasToolbar":false,"hasDialog":false,"enabledRules":[]}
 </div>
-</blockquote>
+</p>
 
 <p>This concludes the proof of the Central Lemma. We are now more than halfway toward proving completeness.
 
